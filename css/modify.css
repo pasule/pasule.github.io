@@ -1,5 +1,9 @@
-#page-header,
+/** 页面头部 */
+#page-header {
+  background: transparent !important;
+}
 #page-header:before {
+  background: transparent !important;
   background: transparent !important;
 }
 #page-header.post-bg,
