@@ -53,6 +53,8 @@
       
         <tags>
             
+            <tag> 性能优化 </tag>
+            
             <tag> Java </tag>
             
             <tag> 并发编程 </tag>
@@ -60,8 +62,6 @@
             <tag> 多线程 </tag>
             
             <tag> JUC </tag>
-            
-            <tag> 性能优化 </tag>
             
         </tags>
       
@@ -86,13 +86,13 @@
       
         <tags>
             
-            <tag> 性能优化 </tag>
-            
             <tag> MySQL </tag>
             
             <tag> 数据库 </tag>
             
             <tag> 索引 </tag>
+            
+            <tag> 性能优化 </tag>
             
             <tag> SQL </tag>
             
