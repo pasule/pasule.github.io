@@ -1,0 +1,80 @@
+/* 让所有页面内容区紧贴 top_img */
+.page .content-wrap,
+.archive .content-wrap,
+.tag .content-wrap,
+.category .content-wrap,
+.friends .content-wrap,
+.movies .content-wrap,
+.gallery .content-wrap,
+.projects .content-wrap,
+.guestbook .content-wrap {
+  margin-top: 0 !important;
+}
+
+/* 全站内容卡片背景和首页一致，使用主题变量实现半透明 */
+.content-wrap {
+  position: relative;
+  top: -200px;
+  margin-bottom: -200px;
+  background: rgba(255,255,255,0.85) !important;
+  box-shadow: var(--card-box-shadow) !important;
+  border-radius: 8px !important;
+}
+
+/* 让 aside 侧边栏卡片也半透明 */
+#aside-content .card-widget {
+  position: relative;
+  top: -200px;
+  margin-bottom: -200px;
+  background: rgba(255,255,255,0.85) !important;
+  box-shadow: var(--card-box-shadow) !important;
+  border-radius: 8px !important;
+}
+
+/* 移除渐变遮罩，保持风格统一 */
+.top-img::after {
+  display: none !important;
+}
+
+#page-header,
+#page-header.not-home-page {
+  height: 100vh !important;
+  min-height: 500px;
+  background-attachment: fixed !important;
+}
+
+@media screen and (max-width: 900px) {
+  .content-wrap,
+  #aside-content .card-widget {
+    top: -100px;
+    margin-bottom: -100px;
+  }
+}
+
+.content-wrap,
+#aside-content .card-widget {
+  border-radius: 18px !important;
+}
+
+.recent-post-item,
+#aside-content .card-widget,
+#post,
+#page,
+#archive,
+#tag,
+#category {
+  box-shadow: 0 20px 42px rgba(111, 126, 160, 0.14) !important;
+}
+
+#recent-posts .recent-post-item {
+  border: 1px solid rgba(114, 128, 167, 0.12);
+  overflow: hidden;
+}
+
+#recent-posts .article-title {
+  line-height: 1.5;
+}
+
+#recent-posts .content {
+  color: #617089;
+}

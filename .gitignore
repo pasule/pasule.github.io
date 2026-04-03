@@ -1,0 +1,7 @@
+.deploy_git/
+.superpowers/
+node_modules/
+public/
+db.json
+.DS_Store
+Thumbs.db

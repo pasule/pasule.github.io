@@ -1,0 +1,82 @@
+﻿home:
+  hero:
+    eyebrow: "TECH x ACG"
+    title: "把博客做成一个有气质的技术小宇宙"
+    description: "把技术文章、项目实验、归档入口和个人信息组织成同一个世界观下的内容站。"
+    primary_text: "浏览文章档案"
+    primary_link: "/archives/"
+    secondary_text: "打开项目页"
+    secondary_link: "/projects/"
+  featured_titles:
+    - "微服务架构设计原理与最佳实践"
+    - "Java并发编程深度解析：从理论到实践"
+    - "MySQL索引优化完全指南：从原理到实战"
+  series_deck:
+    - key: "backend-growth"
+      title: "Java / 后端成长线"
+      description: "从 Spring 注入、Java 并发到微服务架构。"
+      entry_titles:
+        - "Spring框架依赖注入深度解析：从XML到注解的演进之路"
+        - "Java并发编程深度解析：从理论到实践"
+        - "微服务架构设计原理与最佳实践"
+    - key: "db-performance"
+      title: "数据库性能线"
+      description: "围绕 MySQL 索引、查询分析和性能定位逐步展开。"
+      entry_titles:
+        - "MySQL索引优化完全指南：从原理到实战"
+    - key: "frontend-engineering"
+      title: "前端工程线"
+      description: "从路由理解到性能优化，构建前端工程认知。"
+      entry_titles:
+        - "路由的理解"
+        - "前端性能优化实战：从加载到渲染全面提速"
+    - key: "engineering-collaboration"
+      title: "工程协作线"
+      description: "从 Git 基础延伸到团队协作与评审习惯。"
+      entry_titles:
+        - "Git工作流与团队协作最佳实践"
+
+projects:
+  intro:
+    title: "Project Deck"
+    description: "先收纳当前真实在维护的项目，再用 planned 状态诚实标注后续扩展位。"
+  items:
+    - key: "pasule-blog"
+      title: "Pasule Blog"
+      summary: "当前这个 Hexo + Butterfly 博客本体，目标是把它升级成技术博客和作品页混合站。"
+      status: "active"
+      stack:
+        - "Hexo"
+        - "Butterfly"
+        - "Stylus"
+        - "Cheerio"
+      repo: "https://github.com/pasule/pasule.github.io"
+      demo: "https://pasule.github.io"
+      related_titles:
+        - "前端性能优化实战：从加载到渲染全面提速"
+    - key: "content-map-upgrade"
+      title: "Content Map Upgrade"
+      summary: "把文章、系列、项目和首页导流整理进一个中心化内容映射层。"
+      status: "planned"
+      stack:
+        - "Hexo Data"
+        - "YAML"
+        - "Content Design"
+      repo: ""
+      demo: ""
+      related_titles:
+        - "Git工作流与团队协作最佳实践"
+    - key: "series-reading-flow"
+      title: "Series Reading Flow"
+      summary: "让文章从孤立页面升级成可连续阅读的知识路径。"
+      status: "planned"
+      stack:
+        - "Front Matter"
+        - "Butterfly Series"
+        - "HTML Filter"
+      repo: ""
+      demo: ""
+      related_titles:
+        - "Java并发编程深度解析：从理论到实践"
+        - "MySQL索引优化完全指南：从原理到实战"
+

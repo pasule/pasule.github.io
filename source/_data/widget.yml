@@ -1,0 +1,20 @@
+top:
+  - class_name: "pasule-quick-jump"
+    id_name: "pasule-quick-jump"
+    icon: "fas fa-compass"
+    name: "快速跳转"
+    html: |
+      <div class="pasule-link-stack">
+        <a href="/archives/">文章档案</a>
+        <a href="/projects/">项目集</a>
+        <a href="/gallery/">相册</a>
+        <a href="/about/">关于我</a>
+      </div>
+
+bottom:
+  - class_name: "pasule-signal-note"
+    id_name: "pasule-signal-note"
+    icon: "fas fa-satellite-dish"
+    name: "Signal Note"
+    html: |
+      <p class="pasule-widget-copy">先看精选文章，再逛项目页和关于页。所有主要分页面都会保留互相跳转入口。</p>
