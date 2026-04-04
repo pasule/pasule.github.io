@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title></title>
+      <link href="/2026/04/05/%E6%B5%8B%E8%AF%95/"/>
+      <url>/2026/04/05/%E6%B5%8B%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<p>1</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>校园网串流方案</title>
+      <link href="/2026/04/04/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/"/>
+      <url>/2026/04/04/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/</url>
+      
+        <content type="html"><![CDATA[<h1 id="校园网串流方案"><a href="#校园网串流方案" class="headerlink" title="校园网串流方案"></a>校园网串流方案</h1><blockquote><p>🌟<strong>串流核心要点</strong><br>了解P2P原理和使用异地组网工具搭建内网环境<br>使用ipv6 直连<br>了解frp中转原理和使用中转服务器实现串流<br>接触了解Sunshine和Moonlight工具</p></blockquote><h2 id="🤖串流软件配置"><a href="#🤖串流软件配置" class="headerlink" title="🤖串流软件配置"></a>🤖串流软件配置</h2><h3 id="Sunshine-基地版"><a href="#Sunshine-基地版" class="headerlink" title="Sunshine 基地版"></a>Sunshine 基地版</h3><p>Github地址:<a href="https://github.com/AlkaidLab/foundation-sunshine/releases">Releases · AlkaidLab&#x2F;foundation-sunshine</a></p><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>安装会给出许多安装组件<br><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405014556300.png"></p><pre><code>首次安装推荐所有组件都安装，非首次如图勾选</code></pre><h4 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h4><p>配对（pin）<br><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405014936218.png"></p><pre><code>如图所示，配对码是后面Moonlight发送过来的</code></pre><p><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405015125269.png"></p><pre><code>在应用中可以配置主页，steam，游戏等页面</code></pre><p><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405015407359.png"></p><pre><code>在网络设置中将UPnP打开。IP改为IPv4+IPv6;注意下面Sunshine使用的端口，在防火墙中要放行这些端口。</code></pre><p><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405015727566.png"></p><pre><code>将所有加密模式设为禁用</code></pre><h3 id="Moonlight-v"><a href="#Moonlight-v" class="headerlink" title="Moonlight v+"></a>Moonlight v+</h3><p>Github 地址：<a href="https://github.com/qiin2333/moonlight-vplus/releases">Releases · qiin2333&#x2F;moonlight-vplus</a></p><p>在电脑端按win键，搜索cmd，回车，输入ipconfig<br><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405021356475.png"></p><pre><code>找到自己设备的ipv4地址</code></pre><p>在<strong>局域网环境</strong>下，Moonlight中输入设备的ipv4地址，检索到设备。点击向Sunshine发送配对码，配对成功后完成基础设置<br><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405021055168.png"></p><h4 id="设置-1"><a href="#设置-1" class="headerlink" title="设置"></a>设置</h4><p>在moonlight v+里可以设置串流时的分辨率和帧数，虚拟手柄，虚拟麦克风等等。<br><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405022428189.jpg"></p><pre><code>在高级设置里推荐开启性能监控图层，这个HUD非常舒服，能看到网络延迟，帧数，丢包率和编解码速度，帮助你更好地排除问题。</code></pre><h2 id="🛜IPv6直连方案"><a href="#🛜IPv6直连方案" class="headerlink" title="🛜IPv6直连方案"></a>🛜IPv6直连方案</h2><p>如果你的校园网很幸运地有ipv6地址，那么恭喜你，你可以直接通过IPv6直连。<br>👉 校园网 IPv6 &#x3D;<br><strong>免费高速公网 + 低延迟 + 可直连服务器</strong></p><p>核心就是：</p><p>手机 &#x2F; 笔记本（Moonlight）<br>        ↓（IPv6直连）<br>你的电脑（Sunshine）</p><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><h3 id="✅-1-两端都有-IPv6"><a href="#✅-1-两端都有-IPv6" class="headerlink" title="✅ 1. 两端都有 IPv6"></a>✅ 1. 两端都有 IPv6</h3><ul><li>校园网 ✔</li><li>手机：<ul><li>流量：基本支持</li><li>WiFi：看运营商</li></ul></li></ul><p>👉 测试：</p><ul><li>打开 <a href="https://test-ipv6.com/">https://test-ipv6.com/</a></li></ul><h3 id="Sunshine-主机配置"><a href="#Sunshine-主机配置" class="headerlink" title="Sunshine 主机配置"></a>Sunshine 主机配置</h3><p>记录ipv6地址<br>例如：</p><p>[2408:xxxx:xxxx:xxxx::1234]</p><p><img src="/assets/%E6%A0%A1%E5%9B%AD%E7%BD%91%E4%B8%B2%E6%B5%81%E6%96%B9%E6%A1%88/file-20260405011341548.jpg"></p><pre><code>在地址中输入主机的IPV6地址，记得在主机防火墙放行Sunshine对应端口</code></pre><h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><h3 id="🚀-1-强制走-IPv6（避免走-IPv4）"><a href="#🚀-1-强制走-IPv6（避免走-IPv4）" class="headerlink" title="🚀 1. 强制走 IPv6（避免走 IPv4）"></a>🚀 1. 强制走 IPv6（避免走 IPv4）</h3><p>有时候系统会优先 IPv4</p><p>👉 Windows：</p><p>netsh interface ipv6 set prefixpolicy ::ffff:0:0&#x2F;96 10 4</p><p>👉 或直接：</p><ul><li>在 Moonlight 只填 IPv6（推荐）</li></ul><p>👉 校园网 IPv6：</p><ul><li>可以直接拉高码率(根据你校园网的带宽，ipv6受到的限制较小)</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> DevOps </tag>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>微服务架构设计原理与最佳实践</title>
       <link href="/2025/11/15/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"/>
       <url>/2025/11/15/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/</url>
@@ -216,9 +256,9 @@
       
         <tags>
             
-            <tag> 路由 </tag>
-            
             <tag> 网络 </tag>
+            
+            <tag> 路由 </tag>
             
         </tags>
       
