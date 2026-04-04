@@ -5,3 +5,5 @@ public/
 db.json
 .DS_Store
 Thumbs.db
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json

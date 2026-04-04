@@ -225,6 +225,7 @@ Avoid:
 - over-decorating technical posts
 - scattering manual article relations across many files
 
+
 ### 8.2 Existing Content Lines
 
 The current posts naturally support four content lines:
