@@ -1,14 +1,22 @@
-top:
+﻿top:
   - class_name: "pasule-quick-jump"
     id_name: "pasule-quick-jump"
     icon: "fas fa-compass"
-    name: "快速跳转"
+    name: "快速导航"
     html: |
       <div class="pasule-link-stack">
         <a href="/archives/">文章档案</a>
         <a href="/projects/">项目集</a>
         <a href="/gallery/">相册</a>
         <a href="/about/">关于我</a>
+      </div>
+  - class_name: "pasule-station-note"
+    id_name: "pasule-station-note"
+    icon: "fas fa-bullhorn"
+    name: "站点公告"
+    html: |
+      <div data-pasule-announcement-panel>
+        <p class="pasule-widget-copy">首页轮播展示手动精选文章，右侧卡片负责快速导航、站点信息与文章路线入口。</p>
       </div>
 
 bottom:
@@ -17,4 +25,4 @@ bottom:
     icon: "fas fa-satellite-dish"
     name: "Signal Note"
     html: |
-      <p class="pasule-widget-copy">先看精选文章，再逛项目页和关于页。所有主要分页面都会保留互相跳转入口。</p>
+      <p class="pasule-widget-copy">白天模式偏玻璃感内容站，夜间模式偏霓虹感内容站，保留原背景与 Live2D。</p>

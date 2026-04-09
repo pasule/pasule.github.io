@@ -51,8 +51,14 @@ expectContains('public/index.html', 'data-pasule-nav-grouped');
 expectContains('public/index.html', 'data-pasule-announcement-panel');
 expectContains('public/style.css', '.pasule-home-carousel');
 expectContains('public/style.css', '.pasule-nav-group');
+expectContains('public/index.html', '快速导航');
+expectContains('public/index.html', '站点公告');
+expectContains('public/style.css', '[data-theme=dark]');
+expectContains('public/index.html', 'Signal Note');
 
 console.log('verify-generated-pages: checks passed');
+
+
 
 
 
