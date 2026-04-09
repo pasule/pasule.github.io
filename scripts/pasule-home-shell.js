@@ -16,7 +16,7 @@ function buildFeaturedCards(posts, titles) {
     const post = findPostByTitle(posts, title);
     if (!post) return '';
     return `
-      <article class="pasule-feature-card" data-pasule-feature-card>
+      <article class="pasule-feature-card wow animate__fadeInUp" data-pasule-feature-card>
         <p class="pasule-card-kicker">Featured Article</p>
         <h3><a href="${normalizeLink(post.path)}">${post.title}</a></h3>
         <p>${post.description || ''}</p>
@@ -34,7 +34,7 @@ function buildSeriesDeck(posts, seriesDeck) {
     }).join('');
 
     return `
-      <article class="pasule-series-card" data-pasule-series-card>
+      <article class="pasule-series-card wow animate__fadeInUp" data-pasule-series-card>
         <p class="pasule-card-kicker">Series Deck</p>
         <h3>${item.title}</h3>
         <p>${item.description}</p>
@@ -46,7 +46,7 @@ function buildSeriesDeck(posts, seriesDeck) {
 
 function buildProjectSpotlight(items) {
   return items.map(item => `
-    <article class="pasule-project-spotlight-card" data-pasule-project-card>
+    <article class="pasule-project-spotlight-card wow animate__fadeInUp" data-pasule-project-card>
       <p class="pasule-card-kicker">Project</p>
       <h3>${item.title}</h3>
       <p>${item.summary}</p>
@@ -55,27 +55,58 @@ function buildProjectSpotlight(items) {
   `).join('');
 }
 
+function buildCarouselSlides(posts, items) {
+  return items.map(item => {
+    const post = findPostByTitle(posts, item.title);
+    if (!post) return '';
+    return `
+      <article class="swiper-slide pasule-slide-card">
+        <p class="pasule-card-kicker">Featured Slide</p>
+        <h3>${post.title}</h3>
+        <p>${item.summary}</p>
+        <a class="pasule-primary-link" href="${normalizeLink(post.path)}">${item.link_title}</a>
+      </article>
+    `;
+  }).join('');
+}
+
 function buildHomeShell(map, posts) {
   if (!map || !map.home || !map.projects) return '';
 
   const hero = map.home.hero;
+  const announcement = map.home.announcement || {};
   const featuredCards = buildFeaturedCards(posts, map.home.featured_titles || []);
   const seriesCards = buildSeriesDeck(posts, map.home.series_deck || []);
   const projectCards = buildProjectSpotlight(map.projects.items || []);
+  const carouselSlides = buildCarouselSlides(posts, (map.home.carousel && map.home.carousel.items) || []);
 
   return `
     <section class="pasule-home-shell" data-pasule-home-shell>
-      <section class="pasule-home-hero">
-        <p class="pasule-eyebrow">${hero.eyebrow}</p>
-        <h1>${hero.title}</h1>
-        <p class="pasule-hero-copy">${hero.description}</p>
-        <div class="pasule-hero-actions">
-          <a class="pasule-primary-link" href="${hero.primary_link}">${hero.primary_text}</a>
-          <a class="pasule-secondary-link" href="${hero.secondary_link}">${hero.secondary_text}</a>
+      <section class="pasule-home-carousel" data-pasule-home-carousel>
+        <div class="pasule-carousel-head">
+          <p class="pasule-eyebrow">${hero.eyebrow}</p>
+          <h1>${hero.title}</h1>
+          <p class="pasule-hero-copy">${hero.description}</p>
+        </div>
+        <div class="swiper pasule-swiper">
+          <div class="swiper-wrapper">${carouselSlides}</div>
+          <div class="swiper-pagination"></div>
         </div>
       </section>
 
-      <section class="pasule-home-grid">
+      <section class="pasule-home-grid" data-pasule-feature-panels>
+        <div class="pasule-home-section pasule-announcement-section wow animate__fadeInUp" data-pasule-announcement-panel>
+          <div class="pasule-section-head">
+            <h2>${announcement.title || '站点公告'}</h2>
+            <a href="/about/">了解更多</a>
+          </div>
+          <p class="pasule-hero-copy">${announcement.description || hero.description}</p>
+          <div class="pasule-hero-actions">
+            <a class="pasule-primary-link" href="${hero.primary_link}">${hero.primary_text}</a>
+            <a class="pasule-secondary-link" href="${hero.secondary_link}">${hero.secondary_text}</a>
+          </div>
+        </div>
+
         <div class="pasule-home-section" data-pasule-featured-deck>
           <div class="pasule-section-head">
             <h2>Featured Dispatches</h2>
@@ -129,4 +160,3 @@ hexo.extend.filter.register('after_render:html', function (html, data) {
 
   return $.html();
 });
-

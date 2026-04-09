@@ -7,6 +7,24 @@
     primary_link: "/archives/"
     secondary_text: "打开项目页"
     secondary_link: "/projects/"
+  announcement:
+    title: "欢迎来到 Pasule Station"
+    description: "首页轮播展示手动精选文章，右侧卡片负责快速导航、站点信息与文章路线入口。"
+  carousel:
+    title: "Pasule Featured Station"
+    items:
+      - title: "微服务架构设计原理与最佳实践"
+        summary: "从单体到微服务的完整演进路线，适合作为首页主打专题。"
+        link_title: "进入文章"
+      - title: "Java并发编程深度解析：从理论到实践"
+        summary: "并发、JMM 与同步工具放在首页首屏，最能体现技术站主线。"
+        link_title: "开始阅读"
+      - title: "MySQL索引优化完全指南：从原理到实战"
+        summary: "数据库性能线的代表文章，适合作为首页精选之一。"
+        link_title: "查看全文"
+      - title: "前端性能优化实战：从加载到渲染全面提速"
+        summary: "让首页内容覆盖后端、数据库与前端三条主线。"
+        link_title: "阅读文章"
   featured_titles:
     - "微服务架构设计原理与最佳实践"
     - "Java并发编程深度解析：从理论到实践"
