@@ -1,4 +1,4 @@
-# --------------------------------------
+﻿# --------------------------------------
 # Hexo Butterfly Theme Configuration
 # If you have any questions, please refer to the documentation
 # Chinese: https://butterfly.js.org/
@@ -18,14 +18,17 @@ nav:
 
 menu:
   首页: /
-  归档: /archives/
-  标签: /tags/
-  分类: /categories/
-  说说: /shuoshuo/
-  相册: /gallery/
-  项目: /projects/
-  留言板: /comments/ || fas fa-envelope
-  友链: /link/
+  文章 || fas fa-book || hide:
+    归档: /archives/
+    标签: /tags/
+    分类: /categories/
+  生活 || fas fa-feather || hide:
+    说说: /shuoshuo/
+    相册: /gallery/
+  站点 || fas fa-box-archive || hide:
+    项目: /projects/
+    留言板: /comments/ || fas fa-envelope
+    友链: /link/
   关于: /about/
 # --------------------------------------
 # Code Blocks Settings

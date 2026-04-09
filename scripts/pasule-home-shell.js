@@ -108,6 +108,7 @@ hexo.extend.filter.register('after_render:html', function (html, data) {
   if (!data || data.path !== 'index.html') return html;
 
   const $ = cheerio.load(html, { decodeEntities: false });
+  $('#nav').attr('data-pasule-nav-grouped', 'true');
   const recentPosts = $('#recent-posts');
   if (!recentPosts.length || $('[data-pasule-home-shell]').length) return html;
 
@@ -128,3 +129,4 @@ hexo.extend.filter.register('after_render:html', function (html, data) {
 
   return $.html();
 });
+
