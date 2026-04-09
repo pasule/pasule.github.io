@@ -46,8 +46,14 @@ expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'dat
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'Java / 后端成长线');
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', '推荐下一篇');
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'card-post-series');
+expectContains('public/index.html', 'data-pasule-home-carousel');
+expectContains('public/index.html', 'data-pasule-nav-grouped');
+expectContains('public/index.html', 'data-pasule-announcement-panel');
+expectContains('public/style.css', '.pasule-home-carousel');
+expectContains('public/style.css', '.pasule-nav-group');
 
 console.log('verify-generated-pages: checks passed');
+
 
 
 
