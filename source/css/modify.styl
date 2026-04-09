@@ -306,3 +306,74 @@ body
   .pasule-series-card,
   .pasule-project-spotlight-card
     background: rgba(18,22,34,.74)
+
+:root
+  --pasule-home-max: 1280px
+  --pasule-side-fab-offset: 170px
+
+.pasule-home-shell
+  max-width: var(--pasule-home-max)
+  margin: 0 auto 24px
+
+.pasule-home-carousel
+  overflow: hidden
+
+.pasule-swiper
+  width: 100%
+  overflow: hidden
+
+  .swiper-wrapper
+    align-items: stretch
+
+  .swiper-slide
+    width: 100% !important
+    flex-shrink: 0
+    box-sizing: border-box
+
+.pasule-home-grid
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .72fr)
+  align-items: start
+
+.pasule-announcement-section
+  min-height: 100%
+
+.pasule-card-grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+
+.pasule-slide-card
+  min-height: 220px
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+.pasule-feature-card,
+.pasule-series-card,
+.pasule-project-spotlight-card
+  min-height: 180px
+
+#recent-posts .recent-post-items
+  display: grid
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  gap: 18px
+
+  .recent-post-item
+    width: 100%
+    margin: 0
+
+@media screen and (max-width: 1100px)
+  .pasule-home-grid
+    grid-template-columns: 1fr
+
+  .pasule-card-grid,
+  #recent-posts .recent-post-items
+    grid-template-columns: 1fr
+
+@media screen and (min-width: 901px)
+  #rightside
+    right: 18px
+    bottom: var(--pasule-side-fab-offset)
+
+@media screen and (max-width: 900px)
+  #rightside
+    right: 14px
+    bottom: 92px

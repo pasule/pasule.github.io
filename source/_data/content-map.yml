@@ -29,6 +29,9 @@
     - "微服务架构设计原理与最佳实践"
     - "Java并发编程深度解析：从理论到实践"
     - "MySQL索引优化完全指南：从原理到实战"
+    - "软件架构设计入门：从拆模块到定边界"
+    - "Windows 与 WSL 协同开发环境整理"
+    - "Linux 家庭服务器服务编排实战"
   series_deck:
     - key: "backend-growth"
       title: "Java / 后端成长线"
@@ -97,4 +100,3 @@ projects:
       related_titles:
         - "Java并发编程深度解析：从理论到实践"
         - "MySQL索引优化完全指南：从原理到实战"
-

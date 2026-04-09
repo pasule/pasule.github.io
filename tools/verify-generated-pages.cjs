@@ -55,8 +55,15 @@ expectContains('public/index.html', '快速导航');
 expectContains('public/index.html', '站点公告');
 expectContains('public/style.css', '[data-theme=dark]');
 expectContains('public/index.html', 'Signal Note');
+expectContains('public/style.css', '--pasule-side-fab-offset');
+expectContains('public/style.css', '.pasule-swiper');
+expectContains('public/index.html', '软件架构设计入门：从拆模块到定边界');
+expectContains('public/index.html', 'Windows 与 WSL 协同开发环境整理');
+expectContains('public/index.html', 'Linux 家庭服务器服务编排实战');
 
 console.log('verify-generated-pages: checks passed');
+
+
 
 
 
