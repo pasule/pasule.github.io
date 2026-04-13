@@ -11,15 +11,14 @@ const env = {
   GIT_CONFIG_VALUE_2: 'HTTP/1.1'
 };
 
-const child = spawn(
-  process.platform === 'win32' ? 'npx.cmd' : 'npx',
-  ['hexo', 'deploy'],
-  {
-    stdio: 'inherit',
-    env,
-    shell: false
-  }
-);
+const command = process.platform === 'win32' ? process.env.ComSpec || 'cmd.exe' : 'npx';
+const args = process.platform === 'win32' ? ['/d', '/s', '/c', 'npx hexo deploy'] : ['hexo', 'deploy'];
+
+const child = spawn(command, args, {
+  stdio: 'inherit',
+  env,
+  shell: false
+});
 
 child.on('exit', code => {
   process.exit(code ?? 1);
