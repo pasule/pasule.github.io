@@ -192,7 +192,6 @@ home:
 projects:
   intro:
     title: "Project Deck"
-    description: "先收纳当前真实在维护的项目，再用 planned 状态诚实标注后续扩展位。"
   items:
     - key: "pasule-blog"
       title: "Pasule Blog"

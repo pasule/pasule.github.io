@@ -3,4 +3,4 @@ title: projects
 date: 2025-05-24 03:00:30
 ---
 
-{% pasule_projects %}
+{% pasule_projects_v2 %}

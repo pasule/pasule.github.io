@@ -70,6 +70,17 @@ function buildCarouselSlides(posts, items) {
   }).join('');
 }
 
+function buildTopicAtlas(items) {
+  return items.map((item, index) => `
+    <a class="pasule-topic-card wow animate__fadeInUp" data-pasule-topic-card href="${normalizeLink(item.link)}">
+      <p class="pasule-card-kicker">Topic Atlas 0${index + 1}</p>
+      <h3>${item.title}</h3>
+      <p>${item.description}</p>
+      <span class="pasule-topic-link">${item.link_text}</span>
+    </a>
+  `).join('');
+}
+
 function buildHomeShell(map, posts) {
   if (!map || !map.home || !map.projects) return '';
 
@@ -79,6 +90,7 @@ function buildHomeShell(map, posts) {
   const seriesCards = buildSeriesDeck(posts, map.home.series_deck || []);
   const projectCards = buildProjectSpotlight(map.projects.items || []);
   const carouselSlides = buildCarouselSlides(posts, (map.home.carousel && map.home.carousel.items) || []);
+  const topicAtlas = buildTopicAtlas(map.home.topic_atlas || []);
 
   return `
     <section class="pasule-home-shell" data-pasule-home-shell>
@@ -92,6 +104,10 @@ function buildHomeShell(map, posts) {
           <div class="swiper-wrapper">${carouselSlides}</div>
           <div class="swiper-pagination"></div>
         </div>
+      </section>
+
+      <section class="pasule-topic-atlas" data-pasule-topic-atlas>
+        ${topicAtlas}
       </section>
 
       <section class="pasule-home-grid" data-pasule-feature-panels>

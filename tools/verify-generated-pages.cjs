@@ -43,10 +43,16 @@ expectContains('public/about/index.html', '继续读文章');
 expectContains('public/about/index.html', '打开项目页');
 expectNotContains('public/about/index.html', '混吃，等死');
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'data-pasule-post-guide');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'data-pasule-article-brief');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'data-pasule-reading-rail');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'data-pasule-article-outro');
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'Java / 后端成长线');
-expectContains('public/2025/10/20/Java并发编程深度解析/index.html', '推荐下一篇');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'Pasule Article Brief');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'Reading Rail');
+expectContains('public/2025/10/20/Java并发编程深度解析/index.html', '继续沿主线往下读');
 expectContains('public/2025/10/20/Java并发编程深度解析/index.html', 'card-post-series');
 expectContains('public/index.html', 'data-pasule-home-carousel');
+expectContains('public/index.html', 'data-pasule-topic-atlas');
 expectContains('public/index.html', 'data-pasule-nav-grouped');
 expectContains('public/index.html', 'data-pasule-announcement-panel');
 expectContains('public/style.css', '.pasule-home-carousel');
@@ -57,19 +63,14 @@ expectContains('public/style.css', '[data-theme=dark]');
 expectContains('public/index.html', 'Signal Note');
 expectContains('public/style.css', '--pasule-side-fab-offset');
 expectContains('public/style.css', '.pasule-swiper');
+expectContains('public/style.css', '.pasule-topic-atlas');
+expectContains('public/style.css', '.card-tag-cloud');
+expectContains('public/style.css', '.pasule-article-brief');
+expectContains('public/style.css', '.pasule-reading-rail');
+expectContains('public/style.css', '.pasule-article-outro');
 expectContains('public/index.html', '软件架构设计入门：从拆模块到定边界');
 expectContains('public/index.html', 'Windows 与 WSL 协同开发环境整理');
 expectContains('public/index.html', 'Linux 家庭服务器服务编排实战');
+expectNotContains('public/index.html', '/2026/04/05/%E6%B5%8B%E8%AF%95/');
 
 console.log('verify-generated-pages: checks passed');
-
-
-
-
-
-
-
-
-
-
-

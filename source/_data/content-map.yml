@@ -25,6 +25,23 @@
       - title: "前端性能优化实战：从加载到渲染全面提速"
         summary: "让首页内容覆盖后端、数据库与前端三条主线。"
         link_title: "阅读文章"
+  topic_atlas:
+    - title: "架构观察室"
+      description: "从边界划分、模块拆分到微服务协作，把抽象概念落到真正能维护的系统结构。"
+      link_text: "查看架构文章"
+      link: "/archives/"
+    - title: "Windows / WSL 工位"
+      description: "把桌面系统、终端工具链和开发环境整理到同一套顺手的协作节奏里。"
+      link_text: "进入协同环境"
+      link: "/tags/WSL/"
+    - title: "Linux 自托管角落"
+      description: "从 Docker 到服务编排，把家庭服务器做成长期可维护的小型基础设施。"
+      link_text: "查看 Linux 主题"
+      link: "/tags/Linux/"
+    - title: "Pasule 改造日志"
+      description: "记录这个 Hexo 博客从普通内容站向更完整的技术作品站升级的过程。"
+      link_text: "打开项目页"
+      link: "/projects/"
   featured_titles:
     - "微服务架构设计原理与最佳实践"
     - "Java并发编程深度解析：从理论到实践"
@@ -60,7 +77,7 @@
 projects:
   intro:
     title: "Project Deck"
-    description: "先收纳当前真实在维护的项目，再用 planned 状态诚实标注后续扩展位。"
+    description: ""
   items:
     - key: "pasule-blog"
       title: "Pasule Blog"
