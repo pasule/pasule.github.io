@@ -1,15 +1,15 @@
 ﻿home:
   hero:
-    eyebrow: "TECH x ACG"
-    title: "把博客做成一个有气质的技术小宇宙"
-    description: "把技术文章、项目实验、归档入口和个人信息组织成同一个世界观下的内容站。"
+    eyebrow: ""
+    title: ""
+    description: ""
     primary_text: "浏览文章档案"
     primary_link: "/archives/"
     secondary_text: "打开项目页"
     secondary_link: "/projects/"
   announcement:
-    title: "欢迎来到 Pasule Station"
-    description: "首页轮播展示手动精选文章，右侧卡片负责快速导航、站点信息与文章路线入口。"
+    title: "公告"
+    description: "精选文章、项目页与归档入口都在这里。"
   carousel:
     title: "Pasule Featured Station"
     items:

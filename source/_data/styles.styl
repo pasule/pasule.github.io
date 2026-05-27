@@ -11,24 +11,29 @@
   margin-top: 0 !important;
 }
 
-/* 全站内容卡片背景和首页一致，使用主题变量实现半透明 */
+/* 全站内容卡片背景 - 更明亮的玻璃态 */
 .content-wrap {
   position: relative;
-  top: -200px;
-  margin-bottom: -200px;
-  background: rgba(255,255,255,0.85) !important;
-  box-shadow: var(--card-box-shadow) !important;
-  border-radius: 8px !important;
+  top: -180px;
+  margin-bottom: -180px;
+  background: rgba(255,255,255,0.72) !important;
+  backdrop-filter: blur(20px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
+  box-shadow: 0 8px 32px rgba(92, 101, 138, 0.08) !important;
+  border-radius: 24px !important;
 }
 
-/* 让 aside 侧边栏卡片也半透明 */
+/* 让 aside 侧边栏卡片也半透明 - 更明亮 */
 #aside-content .card-widget {
   position: relative;
-  top: -200px;
-  margin-bottom: -200px;
-  background: rgba(255,255,255,0.85) !important;
-  box-shadow: var(--card-box-shadow) !important;
-  border-radius: 8px !important;
+  top: -180px;
+  margin-bottom: -180px;
+  background: rgba(255,255,255,0.78) !important;
+  backdrop-filter: blur(20px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
+  box-shadow: 0 8px 32px rgba(92, 101, 138, 0.1) !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255,255,255,0.6) !important;
 }
 
 /* 移除渐变遮罩，保持风格统一 */
@@ -41,6 +46,42 @@
   height: 100vh !important;
   min-height: 500px;
   background-attachment: fixed !important;
+}
+
+/* 修复侧边栏卡片标题旋转问题 */
+#aside-content .item-headline {
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+  padding: 14px 18px 10px !important;
+  border-bottom: 2px solid rgba(124, 92, 231, 0.15) !important;
+  margin: 0 18px 14px !important;
+  font-weight: 700 !important;
+  color: var(--pasule-purple, #7c5ce7) !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.02em !important;
+  width: auto !important;
+  height: auto !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+/* 确保卡片标题图标正常显示 */
+#aside-content .item-headline i {
+  width: auto !important;
+  height: auto !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+@media screen and (max-width: 900px) {
+  .content-wrap,
+  #aside-content .card-widget {
+    top: -100px;
+    margin-bottom: -100px;
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -63,11 +104,11 @@
 #archive,
 #tag,
 #category {
-  box-shadow: 0 20px 42px rgba(111, 126, 160, 0.14) !important;
+  box-shadow: 0 8px 32px rgba(92, 101, 138, 0.08) !important;
 }
 
 #recent-posts .recent-post-item {
-  border: 1px solid rgba(114, 128, 167, 0.12);
+  border: 1px solid rgba(114, 128, 167, 0.08) !important;
   overflow: hidden;
 }
 
@@ -76,14 +117,34 @@
 }
 
 #recent-posts .content {
-  color: #617089;
+  color: #5b6e8c;
 }
 
 #aside-content .card-widget {
   border-radius: 20px !important;
-  border: 1px solid rgba(114, 128, 167, 0.14);
+  border: 1px solid rgba(114, 128, 167, 0.1);
 }
 
-#aside-content .item-headline {
-  font-weight: 700;
+/* Dark mode overrides - 更明亮的暗色模式 */
+[data-theme='dark'] .content-wrap {
+  background: rgba(28, 32, 48, 0.85) !important;
+  border: 1px solid rgba(140, 160, 255, 0.15) !important;
+}
+
+[data-theme='dark'] #aside-content .card-widget {
+  background: rgba(28, 32, 48, 0.88) !important;
+  border: 1px solid rgba(140, 160, 255, 0.15) !important;
+}
+
+[data-theme='dark'] #recent-posts .recent-post-item {
+  border-color: rgba(140, 160, 255, 0.12) !important;
+}
+
+[data-theme='dark'] #recent-posts .content {
+  color: rgba(200, 210, 240, 0.8);
+}
+
+[data-theme='dark'] #aside-content .item-headline {
+  color: #a8b4ff !important;
+  border-bottom-color: rgba(140, 160, 255, 0.2) !important;
 }

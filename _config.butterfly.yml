@@ -291,7 +291,7 @@ aside:
     category: true
   card_author:
     enable: true
-    description: 把技术文章、项目实验和长期成长记录整理成一个持续更新的小宇宙。
+    description: 记录技术文章、项目实验和日常折腾。
     button:
       enable: true
       icon: fab fa-github
@@ -299,7 +299,7 @@ aside:
       link: https://github.com/pasule
   card_announcement:
     enable: true
-    content: 先看精选文章，再逛项目页和关于页，所有主要分页面都能直接互跳。
+    content: 精选文章、项目页与归档入口都在这里。
   card_recent_post:
     enable: true
     # If set 0 will show all
