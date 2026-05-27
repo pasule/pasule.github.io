@@ -2,6 +2,11 @@ let pasuleNavScrollHandler = null;
 let pasuleReadPercentHandler = null;
 let pasuleArticleScrollHandler = null;
 
+function normalizePath(path) {
+  const cleaned = String(path || '/').split('#')[0].split('?')[0].replace(/\/index\.html$/, '/');
+  return cleaned.endsWith('/') ? cleaned : `${cleaned}/`;
+}
+
 function initPasuleHomeEffects() {
   const root = document.querySelector('.pasule-swiper');
   if (root) {
@@ -67,6 +72,45 @@ function initPasuleNavTitle() {
   pasuleNavScrollHandler = onScroll;
   onScroll();
   document.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function initPasuleNavActiveState() {
+  const nav = document.querySelector('#nav');
+  if (!nav) return;
+  nav.setAttribute('data-pasule-nav-grouped', 'true');
+
+  const currentPath = normalizePath(window.location.pathname);
+  const links = Array.from(nav.querySelectorAll('.menus_item > .site-page[href], .menus_item_child a[href]'));
+  let activeTopItem = null;
+  let bestLength = 0;
+
+  links.forEach((link) => {
+    const url = new URL(link.getAttribute('href'), window.location.origin);
+    const linkPath = normalizePath(url.pathname);
+    const isActive = linkPath === '/'
+      ? currentPath === '/'
+      : currentPath === linkPath || currentPath.startsWith(linkPath);
+
+    link.classList.toggle('is-active', isActive);
+
+    if (isActive && linkPath.length >= bestLength) {
+      activeTopItem = link.closest('.menus_item');
+      bestLength = linkPath.length;
+    }
+  });
+
+  if (!activeTopItem && /^\/\d{4}\//.test(currentPath)) {
+    activeTopItem = Array.from(nav.querySelectorAll('.menus_item'))
+      .find((item) => item.textContent.includes('文章'));
+  }
+
+  nav.querySelectorAll('.menus_item.is-current').forEach((item) => {
+    item.classList.remove('is-current');
+  });
+
+  if (activeTopItem) {
+    activeTopItem.classList.add('is-current');
+  }
 }
 
 function initPasuleReadPercent() {
@@ -140,9 +184,11 @@ function initPasuleArticleProgress() {
 
 document.addEventListener('DOMContentLoaded', initPasuleHomeEffects);
 document.addEventListener('DOMContentLoaded', initPasuleNavTitle);
+document.addEventListener('DOMContentLoaded', initPasuleNavActiveState);
 document.addEventListener('DOMContentLoaded', initPasuleReadPercent);
 document.addEventListener('DOMContentLoaded', initPasuleArticleProgress);
 document.addEventListener('pjax:complete', initPasuleHomeEffects);
 document.addEventListener('pjax:complete', initPasuleNavTitle);
+document.addEventListener('pjax:complete', initPasuleNavActiveState);
 document.addEventListener('pjax:complete', initPasuleReadPercent);
 document.addEventListener('pjax:complete', initPasuleArticleProgress);
