@@ -65,16 +65,16 @@ If `home.music.id` is empty, the UI still renders as a configurable placeholder 
 
 ### HTML Injection
 
-Update `scripts/pasule-home-shell.js` to inject a homepage enhancement block into `index.html` before `#recent-posts`.
+Update `scripts/pasule-home-shell.js` to inject the homepage media hero into `index.html` before `#recent-posts`.
 
-The block should include:
+The homepage block should include:
 
 - `data-pasule-home-hero` for the photo hero.
 - `data-pasule-hero-slide` items generated from `home.media_hero.images`.
-- `data-pasule-music-player` for the global player shell.
-- A compact trigger button that can stay visible even when the player panel is collapsed.
 
-The filter should only run for `data.path === 'index.html'`. It should not affect archive, post, about, projects, gallery, or pagination pages.
+The media hero should only run for `data.path === 'index.html'`. It should not affect archive, post, about, projects, gallery, or pagination pages.
+
+The same filter file should also inject `data-pasule-music-player` once into every generated HTML page so the music player is truly global. This player shell should include a compact trigger button that can stay visible even when the player panel is collapsed.
 
 ### Music Loading
 
@@ -90,7 +90,7 @@ When `home.music.id` is set, generate a `<meting-js>` element with:
 - `id` from config
 - mini/player attributes suitable for a compact global player
 
-When `home.music.id` is empty, show a small disabled panel that says the playlist is configurable in `source/_data/content-map.yml`.
+When `home.music.id` is empty, show a small disabled panel that marks the music source as unset.
 
 ### Browser Behavior
 
@@ -120,7 +120,7 @@ Desktop:
 
 - The Butterfly top banner remains, but the custom homepage enhancement appears at the top of the content area before recent posts.
 - The media hero spans the main content width and shows one large image at a time with a text overlay.
-- The music trigger floats near the right-side controls, above the Live2D-safe area.
+- The music trigger appears on every page and floats near the right-side controls, above the Live2D-safe area.
 - Expanding the player opens a compact glass panel without covering the article cards.
 
 Mobile:
@@ -135,9 +135,10 @@ Mobile:
 1. Hexo reads `source/_data/content-map.yml`.
 2. `scripts/pasule-home-shell.js` builds homepage hero and music shell HTML from the data map.
 3. Butterfly renders the page normally.
-4. The filter injects the enhancement block into homepage HTML.
-5. `source/js/pasule-fomalhaut-ui.js` initializes image rotation and player panel behavior in the browser.
-6. APlayer/MetingJS loads the configured NetEase resource only when a music ID exists.
+4. The filter injects the media hero into homepage HTML.
+5. The filter injects the music player shell into every generated HTML page.
+6. `source/js/pasule-fomalhaut-ui.js` initializes image rotation and player panel behavior in the browser.
+7. APlayer/MetingJS loads the configured NetEase resource only when a music ID exists.
 
 ## Error Handling
 
@@ -153,6 +154,7 @@ Add or update a local verification script so builds assert:
 
 - `public/index.html` contains `data-pasule-home-hero`.
 - `public/index.html` contains `data-pasule-music-player`.
+- `public/about/index.html` contains `data-pasule-music-player`.
 - `public/index.html` keeps `id="recent-posts"`.
 - `public/index.html` does not contain a hard-coded NetEase playlist ID when the config ID is empty.
 - `public/style.css` contains `.pasule-home-media-hero`.
@@ -171,7 +173,7 @@ Manual browser verification:
 ## Acceptance Criteria
 
 - The homepage first content section feels more intentional and media-rich than the current article-list-only entry.
-- Users can see and open a global music player control from the homepage.
+- Users can see and open a global music player control from the homepage and regular content pages.
 - NetEase Cloud Music source is configurable from data, not hard-coded in scripts.
 - The existing Hexo routes, article cards, sidebar widgets, and post pages continue to build.
 - The implementation remains localized to project-owned scripts, data, CSS, and verification files.
