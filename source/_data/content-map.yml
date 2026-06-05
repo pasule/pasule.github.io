@@ -25,6 +25,26 @@
       - title: "前端性能优化实战：从加载到渲染全面提速"
         summary: "让首页内容覆盖后端、数据库与前端三条主线。"
         link_title: "阅读文章"
+  media_hero:
+    enabled: true
+    interval: 5200
+    images:
+      - src: /img/2.jpg
+        title: "Pasule Blog"
+        subtitle: "记录技术文章、项目实验和日常折腾。"
+      - src: https://pic1.imgdb.cn/item/6805d3a258cb8da5c8bb423b.jpg
+        title: "技术、实验与日常"
+        subtitle: "把值得复盘的东西留在这里。"
+      - src: https://bu.dusays.com/2026/04/04/69d11d25cc720.jpg
+        title: "生活与折腾现场"
+        subtitle: "让相册和技术记录在首页都有一点存在感。"
+  music:
+    enabled: true
+    provider: netease
+    type: playlist
+    id: ""
+    title: "Pasule Radio"
+    subtitle: "网易云歌单源未填写。"
   topic_atlas:
     - title: "架构观察室"
       description: "从边界划分、模块拆分到微服务协作，把抽象概念落到真正能维护的系统结构。"

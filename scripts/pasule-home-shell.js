@@ -17,6 +17,129 @@ function findPostByTitle(posts, title) {
   return posts.find(post => post.title === title);
 }
 
+function escapeHtml(input) {
+  return String(input || '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function normalizeInterval(input, fallback = 5200) {
+  const value = Number(input);
+  return Number.isFinite(value) && value >= 2000 ? value : fallback;
+}
+
+function normalizeMusicType(input) {
+  const value = String(input || 'playlist').trim().toLowerCase();
+  return ['song', 'playlist', 'album', 'artist'].includes(value) ? value : 'playlist';
+}
+
+function buildMediaHero(home) {
+  const config = home && home.media_hero;
+  const images = ((config && config.images) || []).filter(item => item && item.src);
+
+  if (!config || config.enabled === false || !images.length) return '';
+
+  const interval = normalizeInterval(config.interval);
+  const slides = images.map((item, index) => {
+    const active = index === 0 ? ' is-active' : '';
+    return `
+      <figure class="pasule-hero-slide${active}" data-pasule-hero-slide>
+        <img src="${normalizeAsset(item.src)}" alt="${escapeHtml(item.title || 'Pasule hero image')}" loading="${index === 0 ? 'eager' : 'lazy'}" onerror="this.onerror=null;this.src='/img/404.jpg'">
+        <figcaption class="pasule-hero-caption">
+          ${item.title ? `<strong>${escapeHtml(item.title)}</strong>` : ''}
+          ${item.subtitle ? `<span>${escapeHtml(item.subtitle)}</span>` : ''}
+        </figcaption>
+      </figure>
+    `;
+  }).join('');
+
+  const dots = images.map((item, index) => {
+    const active = index === 0 ? ' is-active' : '';
+    const label = escapeHtml(item.title || `slide ${index + 1}`);
+    return `<button class="pasule-hero-dot${active}" type="button" data-pasule-hero-dot="${index}" aria-label="${label}"></button>`;
+  }).join('');
+
+  return `
+    <section class="pasule-home-enhancement" data-pasule-home-enhancement>
+      <section class="pasule-home-media-hero" data-pasule-home-hero data-interval="${interval}">
+        <div class="pasule-hero-track">
+          ${slides}
+        </div>
+        <div class="pasule-hero-copy-panel">
+          <p class="pasule-eyebrow">Pasule Station</p>
+          <h2>技术文章、项目实验和日常折腾的入口</h2>
+          <p>先从最近的记录开始，也可以去项目、相册和归档里慢慢翻。</p>
+          <div class="pasule-hero-actions">
+            <a class="pasule-primary-link" href="/archives/">浏览文章</a>
+            <a class="pasule-secondary-link" href="/gallery/">打开相册</a>
+          </div>
+        </div>
+        <div class="pasule-hero-controls" aria-label="首页照片轮换">
+          ${dots}
+        </div>
+      </section>
+    </section>
+  `;
+}
+
+function buildMetingElement(music) {
+  const id = String((music && music.id) || '').trim();
+  if (!id) {
+    return '<p class="pasule-global-music-empty" data-pasule-music-empty>歌单源未填写</p>';
+  }
+
+  return `
+    <meting-js
+      data-pasule-meting
+      server="netease"
+      type="${normalizeMusicType(music.type)}"
+      id="${escapeHtml(id)}"
+      fixed="false"
+      mini="false"
+      autoplay="false"
+      mutex="true"
+      preload="none"
+      theme="#4f7df3"
+      list-folded="true">
+    </meting-js>
+  `;
+}
+
+function buildGlobalMusic(home) {
+  const music = (home && home.music) || {};
+  if (music.enabled === false) return '';
+
+  const title = escapeHtml(music.title || 'Pasule Radio');
+  const subtitle = escapeHtml(music.subtitle || '网易云歌单源未填写。');
+
+  return `
+    <aside class="pasule-global-music" data-pasule-music-player>
+      <button class="pasule-global-music-toggle" type="button" data-pasule-music-toggle aria-label="${title}" aria-expanded="false" aria-controls="pasule-global-music-panel" title="${title}">
+        <i class="fas fa-music" aria-hidden="true"></i>
+      </button>
+      <section class="pasule-global-music-panel" id="pasule-global-music-panel" data-pasule-music-panel hidden>
+        <header class="pasule-global-music-head">
+          <div>
+            <p class="pasule-card-kicker">Music</p>
+            <h2>${title}</h2>
+            <p>${subtitle}</p>
+          </div>
+          <button class="pasule-global-music-close" type="button" data-pasule-music-close aria-label="收起音乐播放器">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="pasule-global-music-body">
+          ${buildMetingElement(music)}
+        </div>
+      </section>
+    </aside>
+  `;
+}
+
 function buildFeaturedCards(posts, titles) {
   return titles.map(title => {
     const post = findPostByTitle(posts, title);
@@ -192,11 +315,34 @@ function normalizeSocial(icon, raw) {
 }
 
 hexo.extend.filter.register('after_render:html', function (html, data) {
-  if (!data || data.path !== 'index.html') return html;
+  if (!data || !data.path || !data.path.endsWith('.html')) return html;
 
   const $ = cheerio.load(html, { decodeEntities: false });
-  $('body').addClass('pasule-home-page');
-  $('#nav').attr('data-pasule-nav-grouped', 'true');
+  const map = ((hexo.locals.get('data') || {})['content-map']) || {};
+  const home = map.home || {};
+
+  if (data.path === 'index.html') {
+    $('body').addClass('pasule-home-page');
+    $('#nav').attr('data-pasule-nav-grouped', 'true');
+
+    if (!$('[data-pasule-home-hero]').length) {
+      const hero = buildMediaHero(home);
+      const recentPosts = $('#recent-posts');
+
+      if (hero && recentPosts.length) {
+        recentPosts.prepend(hero);
+      } else if (hero) {
+        $('#content-inner').prepend(hero);
+      }
+    }
+  }
+
+  if (!$('[data-pasule-music-player]').length) {
+    const player = buildGlobalMusic(home);
+    if (player && $('body').length) {
+      $('body').append(player);
+    }
+  }
 
   return $.html();
 });

@@ -1041,11 +1041,14 @@ css_prefix: true
 inject:
   head:
     - <link rel="stylesheet" href="/css/modify.css">
+    - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
     - <link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css">
     - <link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css">
   bottom:
     - <script src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script>
     - <script src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script>
+    - <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    - <script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>
     - <script src="/js/pasule-fomalhaut-ui.js" data-pjax></script>
 
 # CDN Settings

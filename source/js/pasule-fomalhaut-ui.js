@@ -1,6 +1,8 @@
 let pasuleNavScrollHandler = null;
 let pasuleReadPercentHandler = null;
 let pasuleArticleScrollHandler = null;
+let pasuleMediaHeroTimer = null;
+let pasuleMusicKeyHandler = null;
 
 function normalizePath(path) {
   const cleaned = String(path || '/').split('#')[0].split('?')[0].replace(/\/index\.html$/, '/');
@@ -55,6 +57,118 @@ function initPasuleHomeEffects() {
   if (typeof WOW === 'function') {
     new WOW().init();
   }
+}
+
+function initPasuleMediaHero() {
+  if (pasuleMediaHeroTimer) {
+    window.clearInterval(pasuleMediaHeroTimer);
+    pasuleMediaHeroTimer = null;
+  }
+
+  const root = document.querySelector('[data-pasule-home-hero]');
+  if (!root) return;
+
+  const slides = Array.from(root.querySelectorAll('[data-pasule-hero-slide]'));
+  const dots = Array.from(root.querySelectorAll('[data-pasule-hero-dot]'));
+  const interval = Math.max(Number(root.getAttribute('data-interval')) || 5200, 2000);
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let activeIndex = Math.max(slides.findIndex(slide => slide.classList.contains('is-active')), 0);
+  if (!slides.length) return;
+
+  const render = () => {
+    slides.forEach((slide, index) => {
+      const active = index === activeIndex;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    dots.forEach((dot, index) => {
+      const active = index === activeIndex;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-current', active ? 'true' : 'false');
+    });
+  };
+
+  const goTo = (index) => {
+    activeIndex = (index + slides.length) % slides.length;
+    render();
+  };
+
+  if (!root.dataset.pasuleHeroBound) {
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goTo(Number(dot.getAttribute('data-pasule-hero-dot')) || 0);
+      });
+    });
+
+    root.addEventListener('mouseenter', () => {
+      root.dataset.pasuleHeroPaused = 'true';
+    });
+
+    root.addEventListener('mouseleave', () => {
+      root.dataset.pasuleHeroPaused = 'false';
+    });
+
+    root.dataset.pasuleHeroBound = 'true';
+  }
+
+  render();
+
+  if (!reduceMotion && slides.length > 1) {
+    pasuleMediaHeroTimer = window.setInterval(() => {
+      if (root.dataset.pasuleHeroPaused !== 'true') goTo(activeIndex + 1);
+    }, interval);
+  }
+}
+
+function initPasuleGlobalMusic() {
+  const root = document.querySelector('[data-pasule-music-player]');
+  if (!root) return;
+
+  const toggle = root.querySelector('[data-pasule-music-toggle]');
+  const close = root.querySelector('[data-pasule-music-close]');
+  const panel = root.querySelector('[data-pasule-music-panel]');
+  const storageKey = 'pasule-global-music-open';
+
+  if (!toggle || !panel) return;
+
+  const setOpen = (open, persist = true) => {
+    root.classList.toggle('is-open', open);
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+    if (persist) {
+      localStorage.setItem(storageKey, open ? 'true' : 'false');
+    }
+  };
+
+  if (!root.dataset.pasuleMusicBound) {
+    toggle.addEventListener('click', () => {
+      setOpen(!root.classList.contains('is-open'));
+    });
+
+    if (close) {
+      close.addEventListener('click', () => {
+        setOpen(false);
+      });
+    }
+
+    root.dataset.pasuleMusicBound = 'true';
+  }
+
+  if (pasuleMusicKeyHandler) {
+    document.removeEventListener('keydown', pasuleMusicKeyHandler);
+    pasuleMusicKeyHandler = null;
+  }
+
+  pasuleMusicKeyHandler = (event) => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  };
+
+  document.addEventListener('keydown', pasuleMusicKeyHandler);
+  setOpen(localStorage.getItem(storageKey) === 'true', false);
 }
 
 function initPasuleNavTitle() {
@@ -183,11 +297,15 @@ function initPasuleArticleProgress() {
 }
 
 document.addEventListener('DOMContentLoaded', initPasuleHomeEffects);
+document.addEventListener('DOMContentLoaded', initPasuleMediaHero);
+document.addEventListener('DOMContentLoaded', initPasuleGlobalMusic);
 document.addEventListener('DOMContentLoaded', initPasuleNavTitle);
 document.addEventListener('DOMContentLoaded', initPasuleNavActiveState);
 document.addEventListener('DOMContentLoaded', initPasuleReadPercent);
 document.addEventListener('DOMContentLoaded', initPasuleArticleProgress);
 document.addEventListener('pjax:complete', initPasuleHomeEffects);
+document.addEventListener('pjax:complete', initPasuleMediaHero);
+document.addEventListener('pjax:complete', initPasuleGlobalMusic);
 document.addEventListener('pjax:complete', initPasuleNavTitle);
 document.addEventListener('pjax:complete', initPasuleNavActiveState);
 document.addEventListener('pjax:complete', initPasuleReadPercent);
