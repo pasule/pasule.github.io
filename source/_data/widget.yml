@@ -16,13 +16,5 @@
     name: "站点公告"
     html: |
       <div data-pasule-announcement-panel>
-        <p class="pasule-widget-copy">首页轮播展示手动精选文章，右侧卡片负责快速导航、站点信息与文章路线入口。</p>
+        <p class="pasule-widget-copy">精选文章、项目页与归档入口都在这里。</p>
       </div>
-
-bottom:
-  - class_name: "pasule-signal-note"
-    id_name: "pasule-signal-note"
-    icon: "fas fa-satellite-dish"
-    name: "Signal Note"
-    html: |
-      <p class="pasule-widget-copy">白天模式偏玻璃感内容站，夜间模式偏霓虹感内容站，保留原背景与 Live2D。</p>

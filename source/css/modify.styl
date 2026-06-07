@@ -6,8 +6,45 @@
   // 样式定义在下方
   background: transparent !important
 
-  &:before
-    background: transparent !important
+  &.full_page
+    // Hero gradient overlay for better text readability
+    &:before
+      content: ''
+      position: absolute
+      inset: 0
+      background: linear-gradient(180deg, rgba(16, 20, 36, 0.28) 0%, rgba(16, 20, 36, 0.12) 40%, rgba(16, 20, 36, 0.32) 100%)
+      z-index: 0
+
+    #site-info
+      position: relative
+      z-index: 1
+
+    #site-title
+      font-size: 2.8rem
+      font-weight: 800
+      letter-spacing: -.02em
+      text-shadow: 0 2px 12px rgba(0,0,0,0.18)
+
+    #site-subtitle
+      font-size: 1.1rem
+      opacity: .9
+
+    #scroll-down
+      z-index: 1
+
+      .scroll-down-effects
+        font-size: 1.5rem
+        animation: pasuleScrollBounce 2s ease-in-out infinite
+
+  @keyframes pasuleScrollBounce
+    0%, 100%
+      transform: translateY(0)
+      opacity: .7
+    50%
+      transform: translateY(10px)
+      opacity: 1
+
+  &:not(.full_page):before
     background: transparent !important
 
   &.post-bg, &.not-home-page
@@ -58,36 +95,118 @@
     color: var(--light-grey)
 
 :root
-  --pasule-ink: #243047
-  --pasule-muted: #617089
-  --pasule-line: rgba(114, 128, 167, 0.16)
-  --pasule-pink: #ff6fb1
-  --pasule-blue: #6aa5ff
-  --pasule-cream: rgba(255, 255, 255, 0.82)
-  --pasule-shadow: 0 18px 40px rgba(112, 126, 161, 0.16)
+  --pasule-ink: #1a2332
+  --pasule-muted: #5b6e8c
+  --pasule-line: rgba(114, 128, 167, 0.14)
+  --pasule-pink: #f8588c
+  --pasule-blue: #5b8def
+  --pasule-purple: #7c5ce7
+  --pasule-cream: rgba(255, 255, 255, 0.84)
+  --pasule-shadow: 0 8px 32px rgba(92, 101, 138, 0.12)
+  --pasule-shadow-lg: 0 20px 48px rgba(92, 101, 138, 0.16)
+  --pasule-glass-bg: rgba(255, 255, 255, 0.58)
+  --pasule-glass-border: rgba(255, 255, 255, 0.64)
+  --pasule-card-bg: rgba(255, 255, 255, 0.64)
+  --pasule-gradient-warm: linear-gradient(135deg, rgba(255, 220, 235, 0.95), rgba(255, 240, 245, 0.92))
+  --pasule-gradient-cool: linear-gradient(135deg, rgba(225, 238, 255, 0.95), rgba(240, 245, 255, 0.92))
+  --pasule-radius-sm: 16px
+  --pasule-radius: 22px
+  --pasule-radius-lg: 28px
 
 #nav
   backdrop-filter: blur(12px)
 
-#pasule-quick-jump .item-content,
-#pasule-signal-note .item-content
-  text-align: left
+/* 全局容器更明亮 */
+.content-wrap
+  background: rgba(255,255,255,0.72) !important
+  backdrop-filter: blur(20px) saturate(120%) !important
+  -webkit-backdrop-filter: blur(20px) saturate(120%) !important
+  box-shadow: 0 8px 32px rgba(92, 101, 138, 0.08) !important
+  border-radius: 24px !important
+  border: 1px solid rgba(255,255,255,0.6) !important
+
+/* 侧边栏卡片更明亮 */
+#aside-content .card-widget
+  background: rgba(255,255,255,0.78) !important
+  backdrop-filter: blur(20px) saturate(120%) !important
+  -webkit-backdrop-filter: blur(20px) saturate(120%) !important
+  box-shadow: 0 8px 32px rgba(92, 101, 138, 0.1) !important
+  border-radius: 18px !important
+  border: 1px solid rgba(255,255,255,0.6) !important
+
+/* 修复侧边栏卡片标题旋转问题 */
+#aside-content .item-headline
+  writing-mode: horizontal-tb !important
+  transform: none !important
+  padding: 13px 16px 9px !important
+  border-bottom: 1px solid rgba(79, 125, 243, 0.13) !important
+  margin: 0 16px 12px !important
+  font-weight: 700 !important
+  color: var(--pasule-purple, #7c5ce7) !important
+  font-size: 0.9rem !important
+  letter-spacing: 0 !important
+  width: auto !important
+  height: auto !important
+  position: relative !important
+
+/* 确保卡片标题图标正常显示 */
+#aside-content .item-headline i
+  width: auto !important
+  height: auto !important
+  line-height: 1 !important
+  transform: none !important
+
+/* 修复侧边栏文章列表项垂直旋转问题 */
+#aside-content .aside-list,
+#aside-content .aside-list-item
+  writing-mode: horizontal-tb !important
+  transform: none !important
+
+#aside-content .aside-list-item .content
+  writing-mode: horizontal-tb !important
+  transform: none !important
+  text-align: left !important
+
+#aside-content .aside-list-item .name
+  writing-mode: horizontal-tb !important
+  transform: none !important
+  text-align: left !important
+  line-height: 1.5 !important
+  font-weight: 500 !important
+
+#aside-content .aside-list-item .datetime
+  writing-mode: horizontal-tb !important
+  transform: none !important
+  text-align: left !important
+
+#aside-content .card-archive-list-count,
+#aside-content .card-archive-list-date
+  writing-mode: horizontal-tb !important
+  transform: none !important
 
 .pasule-link-stack
   display: grid
-  gap: 10px
+  gap: 8px
 
   a
-    display: block
-    padding: 10px 12px
-    border-radius: 14px
-    background: rgba(255, 255, 255, 0.72)
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 38px
+    padding: 8px 10px
+    border-radius: 12px
+    background: rgba(255,255,255,.56)
+    backdrop-filter: blur(6px)
+    -webkit-backdrop-filter: blur(6px)
     border: 1px solid var(--pasule-line)
     color: var(--pasule-ink)
+    font-size: .88rem
+    font-weight: 650
     transition: all .2s ease
 
     &:hover
-      transform: translateY(-2px)
+      transform: translateY(-1px)
+      color: var(--pasule-accent)
       box-shadow: var(--pasule-shadow)
 
 .pasule-widget-copy
@@ -111,22 +230,25 @@
 .pasule-project-page,
 .pasule-about-panel,
 .pasule-post-guide
-  border-radius: 24px
+  border-radius: var(--pasule-radius-lg)
   border: 1px solid var(--pasule-line)
-  background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.9))
+  background: var(--pasule-card-bg)
+  backdrop-filter: blur(10px)
+  -webkit-backdrop-filter: blur(10px)
   box-shadow: var(--pasule-shadow)
 
 .pasule-home-hero
   padding: 28px
-  background: linear-gradient(135deg, rgba(255,234,244,.96), rgba(230,242,255,.96))
+  background: var(--pasule-gradient-warm)
 
 .pasule-eyebrow,
 .pasule-card-kicker
   margin: 0 0 8px
-  font-size: .8rem
-  letter-spacing: .08em
+  font-size: .75rem
+  font-weight: 700
+  letter-spacing: .1em
   text-transform: uppercase
-  color: #6f5e8e
+  color: var(--pasule-purple)
 
 .pasule-hero-copy
   max-width: 48rem
@@ -150,7 +272,15 @@
 
 .pasule-primary-link
   color: #fff
-  background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-blue))
+  background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-purple))
+  padding: 10px 20px
+  border-radius: 999px
+  font-weight: 600
+  transition: transform .2s ease, box-shadow .2s ease
+
+  &:hover
+    transform: translateY(-2px)
+    box-shadow: 0 6px 20px rgba(120, 80, 200, 0.3)
 
 .pasule-secondary-link,
 .pasule-mini-link
@@ -168,27 +298,50 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
 
 .pasule-home-section
-  padding: 22px
+  padding: 24px
+  border-radius: var(--pasule-radius)
+  border: 1px solid var(--pasule-line)
+  background: var(--pasule-card-bg)
+  backdrop-filter: blur(10px)
+  -webkit-backdrop-filter: blur(10px)
+  box-shadow: var(--pasule-shadow)
 
 .pasule-section-head
   display: flex
   align-items: center
   justify-content: space-between
   gap: 12px
-  margin-bottom: 16px
+  margin-bottom: 20px
+  padding-bottom: 14px
+  border-bottom: 2px solid var(--pasule-line)
 
   h2
     margin: 0
+    font-size: 1.35rem
+    font-weight: 700
+    letter-spacing: -.01em
+
+  a
+    font-size: .88rem
+    color: var(--pasule-blue)
+    font-weight: 600
 
 .pasule-feature-card,
 .pasule-series-card,
 .pasule-project-spotlight-card,
 .pasule-project-card,
 .pasule-about-panel
-  padding: 18px
-  border-radius: 18px
+  padding: 20px
+  border-radius: var(--pasule-radius-sm)
   border: 1px solid var(--pasule-line)
-  background: rgba(255,255,255,.72)
+  background: var(--pasule-glass-bg)
+  backdrop-filter: blur(8px)
+  -webkit-backdrop-filter: blur(8px)
+  transition: transform .25s ease, box-shadow .25s ease
+
+  &:hover
+    transform: translateY(-3px)
+    box-shadow: var(--pasule-shadow-lg)
 
 .pasule-mini-link-list,
 .pasule-stack-list
@@ -196,6 +349,17 @@
   flex-wrap: wrap
   gap: 10px
   margin-top: 12px
+
+.pasule-project-status
+  display: inline-block
+  margin-top: 8px
+  padding: 4px 10px
+  border-radius: 999px
+  font-size: .78rem
+  font-weight: 600
+  background: rgba(124, 92, 231, 0.1)
+  color: var(--pasule-purple)
+  border: 1px solid rgba(124, 92, 231, 0.2)
 
 .pasule-post-guide
   margin-bottom: 24px
@@ -216,82 +380,218 @@
     border-radius: 18px
 
 body
-  --pasule-nav-pill-bg: rgba(255,255,255,.72)
-  --pasule-nav-pill-border: rgba(114,128,167,.16)
+  --pasule-nav-pill-bg: rgba(255,255,255,.58)
+  --pasule-nav-pill-border: rgba(114,128,167,.12)
 
 #nav[data-pasule-nav-grouped]
+  height: 60px
+  display: flex
+  align-items: center
+
+  #blog_name,
+  #menus,
+  #nav-right
+    height: 100%
+    display: flex
+    align-items: center
+
+  #blog_name
+    min-width: 0
+
+  #menus
+    justify-content: flex-end
+    gap: 10px
+
+  #name-container
+    display: none
+
+  #toggle-menu
+    display: none !important
+    align-items: center
+    justify-content: center
+    width: 38px
+    height: 38px
+    margin: 0
+    padding: 0
+    border-radius: 999px
+    color: var(--pasule-blue)
+    line-height: 1
+
+    a,
+    .site-page
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      width: 100%
+      height: 100%
+
   .menus_items
     display: flex
     align-items: center
-    gap: 8px
+    height: 100%
+    gap: 6px
 
-  .menus_item > a.site-page
-    padding: 8px 14px
+  .menus_item
+    position: relative
+    display: flex
+    align-items: center
+    height: 100%
+    padding: 0 !important
+    overflow: visible
+
+    &:hover,
+    &:focus-within
+      .menus_item_child
+        opacity: 1
+        visibility: visible
+        pointer-events: auto
+        transform: translate3d(-50%, 0, 0)
+
+    .menus_item_child
+      position: absolute !important
+      top: calc(100% + 6px)
+      left: 50%
+      right: auto
+      z-index: 120
+      display: block !important
+      margin-top: 0
+      padding: 6px
+      width: max-content
+      min-width: 108px
+      max-width: calc(100vw - 32px)
+      overflow: visible
+      border-radius: 10px
+      background: rgba(255,255,255,.94)
+      box-shadow: 0 12px 30px rgba(22, 39, 78, 0.18)
+      opacity: 0
+      visibility: hidden
+      pointer-events: none
+      animation: none
+      transform: translate3d(-50%, 8px, 0)
+      transition: opacity .18s ease, visibility .18s ease, transform .18s ease
+
+      &:before
+        top: -12px
+        left: 0
+        height: 14px
+
+      li
+        overflow: hidden
+        border-radius: 7px
+
+        &:hover
+          background: rgba(91,141,239,.10)
+
+        a
+          display: flex
+          align-items: center
+          justify-content: center
+          min-height: 40px
+          padding: 0 14px
+          white-space: nowrap
+          color: var(--pasule-ink) !important
+
+    &:nth-last-child(-n + 2)
+      .menus_item_child
+        left: auto
+        right: 0
+        transform: translate3d(0, 8px, 0)
+
+    &:nth-last-child(-n + 2):hover,
+    &:nth-last-child(-n + 2):focus-within
+      .menus_item_child
+        transform: translate3d(0, 0, 0)
+
+  .menus_item > .site-page
+    display: inline-flex !important
+    align-items: center
+    justify-content: center
+    min-height: 36px
+    padding: 0 14px
     border-radius: 999px
-    background: var(--pasule-nav-pill-bg)
-    border: 1px solid var(--pasule-nav-pill-border)
+    background: var(--pasule-nav-pill-bg) !important
+    backdrop-filter: blur(8px)
+    -webkit-backdrop-filter: blur(8px)
+    border: 1px solid var(--pasule-nav-pill-border) !important
+    font-weight: 600
+    font-size: .9rem
+    line-height: 1
+    text-shadow: none
+    transition: background .2s ease, transform .2s ease
+
+    &:hover
+      transform: translateY(-1px)
+      background: rgba(255,255,255,.78) !important
+
+    &:after
+      display: none
+
+  @media screen and (max-width: 768px)
+    #toggle-menu
+      display: flex !important
+
+    .menus_items
+      display: none
 
 .pasule-nav-group
   display: inline-flex
   align-items: center
-  gap: 8px
-
-body
-  --pasule-nav-pill-bg: rgba(255,255,255,.72)
-  --pasule-nav-pill-border: rgba(114,128,167,.16)
-
-#nav[data-pasule-nav-grouped]
-  .menus_items
-    display: flex
-    align-items: center
-    gap: 8px
-
-  .menus_item > a.site-page
-    padding: 8px 14px
-    border-radius: 999px
-    background: var(--pasule-nav-pill-bg)
-    border: 1px solid var(--pasule-nav-pill-border)
-
-.pasule-nav-group
-  display: inline-flex
-  align-items: center
-  gap: 8px
+  gap: 6px
 
 .pasule-home-carousel
   padding: 24px
-  border-radius: 28px
-  border: 1px solid var(--pasule-line)
-  background: linear-gradient(135deg, rgba(255,237,246,.94), rgba(230,242,255,.94))
-  box-shadow: var(--pasule-shadow)
+  border-radius: 22px
+  border: 1px solid rgba(255,255,255,0.58)
+  background: rgba(255,255,255,.68)
+  box-shadow: 0 10px 28px rgba(55, 72, 120, 0.08)
+  backdrop-filter: blur(18px) saturate(112%)
+  -webkit-backdrop-filter: blur(18px) saturate(112%)
 
 .pasule-swiper
   margin-top: 18px
 
 .pasule-slide-card
-  min-height: 260px
-  padding: 26px
-  border-radius: 24px
-  background: rgba(255,255,255,.78)
-  border: 1px solid var(--pasule-line)
+  min-height: 210px
+  padding: 22px
+  border-radius: 18px
+  background: rgba(255, 255, 255, 0.72)
+  backdrop-filter: blur(12px) saturate(110%)
+  -webkit-backdrop-filter: blur(12px) saturate(110%)
+  border: 1px solid rgba(255, 255, 255, 0.58)
+  box-shadow: none
 
 .pasule-carousel-head
   max-width: 54rem
 
+  h1
+    font-size: 1.45rem
+    font-weight: 800
+    line-height: 1.3
+    letter-spacing: -.01em
+    margin: 8px 0 12px
+
 [data-pasule-feature-panels]
   display: grid
-  gap: 18px
+  gap: 14px
 
 [data-pasule-announcement-panel]
   padding: 20px
-  border-radius: 22px
+  border-radius: 20px
   border: 1px solid var(--pasule-line)
-  background: rgba(255,255,255,.76)
+  background: rgba(255,255,255,.58)
+  box-shadow: 0 8px 22px rgba(55, 72, 120, 0.07)
 
 [data-theme='dark']
-  --pasule-ink: rgba(255,255,255,.88)
-  --pasule-muted: rgba(220,228,245,.78)
-  --pasule-line: rgba(145, 168, 255, 0.18)
-  --pasule-shadow: 0 20px 42px rgba(0, 0, 0, 0.24)
+  --pasule-ink: rgba(235, 240, 255, 0.92)
+  --pasule-muted: rgba(200, 212, 245, 0.78)
+  --pasule-line: rgba(150, 175, 255, 0.18)
+  --pasule-shadow: 0 8px 32px rgba(0, 0, 0, 0.25)
+  --pasule-shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.32)
+  --pasule-glass-bg: rgba(28, 32, 48, 0.72)
+  --pasule-glass-border: rgba(255, 255, 255, 0.08)
+  --pasule-card-bg: rgba(28, 32, 48, 0.78)
+  --pasule-gradient-warm: linear-gradient(135deg, rgba(35, 30, 50, 0.95), rgba(25, 28, 45, 0.95))
+  --pasule-gradient-cool: linear-gradient(135deg, rgba(28, 32, 52, 0.95), rgba(25, 30, 48, 0.95))
 
   .pasule-home-carousel,
   .pasule-home-section,
@@ -299,13 +599,30 @@ body
   .pasule-about-panel,
   .pasule-post-guide,
   #aside-content .card-widget
-    background: linear-gradient(180deg, rgba(22,26,40,.76), rgba(14,18,30,.88))
+    background: linear-gradient(180deg, rgba(35, 40, 60, 0.88), rgba(22, 26, 42, 0.92))
+    border-color: rgba(150, 175, 255, 0.15)
 
   .pasule-slide-card,
   .pasule-feature-card,
   .pasule-series-card,
   .pasule-project-spotlight-card
-    background: rgba(18,22,34,.74)
+    background: rgba(35, 40, 60, 0.82)
+    border-color: rgba(150, 175, 255, 0.18)
+
+  .pasule-primary-link
+    box-shadow: 0 4px 16px rgba(120, 100, 240, 0.3)
+
+  .pasule-section-head
+    border-bottom-color: rgba(120, 150, 220, 0.12)
+
+  .pasule-eyebrow,
+  .pasule-card-kicker
+    color: rgba(170, 190, 255, 0.85)
+
+  /* 暗色模式侧边栏标题 */
+  #aside-content .item-headline
+    color: #a8b4ff !important
+    border-bottom-color: rgba(140, 160, 255, 0.2) !important
 
 :root
   --pasule-home-max: 1280px
@@ -379,8 +696,13 @@ body
     bottom: 92px
 
 // Fix the Fomalhaut-inspired home layout so sections stay readable and inside the viewport.
+.layout:has(> .pasule-home-shell)
+  flex-wrap: wrap
+
 .pasule-home-shell
-  gap: 16px
+  flex: 0 0 100%
+  width: 100%
+  gap: 14px
 
 .pasule-home-carousel
   min-height: 0
@@ -390,7 +712,7 @@ body
   position: relative
   width: 100%
   overflow: hidden !important
-  min-height: 260px
+  min-height: 210px
 
   .swiper-wrapper
     position: relative
@@ -399,7 +721,7 @@ body
   .swiper-slide
     display: none
     width: 100%
-    min-height: 260px
+    min-height: 210px
     flex-direction: column
     justify-content: space-between
 
@@ -417,40 +739,81 @@ body
   height: 10px
   border: 0
   border-radius: 999px
-  background: rgba(111, 94, 142, 0.24)
+  background: rgba(124, 92, 231, 0.2)
   cursor: pointer
-  transition: all .2s ease
+  transition: all .3s ease
 
   &.is-active
-    width: 28px
-    background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-blue))
+    width: 32px
+    background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-purple))
 
 .pasule-home-grid
-  grid-template-columns: 1fr !important
-  gap: 16px
+  grid-template-columns: minmax(280px, .72fr) minmax(0, 1.28fr) !important
+  gap: 14px
+  align-items: start
 
 .pasule-home-section
-  padding: 18px
+  padding: 0
+  border: 0 !important
+  border-radius: 0
+  background: transparent !important
+  backdrop-filter: none !important
+  -webkit-backdrop-filter: none !important
+  box-shadow: none !important
 
 .pasule-card-grid
   grid-template-columns: repeat(2, minmax(0, 1fr))
-  gap: 14px
+  gap: 12px
 
 .pasule-announcement-section
   min-height: auto
+  padding: 22px
+  border-radius: 20px
+  border: 1px solid rgba(255, 255, 255, 0.72) !important
+  background: linear-gradient(160deg, rgba(248, 251, 255, 0.9), rgba(226, 236, 255, 0.82)) !important
+  backdrop-filter: blur(16px) saturate(118%) !important
+  -webkit-backdrop-filter: blur(16px) saturate(118%) !important
+  box-shadow: 0 16px 34px rgba(22, 39, 78, 0.18) !important
+
+  .pasule-section-head
+    border-bottom-color: rgba(46, 67, 112, 0.12)
+
+    h2
+      color: #152238
+
+    a
+      color: #3468d9
+
+  .pasule-hero-copy
+    color: #41516b
+
+  .pasule-secondary-link
+    background: rgba(255,255,255,.86)
+    border-color: rgba(62, 88, 140, 0.16)
+    color: #1f2d45
 
 .pasule-feature-card,
 .pasule-series-card,
 .pasule-project-spotlight-card
   min-height: 0
+  padding: 18px
+  border-radius: 18px
+  box-shadow: 0 8px 22px rgba(55, 72, 120, 0.07)
 
   h3
-    margin-bottom: 10px
-    line-height: 1.45
-    font-size: 1.35rem
+    margin: 0 0 8px
+    line-height: 1.4
+    font-size: 1.05rem
+    font-weight: 700
 
   p
-    line-height: 1.85
+    margin: 0
+    line-height: 1.65
+    font-size: .88rem
+
+[data-pasule-series-deck],
+[data-pasule-project-spotlight]
+  align-self: start
 
 #recent-posts .recent-post-items
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important
@@ -476,53 +839,18 @@ body
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important
 
 @media screen and (max-width: 900px)
+  .pasule-home-grid
+    grid-template-columns: 1fr !important
+
   .pasule-card-grid,
   #recent-posts .recent-post-items
     grid-template-columns: 1fr !important
 
   .pasule-swiper
-    min-height: 220px
+    min-height: 200px
 
     .swiper-slide
-      min-height: 220px
-
-// Pasule home densify fixes v2
-.pasule-topic-atlas
-  display: grid
-  grid-template-columns: repeat(4, minmax(0, 1fr))
-  gap: 14px
-
-.pasule-topic-card
-  display: flex
-  flex-direction: column
-  gap: 10px
-  min-height: 100%
-  padding: 18px 18px 20px
-  border-radius: 20px
-  border: 1px solid var(--pasule-line)
-  background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.92))
-  box-shadow: var(--pasule-shadow)
-  color: var(--pasule-ink)
-  text-decoration: none
-  transition: transform .22s ease, box-shadow .22s ease
-
-  &:hover
-    transform: translateY(-4px)
-    box-shadow: 0 22px 44px rgba(111, 126, 160, 0.18)
-
-  h3
-    margin: 0
-    line-height: 1.35
-
-  p
-    margin: 0
-    color: var(--pasule-muted)
-    line-height: 1.75
-
-.pasule-topic-link
-  margin-top: auto
-  color: #6f5e8e
-  font-weight: 700
+      min-height: 200px
 
 #aside-content .card-tag-cloud
   display: flex
@@ -535,16 +863,20 @@ body
     align-items: center
     justify-content: center
     margin: 0 !important
-    padding: 7px 12px
+    padding: 6px 12px
     border-radius: 999px
-    background: rgba(255,255,255,.8)
+    background: var(--pasule-glass-bg)
+    backdrop-filter: blur(6px)
+    -webkit-backdrop-filter: blur(6px)
     border: 1px solid var(--pasule-line)
     color: var(--pasule-ink) !important
-    transition: transform .18s ease, box-shadow .18s ease
+    font-size: .86rem
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease
 
     &:hover
       transform: translateY(-2px)
       box-shadow: var(--pasule-shadow)
+      background: var(--pasule-cream)
 
 #recent-posts
   margin-top: 8px
@@ -557,8 +889,19 @@ body
   display: grid !important
   grid-template-rows: auto 1fr
   align-items: stretch
+  overflow: hidden
   min-height: 100%
-  border-radius: 22px
+  border-radius: var(--pasule-radius)
+  border: 1px solid var(--pasule-line) !important
+  background: var(--pasule-card-bg)
+  backdrop-filter: blur(8px)
+  -webkit-backdrop-filter: blur(8px)
+  box-shadow: var(--pasule-shadow)
+  transition: transform .25s ease, box-shadow .25s ease
+
+  &:hover
+    transform: translateY(-3px)
+    box-shadow: var(--pasule-shadow-lg)
 
 #recent-posts .post_cover
   float: none !important
@@ -575,48 +918,134 @@ body
     object-fit: cover
 
 #recent-posts .recent-post-info
+  position: relative
   display: flex
   flex-direction: column
-  gap: 12px
+  gap: 9px
   min-width: 0
   padding: 18px 20px 20px
-
-#recent-posts .article-meta-wrap
-  display: flex
-  flex-wrap: wrap
-  gap: 8px 10px
 
 #recent-posts .article-title
   display: -webkit-box
   overflow: hidden
   -webkit-box-orient: vertical
   -webkit-line-clamp: 2
+  color: var(--pasule-heading)
+  font-weight: 760
+  line-height: 1.32
+
+#recent-posts .article-meta-wrap
+  color: var(--pasule-muted)
+  font-size: .82rem
+  line-height: 1.55
+
+#recent-posts .article-meta-wrap i
+  color: rgba(79, 125, 243, .72)
 
 #recent-posts .content
   display: -webkit-box
   overflow: hidden
   margin: 0
-  line-height: 1.8
+  color: var(--pasule-body)
+  font-size: .92rem
+  line-height: 1.75
   -webkit-box-orient: vertical
-  -webkit-line-clamp: 5
+  -webkit-line-clamp: 2
+
+#recent-posts [data-pasule-post-card] .recent-post-info:after
+  align-self: flex-start
+  margin-top: auto
+  padding-top: 2px
+  color: var(--pasule-accent)
+  font-size: .82rem
+  font-weight: 700
+  content: '阅读全文 →'
+
+#aside-content .card-info
+  padding: 20px 18px 18px !important
+
+  .avatar-img
+    width: 78px !important
+    height: 78px !important
+    margin: 0 auto 10px !important
+    border-radius: 50% !important
+    box-shadow: 0 8px 20px rgba(36,48,72,.12)
+
+  .author-info-name
+    margin-bottom: 4px
+    color: var(--pasule-heading)
+    font-size: 1.08rem
+    font-weight: 760
+    line-height: 1.25
+
+  .author-info-description
+    max-width: 210px
+    margin: 0 auto 14px
+    color: var(--pasule-body)
+    font-size: .84rem
+    line-height: 1.65
+
+  .site-data
+    display: grid
+    grid-template-columns: repeat(3, minmax(0, 1fr))
+    gap: 8px
+    margin: 0 0 12px !important
+
+    a
+      padding: 8px 4px
+      border-radius: 12px
+      background: rgba(255,255,255,.5)
+      border: 1px solid var(--pasule-border)
+
+    .headline
+      color: var(--pasule-muted)
+      font-size: .74rem
+
+    .length-num
+      color: var(--pasule-heading)
+      font-size: 1rem
+      font-weight: 760
+
+  #card-info-btn
+    min-height: 36px
+    margin: 0 0 12px !important
+    border-radius: 12px !important
+    background: rgba(79,125,243,.12) !important
+    color: var(--pasule-accent) !important
+    box-shadow: none !important
+    font-size: .88rem
+
+  .card-info-social-icons
+    margin: 0 !important
+    gap: 16px
+    font-size: 1.05rem
+
+#aside-content .card-announcement,
+#aside-content #pasule-station-note
+  .announcement_content,
+  .pasule-widget-copy
+    padding: 0 18px 18px
+    color: var(--pasule-body)
+    font-size: .86rem
+    line-height: 1.75
+
+#aside-content #pasule-quick-jump .pasule-link-stack
+  grid-template-columns: repeat(2, minmax(0, 1fr))
+  padding: 0 16px 16px
+
+#aside-content #pasule-quick-jump .item-content
+  padding: 0 !important
 
 @media screen and (min-width: 901px)
   #rightside
     right: 16px !important
     bottom: 248px !important
 
-@media screen and (max-width: 1280px)
-  .pasule-topic-atlas
-    grid-template-columns: repeat(2, minmax(0, 1fr))
-
 @media screen and (max-width: 1100px)
   #recent-posts .recent-post-items
     grid-template-columns: 1fr !important
 
 @media screen and (max-width: 768px)
-  .pasule-topic-atlas
-    grid-template-columns: 1fr
-
   #aside-content .card-tag-cloud
     gap: 8px
 
@@ -697,7 +1126,7 @@ body
     width: 0
     height: 100%
     border-radius: inherit
-    background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-blue))
+    background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-purple))
     transition: width .2s ease
 
 .pasule-post-guide
@@ -743,7 +1172,7 @@ body
       width: 8px
       height: 8px
       border-radius: 999px
-      background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-blue))
+      background: linear-gradient(135deg, var(--pasule-pink), var(--pasule-purple))
       content: ''
 
 .pasule-reading-rail
@@ -885,3 +1314,296 @@ body
 
   #page-header.post-bg #post-info #post-meta
     padding: 10px 14px
+
+// Pasule polish pass: clearer tokens, calmer reading surfaces, and active navigation.
+:root
+  --pasule-surface: rgba(255,255,255,.82)
+  --pasule-surface-strong: rgba(255,255,255,.92)
+  --pasule-surface-soft: rgba(248,250,255,.74)
+  --pasule-border: rgba(92,108,145,.14)
+  --pasule-accent: #4f7df3
+  --pasule-accent-soft: rgba(79,125,243,.12)
+  --pasule-accent-2: #ec5f93
+  --pasule-heading: #142033
+  --pasule-body: #2f405a
+  --pasule-code-bg: rgba(18,24,38,.92)
+  --pasule-focus-ring: rgba(79,125,243,.28)
+  --pasule-radius-xs: 10px
+  --pasule-radius-card: 18px
+  --pasule-ease: cubic-bezier(.2,.8,.2,1)
+  --pasule-shadow-soft: 0 10px 28px rgba(36,48,72,.08)
+  --pasule-shadow-lift: 0 18px 38px rgba(36,48,72,.13)
+
+.content-wrap,
+#aside-content .card-widget,
+.pasule-article-brief,
+.pasule-post-guide,
+.pasule-article-outro,
+.pasule-reading-rail,
+#recent-posts .recent-post-item
+  background: var(--pasule-surface) !important
+  border: 1px solid var(--pasule-border) !important
+  box-shadow: var(--pasule-shadow-soft) !important
+  backdrop-filter: blur(14px) saturate(112%) !important
+  -webkit-backdrop-filter: blur(14px) saturate(112%) !important
+
+.pasule-feature-card,
+.pasule-series-card,
+.pasule-project-spotlight-card,
+.pasule-project-card,
+.pasule-guide-panel,
+.pasule-brief-stat,
+.pasule-rail-stat
+  background: var(--pasule-surface-soft) !important
+  border: 1px solid var(--pasule-border) !important
+  box-shadow: none
+
+.pasule-feature-card:hover,
+.pasule-series-card:hover,
+.pasule-project-spotlight-card:hover,
+.pasule-project-card:hover,
+#recent-posts .recent-post-item:hover
+  box-shadow: var(--pasule-shadow-lift) !important
+  transform: translateY(-2px)
+
+#nav[data-pasule-nav-grouped]
+  .menus_item.is-current > .site-page,
+  .menus_item > .site-page.is-active
+    background: rgba(255,255,255,.9) !important
+    border-color: rgba(79,125,243,.22) !important
+    color: var(--pasule-accent) !important
+    box-shadow: 0 8px 22px rgba(79,125,243,.14)
+
+  .menus_item.is-current > .site-page:before
+    position: absolute
+    right: 12px
+    bottom: 5px
+    left: 12px
+    height: 2px
+    border-radius: 999px
+    background: linear-gradient(90deg, var(--pasule-accent), var(--pasule-accent-2))
+    content: ''
+
+  .menus_item_child
+    border: 1px solid var(--pasule-border)
+    background: var(--pasule-surface-strong)
+    backdrop-filter: blur(12px) saturate(112%)
+    -webkit-backdrop-filter: blur(12px) saturate(112%)
+
+    li a.is-active
+      color: var(--pasule-accent) !important
+      background: var(--pasule-accent-soft)
+      font-weight: 700
+
+  .menus_item > .site-page:focus-visible,
+  .menus_item_child a:focus-visible
+    outline: 3px solid var(--pasule-focus-ring)
+    outline-offset: 3px
+
+#post
+  color: var(--pasule-body)
+
+#post #article-container
+  max-width: 76ch
+  margin-inline: auto
+  color: var(--pasule-body)
+  font-size: 1.02rem
+  line-height: 1.9
+
+  > p,
+  > ul,
+  > ol
+    margin: 0 0 1.05rem
+
+  a:not(.pasule-mini-link):not(.pasule-rail-link)
+    color: var(--pasule-accent)
+    text-decoration: none
+    background: linear-gradient(transparent 62%, rgba(79,125,243,.16) 0)
+
+    &:hover
+      color: #315fda
+      background: linear-gradient(transparent 54%, rgba(79,125,243,.26) 0)
+
+  h1,
+  h2,
+  h3,
+  h4
+    color: var(--pasule-heading)
+    letter-spacing: 0
+    line-height: 1.35
+    scroll-margin-top: 86px
+
+  h2
+    margin-top: 2.2rem
+    padding-bottom: .55rem
+    border-bottom: 1px solid var(--pasule-border)
+    font-size: 1.55rem
+
+    &:before
+      width: 8px
+      height: 8px
+      border-radius: 999px
+      background: linear-gradient(135deg, var(--pasule-accent), var(--pasule-accent-2))
+
+  h3
+    margin-top: 1.7rem
+    font-size: 1.22rem
+
+  blockquote
+    margin: 1.25rem 0
+    padding: 16px 18px 16px 20px
+    border-left: 4px solid var(--pasule-accent)
+    border-radius: 0 var(--pasule-radius-xs) var(--pasule-radius-xs) 0
+    background: rgba(79,125,243,.08)
+    color: var(--pasule-body)
+
+    p:last-child
+      margin-bottom: 0
+
+  .note
+    border-radius: var(--pasule-radius-card)
+    box-shadow: none
+
+  code:not([class])
+    padding: .16em .42em
+    border-radius: 7px
+    background: rgba(79,125,243,.10)
+    color: #315fda
+    font-size: .92em
+
+  figure.highlight,
+  pre
+    border-radius: var(--pasule-radius-card) !important
+    box-shadow: 0 12px 28px rgba(18,24,38,.18) !important
+
+  figure.highlight
+    overflow: hidden
+    border: 1px solid rgba(255,255,255,.10)
+    background: var(--pasule-code-bg) !important
+
+  img
+    border-radius: var(--pasule-radius-card)
+
+.pasule-article-brief
+  grid-template-columns: minmax(0, 1.08fr) minmax(260px, .92fr)
+  align-items: start
+
+  .pasule-article-meta-grid
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+
+.pasule-article-brief-main h2
+  color: var(--pasule-heading)
+  font-size: 1.45rem
+
+.pasule-guide-links,
+.pasule-mini-link-list,
+.pasule-rail-links
+  gap: 8px
+
+.pasule-mini-link,
+.pasule-rail-link
+  min-height: 34px
+  border-radius: 999px
+  border: 1px solid var(--pasule-border)
+  background: rgba(255,255,255,.72)
+  color: var(--pasule-body)
+  font-weight: 650
+
+  &:hover
+    color: var(--pasule-accent)
+    border-color: rgba(79,125,243,.24)
+    background: rgba(255,255,255,.94)
+
+.pasule-progress-track
+  height: 8px
+  background: rgba(79,125,243,.12)
+
+  span
+    background: linear-gradient(90deg, var(--pasule-accent), var(--pasule-accent-2))
+
+.post #aside-content #card-toc .toc-content
+  max-height: 420px
+
+.post #aside-content #card-toc .toc-link
+  border-radius: 8px
+  padding: 5px 8px
+
+  &.active
+    background: var(--pasule-accent-soft)
+    color: var(--pasule-accent)
+    font-weight: 700
+
+[data-theme='dark']
+  --pasule-surface: rgba(24,28,42,.82)
+  --pasule-surface-strong: rgba(28,33,49,.94)
+  --pasule-surface-soft: rgba(35,40,58,.72)
+  --pasule-border: rgba(155,176,235,.14)
+  --pasule-accent: #8fb0ff
+  --pasule-accent-soft: rgba(143,176,255,.14)
+  --pasule-accent-2: #ff8db5
+  --pasule-heading: rgba(245,248,255,.94)
+  --pasule-body: rgba(225,232,248,.82)
+  --pasule-code-bg: rgba(9,12,22,.94)
+  --pasule-focus-ring: rgba(143,176,255,.3)
+
+  #post #article-container
+    color: var(--pasule-body)
+
+    h1,
+    h2,
+    h3,
+    h4
+      color: var(--pasule-heading)
+
+    blockquote
+      background: rgba(143,176,255,.10)
+      color: var(--pasule-body)
+
+    code:not([class])
+      background: rgba(143,176,255,.14)
+      color: #bad0ff
+
+  .pasule-mini-link,
+  .pasule-rail-link
+    background: rgba(35,40,58,.74)
+    color: var(--pasule-body)
+
+    &:hover
+      background: rgba(42,49,70,.92)
+      color: var(--pasule-accent)
+
+  #nav[data-pasule-nav-grouped]
+    .menus_item.is-current > .site-page,
+    .menus_item > .site-page.is-active
+      background: rgba(28,33,49,.92) !important
+      color: var(--pasule-accent) !important
+
+    .menus_item_child
+      background: var(--pasule-surface-strong)
+
+@media screen and (max-width: 900px)
+  .pasule-article-brief
+    grid-template-columns: 1fr
+
+  #post #article-container
+    max-width: 100%
+
+@media screen and (max-width: 768px)
+  #post #article-container
+    font-size: 1rem
+    line-height: 1.82
+
+    h2
+      font-size: 1.34rem
+
+  .pasule-article-brief .pasule-article-meta-grid
+    grid-template-columns: 1fr
+
+body.pasule-home-page #rightside
+  right: 18px !important
+  bottom: 96px !important
+
+body.pasule-home-page canvas[id^='live2d'],
+body.pasule-home-page .live2d-widget-container
+  transform: scale(.52)
+  transform-origin: right bottom

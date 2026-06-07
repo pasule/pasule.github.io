@@ -7,6 +7,12 @@ function normalizeLink(input) {
   return `/${String(input).replace(/^\/+/, '')}`;
 }
 
+function normalizeAsset(input) {
+  if (!input) return '#';
+  if (/^(https?:)?\/\//.test(String(input)) || String(input).startsWith('mailto:')) return input;
+  return normalizeLink(input);
+}
+
 function findPostByTitle(posts, title) {
   return posts.find(post => post.title === title);
 }
@@ -70,59 +76,83 @@ function buildCarouselSlides(posts, items) {
   }).join('');
 }
 
-function buildTopicAtlas(items) {
-  return items.map((item, index) => `
-    <a class="pasule-topic-card wow animate__fadeInUp" data-pasule-topic-card href="${normalizeLink(item.link)}">
-      <p class="pasule-card-kicker">Topic Atlas 0${index + 1}</p>
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-      <span class="pasule-topic-link">${item.link_text}</span>
+function buildHomeProfile(meta) {
+  const socialLinks = (meta.social || []).map(item => `
+    <a class="social-icon" href="${item.link}" target="_blank" rel="noopener" title="${item.label}">
+      <i class="${item.icon}"${item.color ? ` style="color:${item.color}"` : ''}></i>
     </a>
   `).join('');
+
+  return `
+    <section class="pasule-home-side-card pasule-home-profile-card text-center" data-pasule-home-profile>
+      <div class="avatar-img">
+        <img src="${meta.avatar}" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar">
+      </div>
+      <div class="author-info-name">${meta.author}</div>
+      <div class="author-info-description">${meta.description}</div>
+      <div class="site-data">
+        <a href="/archives/"><div class="headline">文章</div><div class="length-num">${meta.counts.posts}</div></a>
+        <a href="/tags/"><div class="headline">标签</div><div class="length-num">${meta.counts.tags}</div></a>
+        <a href="/categories/"><div class="headline">分类</div><div class="length-num">${meta.counts.categories}</div></a>
+      </div>
+      <a id="pasule-home-profile-btn" href="${meta.profileLink}" target="_blank" rel="noopener">
+        <i class="${meta.profileIcon}"></i><span>${meta.profileText}</span>
+      </a>
+      <div class="card-info-social-icons">${socialLinks}</div>
+    </section>
+  `;
 }
 
-function buildHomeShell(map, posts) {
+function buildHomeSide(meta) {
+  return `
+    <aside class="pasule-home-side" data-pasule-home-side>
+      ${buildHomeProfile(meta)}
+      <section class="pasule-home-side-card pasule-home-note-card" data-pasule-home-note data-pasule-announcement-panel>
+        <div class="item-headline"><i class="fas fa-bullhorn"></i><span>公告</span></div>
+        <p class="pasule-widget-copy">${meta.announcement}</p>
+      </section>
+      <section class="pasule-home-side-card pasule-home-quick-card" data-pasule-home-quick>
+        <div class="item-headline"><i class="fas fa-compass"></i><span>快速导航</span></div>
+        <div class="pasule-link-stack">
+          <a href="/archives/">文章档案</a>
+          <a href="/projects/">项目集</a>
+          <a href="/gallery/">相册</a>
+          <a href="/about/">关于我</a>
+        </div>
+      </section>
+    </aside>
+  `;
+}
+
+function buildHomeShell(map, posts, meta) {
   if (!map || !map.home || !map.projects) return '';
 
   const hero = map.home.hero;
-  const announcement = map.home.announcement || {};
   const featuredCards = buildFeaturedCards(posts, map.home.featured_titles || []);
   const seriesCards = buildSeriesDeck(posts, map.home.series_deck || []);
   const projectCards = buildProjectSpotlight(map.projects.items || []);
   const carouselSlides = buildCarouselSlides(posts, (map.home.carousel && map.home.carousel.items) || []);
-  const topicAtlas = buildTopicAtlas(map.home.topic_atlas || []);
 
   return `
     <section class="pasule-home-shell" data-pasule-home-shell>
-      <section class="pasule-home-carousel" data-pasule-home-carousel>
-        <div class="pasule-carousel-head">
-          <p class="pasule-eyebrow">${hero.eyebrow}</p>
-          <h1>${hero.title}</h1>
-          <p class="pasule-hero-copy">${hero.description}</p>
-        </div>
-        <div class="swiper pasule-swiper">
-          <div class="swiper-wrapper">${carouselSlides}</div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </section>
-
-      <section class="pasule-topic-atlas" data-pasule-topic-atlas>
-        ${topicAtlas}
+      <section class="pasule-home-stage" data-pasule-home-stage>
+        <section class="pasule-home-carousel" data-pasule-home-carousel>
+          ${(hero.eyebrow || hero.title || hero.description) ? `
+            <div class="pasule-carousel-head">
+              ${hero.eyebrow ? `<p class="pasule-eyebrow">${hero.eyebrow}</p>` : ''}
+              ${hero.title ? `<h1>${hero.title}</h1>` : ''}
+              ${hero.description ? `<p class="pasule-hero-copy">${hero.description}</p>` : ''}
+            </div>
+          ` : ''}
+          <div class="swiper pasule-swiper">
+            <div class="swiper-wrapper">${carouselSlides}</div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+        ${buildHomeSide(meta)}
       </section>
 
       <section class="pasule-home-grid" data-pasule-feature-panels>
-        <div class="pasule-home-section pasule-announcement-section wow animate__fadeInUp" data-pasule-announcement-panel>
-          <div class="pasule-section-head">
-            <h2>${announcement.title || '站点公告'}</h2>
-            <a href="/about/">了解更多</a>
-          </div>
-          <p class="pasule-hero-copy">${announcement.description || hero.description}</p>
-          <div class="pasule-hero-actions">
-            <a class="pasule-primary-link" href="${hero.primary_link}">${hero.primary_text}</a>
-            <a class="pasule-secondary-link" href="${hero.secondary_link}">${hero.secondary_text}</a>
-          </div>
-        </div>
-
         <div class="pasule-home-section" data-pasule-featured-deck>
           <div class="pasule-section-head">
             <h2>Featured Dispatches</h2>
@@ -151,28 +181,22 @@ function buildHomeShell(map, posts) {
   `;
 }
 
+function normalizeSocial(icon, raw) {
+  const parts = String(raw).split('||').map(part => part.trim());
+  return {
+    icon,
+    link: parts[0] || '#',
+    label: parts[1] || icon,
+    color: parts[2] ? parts[2].replace(/^['"]|['"]$/g, '') : ''
+  };
+}
+
 hexo.extend.filter.register('after_render:html', function (html, data) {
   if (!data || data.path !== 'index.html') return html;
 
   const $ = cheerio.load(html, { decodeEntities: false });
+  $('body').addClass('pasule-home-page');
   $('#nav').attr('data-pasule-nav-grouped', 'true');
-  const recentPosts = $('#recent-posts');
-  if (!recentPosts.length || $('[data-pasule-home-shell]').length) return html;
-
-  const siteData = hexo.locals.get('data');
-  const posts = hexo.locals.get('posts').data;
-  const contentMap = siteData['content-map'];
-  const shell = buildHomeShell(contentMap, posts);
-
-  if (!shell) return html;
-
-  recentPosts.before(shell);
-  recentPosts.prepend(`
-    <div class="pasule-section-head pasule-feed-head">
-      <h2>Recent Updates</h2>
-      <a href="/archives/">查看完整归档</a>
-    </div>
-  `);
 
   return $.html();
 });
