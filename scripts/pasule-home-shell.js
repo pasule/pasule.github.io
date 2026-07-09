@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 const cheerio = require('cheerio');
 
@@ -9,12 +9,9 @@ function normalizeLink(input) {
 
 function normalizeAsset(input) {
   if (!input) return '#';
-  if (/^(https?:)?\/\//.test(String(input)) || String(input).startsWith('mailto:')) return input;
-  return normalizeLink(input);
-}
-
-function findPostByTitle(posts, title) {
-  return posts.find(post => post.title === title);
+  const value = String(input);
+  if (/^(https?:)?\/\//.test(value) || value.startsWith('mailto:')) return value;
+  return normalizeLink(value);
 }
 
 function escapeHtml(input) {
@@ -27,9 +24,13 @@ function escapeHtml(input) {
   }[char]));
 }
 
-function normalizeInterval(input, fallback = 5200) {
+function escapeCssUrl(input) {
+  return String(input || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+function normalizeLimit(input, fallback) {
   const value = Number(input);
-  return Number.isFinite(value) && value >= 2000 ? value : fallback;
+  return Number.isFinite(value) && value > 0 ? Math.floor(value) : fallback;
 }
 
 function normalizeMusicType(input) {
@@ -37,53 +38,40 @@ function normalizeMusicType(input) {
   return ['song', 'playlist', 'album', 'artist'].includes(value) ? value : 'playlist';
 }
 
-function buildMediaHero(home) {
-  const config = home && home.media_hero;
-  const images = ((config && config.images) || []).filter(item => item && item.src);
+function getStaticBanner(home) {
+  const banner = (home && home.banner) || {};
+  if (banner.enabled === false) return null;
 
-  if (!config || config.enabled === false || !images.length) return '';
+  const legacyImages = ((((home && home.media_hero) || {}).images) || []).filter(item => item && item.src);
+  const image = banner.image || (legacyImages[0] && legacyImages[0].src);
+  if (!image) return null;
 
-  const interval = normalizeInterval(config.interval);
-  const slides = images.map((item, index) => {
-    const active = index === 0 ? ' is-active' : '';
-    return `
-      <figure class="pasule-hero-slide${active}" data-pasule-hero-slide>
-        <img src="${normalizeAsset(item.src)}" alt="${escapeHtml(item.title || 'Pasule hero image')}" loading="${index === 0 ? 'eager' : 'lazy'}" onerror="this.onerror=null;this.src='/img/404.jpg'">
-        <figcaption class="pasule-hero-caption">
-          ${item.title ? `<strong>${escapeHtml(item.title)}</strong>` : ''}
-          ${item.subtitle ? `<span>${escapeHtml(item.subtitle)}</span>` : ''}
-        </figcaption>
-      </figure>
-    `;
-  }).join('');
+  return {
+    image: normalizeAsset(image),
+    fallback: normalizeAsset(banner.fallback_image || '/img/404.jpg')
+  };
+}
 
-  const dots = images.map((item, index) => {
-    const active = index === 0 ? ' is-active' : '';
-    const label = escapeHtml(item.title || `slide ${index + 1}`);
-    return `<button class="pasule-hero-dot${active}" type="button" data-pasule-hero-dot="${index}" aria-label="${label}"></button>`;
-  }).join('');
+function applyStaticBanner($, home) {
+  const banner = getStaticBanner(home);
+  const header = $('#page-header');
+  if (!banner || !header.length) return;
 
-  return `
-    <section class="pasule-home-enhancement" data-pasule-home-enhancement>
-      <section class="pasule-home-media-hero" data-pasule-home-hero data-interval="${interval}">
-        <div class="pasule-hero-track">
-          ${slides}
-        </div>
-        <div class="pasule-hero-copy-panel">
-          <p class="pasule-eyebrow">Pasule Station</p>
-          <h2>技术文章、项目实验和日常折腾的入口</h2>
-          <p>先从最近的记录开始，也可以去项目、相册和归档里慢慢翻。</p>
-          <div class="pasule-hero-actions">
-            <a class="pasule-primary-link" href="/archives/">浏览文章</a>
-            <a class="pasule-secondary-link" href="/gallery/">打开相册</a>
-          </div>
-        </div>
-        <div class="pasule-hero-controls" aria-label="首页照片轮换">
-          ${dots}
-        </div>
-      </section>
-    </section>
-  `;
+  const style = String(header.attr('style') || '')
+    .split(';')
+    .map(part => part.trim())
+    .filter(Boolean)
+    .filter(part => !/^background(?:-image|-size|-position|-repeat)?\s*:/i.test(part));
+
+  style.push(`background-image: url("${escapeCssUrl(banner.image)}")`);
+  style.push('background-size: cover');
+  style.push('background-position: center');
+  style.push('background-repeat: no-repeat');
+
+  header.attr('style', style.join('; '));
+  header.attr('data-pasule-static-banner', 'true');
+  header.attr('data-pasule-banner-image', banner.image);
+  header.attr('data-pasule-banner-fallback', banner.fallback);
 }
 
 function buildMetingElement(music) {
@@ -140,178 +128,135 @@ function buildGlobalMusic(home) {
   `;
 }
 
-function buildFeaturedCards(posts, titles) {
-  return titles.map(title => {
-    const post = findPostByTitle(posts, title);
-    if (!post) return '';
-    return `
-      <article class="pasule-feature-card wow animate__fadeInUp" data-pasule-feature-card>
-        <p class="pasule-card-kicker">Featured Article</p>
-        <h3><a href="${normalizeLink(post.path)}">${post.title}</a></h3>
-        <p>${post.description || ''}</p>
-      </article>
-    `;
-  }).join('');
-}
+function buildHomeMusicCard(home) {
+  const music = (home && home.music) || {};
+  if (music.enabled === false) return '';
 
-function buildSeriesDeck(posts, seriesDeck) {
-  return seriesDeck.map(item => {
-    const links = item.entry_titles.map(title => {
-      const post = findPostByTitle(posts, title);
-      if (!post) return '';
-      return `<a class="pasule-mini-link" href="${normalizeLink(post.path)}">${post.title}</a>`;
-    }).join('');
-
-    return `
-      <article class="pasule-series-card wow animate__fadeInUp" data-pasule-series-card>
-        <p class="pasule-card-kicker">Series Deck</p>
-        <h3>${item.title}</h3>
-        <p>${item.description}</p>
-        <div class="pasule-mini-link-list">${links}</div>
-      </article>
-    `;
-  }).join('');
-}
-
-function buildProjectSpotlight(items) {
-  return items.map(item => `
-    <article class="pasule-project-spotlight-card wow animate__fadeInUp" data-pasule-project-card>
-      <p class="pasule-card-kicker">Project</p>
-      <h3>${item.title}</h3>
-      <p>${item.summary}</p>
-      <div class="pasule-project-status">status: ${item.status}</div>
-    </article>
-  `).join('');
-}
-
-function buildCarouselSlides(posts, items) {
-  return items.map(item => {
-    const post = findPostByTitle(posts, item.title);
-    if (!post) return '';
-    return `
-      <article class="swiper-slide pasule-slide-card">
-        <p class="pasule-card-kicker">Featured Slide</p>
-        <h3>${post.title}</h3>
-        <p>${item.summary}</p>
-        <a class="pasule-primary-link" href="${normalizeLink(post.path)}">${item.link_title}</a>
-      </article>
-    `;
-  }).join('');
-}
-
-function buildHomeProfile(meta) {
-  const socialLinks = (meta.social || []).map(item => `
-    <a class="social-icon" href="${item.link}" target="_blank" rel="noopener" title="${item.label}">
-      <i class="${item.icon}"${item.color ? ` style="color:${item.color}"` : ''}></i>
-    </a>
-  `).join('');
+  const title = escapeHtml(music.title || 'Pasule Radio');
+  const hasSource = Boolean(String(music.id || '').trim());
+  const status = hasSource ? '歌单源已配置，打开全局播放器即可收听。' : escapeHtml(music.subtitle || '网易云歌单源未填写。');
 
   return `
-    <section class="pasule-home-side-card pasule-home-profile-card text-center" data-pasule-home-profile>
-      <div class="avatar-img">
-        <img src="${meta.avatar}" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar">
+    <section class="card-widget pasule-home-music-card" data-pasule-home-music-card>
+      <div class="item-headline"><i class="fas fa-music"></i><span>音乐</span></div>
+      <div class="item-content">
+        <p class="pasule-widget-copy">${status}</p>
+        <button class="pasule-home-music-open" type="button" data-pasule-music-open>打开播放器</button>
       </div>
-      <div class="author-info-name">${meta.author}</div>
-      <div class="author-info-description">${meta.description}</div>
-      <div class="site-data">
-        <a href="/archives/"><div class="headline">文章</div><div class="length-num">${meta.counts.posts}</div></a>
-        <a href="/tags/"><div class="headline">标签</div><div class="length-num">${meta.counts.tags}</div></a>
-        <a href="/categories/"><div class="headline">分类</div><div class="length-num">${meta.counts.categories}</div></a>
-      </div>
-      <a id="pasule-home-profile-btn" href="${meta.profileLink}" target="_blank" rel="noopener">
-        <i class="${meta.profileIcon}"></i><span>${meta.profileText}</span>
+    </section>
+  `;
+}
+
+function limitCategoryCard($, card, limit) {
+  const items = card.find('.card-category-list-item');
+  if (items.length <= limit) return;
+
+  items.each((index, item) => {
+    if (index >= limit) $(item).remove();
+  });
+
+  card.find('.card-category-list').append(`
+    <li class="card-category-list-item pasule-more-item">
+      <a class="card-category-list-link" href="/categories/">
+        <span class="card-category-list-name">更多</span>
+        <span class="card-category-list-count">+</span>
       </a>
-      <div class="card-info-social-icons">${socialLinks}</div>
-    </section>
-  `;
+    </li>
+  `);
 }
 
-function buildHomeSide(meta) {
-  return `
-    <aside class="pasule-home-side" data-pasule-home-side>
-      ${buildHomeProfile(meta)}
-      <section class="pasule-home-side-card pasule-home-note-card" data-pasule-home-note data-pasule-announcement-panel>
-        <div class="item-headline"><i class="fas fa-bullhorn"></i><span>公告</span></div>
-        <p class="pasule-widget-copy">${meta.announcement}</p>
-      </section>
-      <section class="pasule-home-side-card pasule-home-quick-card" data-pasule-home-quick>
-        <div class="item-headline"><i class="fas fa-compass"></i><span>快速导航</span></div>
-        <div class="pasule-link-stack">
-          <a href="/archives/">文章档案</a>
-          <a href="/projects/">项目集</a>
-          <a href="/gallery/">相册</a>
-          <a href="/about/">关于我</a>
-        </div>
-      </section>
-    </aside>
-  `;
+function limitTagCard($, card, limit) {
+  const tags = card.find('.card-tag-cloud a');
+  if (tags.length <= limit) return;
+
+  tags.each((index, item) => {
+    if (index >= limit) $(item).remove();
+  });
+
+  card.find('.card-tag-cloud').append('<a class="pasule-chip-more" href="/tags/">更多</a>');
 }
 
-function buildHomeShell(map, posts, meta) {
-  if (!map || !map.home || !map.projects) return '';
+function limitArchiveCard($, card, limit) {
+  const items = card.find('.card-archive-list-item');
+  if (items.length <= limit) return;
 
-  const hero = map.home.hero;
-  const featuredCards = buildFeaturedCards(posts, map.home.featured_titles || []);
-  const seriesCards = buildSeriesDeck(posts, map.home.series_deck || []);
-  const projectCards = buildProjectSpotlight(map.projects.items || []);
-  const carouselSlides = buildCarouselSlides(posts, (map.home.carousel && map.home.carousel.items) || []);
+  items.each((index, item) => {
+    if (index >= limit) $(item).remove();
+  });
 
-  return `
-    <section class="pasule-home-shell" data-pasule-home-shell>
-      <section class="pasule-home-stage" data-pasule-home-stage>
-        <section class="pasule-home-carousel" data-pasule-home-carousel>
-          ${(hero.eyebrow || hero.title || hero.description) ? `
-            <div class="pasule-carousel-head">
-              ${hero.eyebrow ? `<p class="pasule-eyebrow">${hero.eyebrow}</p>` : ''}
-              ${hero.title ? `<h1>${hero.title}</h1>` : ''}
-              ${hero.description ? `<p class="pasule-hero-copy">${hero.description}</p>` : ''}
-            </div>
-          ` : ''}
-          <div class="swiper pasule-swiper">
-            <div class="swiper-wrapper">${carouselSlides}</div>
-            <div class="swiper-pagination"></div>
-          </div>
-        </section>
-        ${buildHomeSide(meta)}
-      </section>
-
-      <section class="pasule-home-grid" data-pasule-feature-panels>
-        <div class="pasule-home-section" data-pasule-featured-deck>
-          <div class="pasule-section-head">
-            <h2>Featured Dispatches</h2>
-            <a href="/archives/">更多文章</a>
-          </div>
-          <div class="pasule-card-grid">${featuredCards}</div>
-        </div>
-
-        <div class="pasule-home-section" data-pasule-series-deck>
-          <div class="pasule-section-head">
-            <h2>Series Deck</h2>
-            <a href="/tags/">浏览标签</a>
-          </div>
-          <div class="pasule-card-grid">${seriesCards}</div>
-        </div>
-
-        <div class="pasule-home-section" data-pasule-project-spotlight>
-          <div class="pasule-section-head">
-            <h2>${map.projects.intro.title}</h2>
-            <a href="/projects/">打开项目页</a>
-          </div>
-          <div class="pasule-card-grid">${projectCards}</div>
-        </div>
-      </section>
-    </section>
-  `;
+  card.find('.card-archive-list').append(`
+    <li class="card-archive-list-item pasule-more-item">
+      <a class="card-archive-list-link" href="/archives/">
+        <span class="card-archive-list-date">更多归档</span>
+        <span class="card-archive-list-count">+</span>
+      </a>
+    </li>
+  `);
 }
 
-function normalizeSocial(icon, raw) {
-  const parts = String(raw).split('||').map(part => part.trim());
-  return {
-    icon,
-    link: parts[0] || '#',
-    label: parts[1] || icon,
-    color: parts[2] ? parts[2].replace(/^['"]|['"]$/g, '') : ''
-  };
+function moveFirst($, source, selector, target) {
+  const node = source.find(selector).first();
+  if (!node.length) return null;
+  target.append(node);
+  return node;
+}
+
+function applyFireflyHomeLayout($, home) {
+  if ($('[data-pasule-home-firefly]').length) return;
+
+  const layout = $('#content-inner');
+  const recentPosts = $('#recent-posts');
+  const aside = $('#aside-content');
+  if (!layout.length || !recentPosts.length || !aside.length) return;
+
+  const config = (home && home.layout) || {};
+  const tagLimit = normalizeLimit(config.tag_limit, 12);
+  const categoryLimit = normalizeLimit(config.category_limit, 6);
+
+  const shell = $('<section class="pasule-home-firefly" data-pasule-home-firefly></section>');
+  const left = $('<aside class="pasule-home-rail pasule-home-left" data-pasule-home-left></aside>');
+  const stream = $('<section class="pasule-home-stream" data-pasule-home-stream></section>');
+  const right = $('<aside class="pasule-home-rail pasule-home-right" data-pasule-home-right></aside>');
+
+  recentPosts.before(shell);
+  shell.append(left, stream, right);
+
+  moveFirst($, aside, '.card-info', left);
+  left.append(buildHomeMusicCard(home));
+
+  const categoryCard = moveFirst($, aside, '.card-categories', left);
+  if (categoryCard) limitCategoryCard($, categoryCard, categoryLimit);
+
+  const tagCard = moveFirst($, aside, '.card-tags', left);
+  if (tagCard) limitTagCard($, tagCard, tagLimit);
+
+  const announcementCard = moveFirst($, aside, '.card-announcement', right);
+  if (announcementCard) announcementCard.attr('data-pasule-announcement-panel', '');
+
+  moveFirst($, aside, '#pasule-quick-jump', right);
+  moveFirst($, aside, '.card-webinfo', right);
+
+  const archiveCard = moveFirst($, aside, '.card-archives', right);
+  if (archiveCard) limitArchiveCard($, archiveCard, 5);
+
+  aside.find('#pasule-station-note, .card-recent-post').remove();
+  aside.remove();
+
+  recentPosts.addClass('pasule-home-posts');
+  if (!recentPosts.find('[data-pasule-stream-head]').length) {
+    recentPosts.prepend(`
+      <div class="pasule-home-stream-head" data-pasule-stream-head>
+        <p class="pasule-card-kicker">Recent Posts</p>
+        <h2>最近文章</h2>
+        <a href="/archives/">全部归档</a>
+      </div>
+    `);
+  }
+  stream.append(recentPosts);
+
+  left.children('.card-widget').addClass('pasule-home-rail-card');
+  right.children('.card-widget').addClass('pasule-home-rail-card');
+  layout.addClass('pasule-home-layout');
 }
 
 hexo.extend.filter.register('after_render:html', function (html, data) {
@@ -324,17 +269,8 @@ hexo.extend.filter.register('after_render:html', function (html, data) {
   if (data.path === 'index.html') {
     $('body').addClass('pasule-home-page');
     $('#nav').attr('data-pasule-nav-grouped', 'true');
-
-    if (!$('[data-pasule-home-hero]').length) {
-      const hero = buildMediaHero(home);
-      const recentPosts = $('#recent-posts');
-
-      if (hero && recentPosts.length) {
-        recentPosts.prepend(hero);
-      } else if (hero) {
-        $('#content-inner').prepend(hero);
-      }
-    }
+    applyStaticBanner($, home);
+    applyFireflyHomeLayout($, home);
   }
 
   if (!$('[data-pasule-music-player]').length) {

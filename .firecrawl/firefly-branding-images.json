@@ -1,0 +1,256 @@
+{
+  "branding": {
+    "colorScheme": "light",
+    "fonts": [
+      {
+        "family": "Roboto",
+        "role": "body"
+      }
+    ],
+    "colors": {
+      "primary": "#E0F4EA",
+      "secondary": "#C0E9D6",
+      "accent": "#008760",
+      "background": "#E9F1ED",
+      "textPrimary": "#008760",
+      "link": "#008760"
+    },
+    "typography": {
+      "fontFamilies": {
+        "primary": "Roboto",
+        "heading": "Roboto"
+      },
+      "fontStacks": {
+        "heading": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        "body": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        "paragraph": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ]
+      },
+      "fontSizes": {
+        "h1": "16px",
+        "h2": "16px",
+        "body": "12px"
+      }
+    },
+    "spacing": {
+      "baseUnit": 4,
+      "borderRadius": "8px"
+    },
+    "components": {
+      "input": {
+        "background": "transparent",
+        "textColor": "#757977",
+        "borderColor": null,
+        "borderRadius": "0px",
+        "borderRadiusCorners": {
+          "topLeft": "0px",
+          "topRight": "0px",
+          "bottomRight": "0px",
+          "bottomLeft": "0px"
+        },
+        "shadow": "none"
+      },
+      "buttonPrimary": {
+        "background": "#C0E9D6",
+        "textColor": "#008760",
+        "borderRadius": "6px",
+        "borderRadiusCorners": {
+          "topLeft": "6px",
+          "topRight": "6px",
+          "bottomRight": "6px",
+          "bottomLeft": "6px"
+        },
+        "shadow": "none"
+      },
+      "buttonSecondary": {
+        "background": "#FFFFFF",
+        "textColor": "#3A3C3B",
+        "borderRadius": "8px",
+        "borderRadiusCorners": {
+          "topLeft": "8px",
+          "topRight": "8px",
+          "bottomRight": "8px",
+          "bottomLeft": "8px"
+        },
+        "shadow": "none"
+      }
+    },
+    "images": {
+      "logo": "https://firefly.cuteleaf.cn/_astro/firefly.EzH7fIYR_16B3gR.webp",
+      "favicon": "https://firefly.cuteleaf.cn/favicon/favicon.ico",
+      "ogImage": null,
+      "logoHref": "/",
+      "logoAlt": "🍀"
+    },
+    "__llm_logo_reasoning": {
+      "selectedIndex": 1,
+      "reasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, aligning with the brand 'Firefly'.",
+      "confidence": 0.9,
+      "source": "llm"
+    },
+    "__llm_button_reasoning": {
+      "primary": {
+        "index": 0,
+        "text": "首页壁纸标题",
+        "reasoning": "Button #0 has a vibrant green background (#C0E9D6) and is positioned as a primary navigation element, making it a strong candidate for the primary CTA."
+      },
+      "secondary": {
+        "index": 10,
+        "text": "Firefly",
+        "reasoning": "Button #10 has a white background (#FFFFFF), providing a clear contrast to the primary button's green, making it suitable as a secondary CTA."
+      },
+      "confidence": 0.9
+    },
+    "personality": {
+      "tone": "playful",
+      "energy": "medium",
+      "targetAudience": "young adults interested in creative design"
+    },
+    "designSystem": {
+      "framework": "tailwind",
+      "componentLibrary": ""
+    },
+    "confidence": {
+      "buttons": 0.9,
+      "colors": 0.9,
+      "overall": 0.9
+    },
+    "__llm_metadata": {
+      "logoSelection": {
+        "llmCalled": true,
+        "llmSucceeded": true,
+        "finalSource": "llm",
+        "rawLogoSelection": {
+          "selectedLogoIndex": 0,
+          "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, aligning with the brand 'Firefly'.",
+          "confidence": 0.9
+        }
+      },
+      "buttonClassification": {
+        "llmCalled": true,
+        "llmSucceeded": true
+      }
+    }
+  },
+  "metadata": {
+    "ogSiteName": "Firefly",
+    "og:description": "Firefly 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+    "twitter:title": "Firefly - Demo site",
+    "twitter:url": "https://firefly.cuteleaf.cn/",
+    "viewport": "width=device-width",
+    "title": "Firefly - Demo site",
+    "twitter:card": "summary_large_image",
+    "ogUrl": "https://firefly.cuteleaf.cn/",
+    "description": "Firefly 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+    "og:site_name": "Firefly",
+    "twitter:description": "Firefly 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+    "author": "Firefly",
+    "keywords": "Firefly, Fuwari, Astro, ACGN, 博客, 技术博客, 静态博客",
+    "ogDescription": "Firefly 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+    "generator": "Astro v6.4.2",
+    "ogTitle": "Firefly - Demo site",
+    "og:url": "https://firefly.cuteleaf.cn/",
+    "og:title": "Firefly - Demo site",
+    "og:type": "website",
+    "language": "zh-CN",
+    "favicon": "https://firefly.cuteleaf.cn/favicon/favicon.ico",
+    "scrapeId": "019e9642-910e-767d-9c42-9b0d1f2e5aad",
+    "sourceURL": "https://firefly.cuteleaf.cn/",
+    "url": "https://firefly.cuteleaf.cn/",
+    "statusCode": 200,
+    "contentType": "text/html",
+    "timezone": "America/New_York",
+    "proxyUsed": "basic",
+    "indexId": "32451e91-a0bc-41a4-8a77-608e2ff175cd",
+    "creditsUsed": 1,
+    "concurrencyLimited": true,
+    "concurrencyQueueDurationMs": 16118
+  },
+  "images": [
+    "https://firefly.cuteleaf.cn/_astro/m5.D_Epxsab_Z6DmAe.webp",
+    "https://firefly.cuteleaf.cn/_astro/m5.D_Epxsab_MipJw.webp",
+    "https://firefly.cuteleaf.cn/_astro/avatar.BcAu2wMi_Z2kMBUQ.webp",
+    "https://firefly.cuteleaf.cn/_astro/m4.BH-lD-3t_1DXrET.webp",
+    "https://firefly.cuteleaf.cn/_astro/d2.B57ICuoV_1oCTE1.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly1.CZCuCN4V_ZGJO0Y.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly.EzH7fIYR_16B3gR.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly3.CGzFXcxi_k1YJ7.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly1.CZCuCN4V_ga8NS.webp",
+    "https://firefly.cuteleaf.cn/_astro/d5.z7QGp_dj_IOE5U.webp",
+    "https://firefly.cuteleaf.cn/_astro/d2.B57ICuoV_Z11rAeB.webp",
+    "https://firefly.cuteleaf.cn/_astro/m2.B5kTqdCO_1CrLdN.webp",
+    "https://firefly.cuteleaf.cn/_astro/d4.Brgr35k-_QbpD3.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly3.CGzFXcxi_1hVWyY.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly2.dxmXG905_20a9tr.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly.EzH7fIYR_2kkPj.webp",
+    "https://firefly.cuteleaf.cn/_astro/cover.bDPQizdp_1l3my4.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly2.dxmXG905_1WrsBf.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly3.CGzFXcxi_mJFBj.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly3.CGzFXcxi_Z23WBFV.webp",
+    "https://firefly.cuteleaf.cn/_astro/cover.bDPQizdp_ZEzH1i.webp",
+    "https://firefly.cuteleaf.cn/_astro/m6.BY42_Be2_ZUhKeK.webp",
+    "https://firefly.cuteleaf.cn/_astro/d6.DetxM4Sl_ZpXFRv.webp",
+    "https://firefly.cuteleaf.cn/_astro/d6.DetxM4Sl_ZobhQx.webp",
+    "https://firefly.cuteleaf.cn/_astro/m4.BH-lD-3t_ZKFJHX.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly3.CGzFXcxi_16Dll0.webp",
+    "https://firefly.cuteleaf.cn/_astro/m3.DGa_nZZV_1lb4J0.webp",
+    "https://firefly.cuteleaf.cn/_astro/m3.DGa_nZZV_Z1xA57u.webp",
+    "https://firefly.cuteleaf.cn/_astro/d2.B57ICuoV_gwPXo.webp",
+    "https://firefly.cuteleaf.cn/_astro/d6.DetxM4Sl_wvX9N.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly1.CZCuCN4V_ZE288M.webp",
+    "https://firefly.cuteleaf.cn/_astro/d3.CGCRs0-H_Z4ue21.webp",
+    "https://firefly.cuteleaf.cn/_astro/d4.Brgr35k-_Z1yT5fz.webp",
+    "https://firefly.cuteleaf.cn/",
+    "https://firefly.cuteleaf.cn/_astro/d3.CGCRs0-H_Z11YS4k.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly.EzH7fIYR_Z1fPAp8.webp",
+    "https://firefly.cuteleaf.cn/_astro/m2.B5kTqdCO_1mllz8.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951169585655912&auth=6c271d05e54632a74b7edc2273bd0898c7e0a10b",
+    "https://firefly.cuteleaf.cn/_astro/d4.Brgr35k-_ZgTD2z.webp",
+    "https://firefly.cuteleaf.cn/_astro/d5.z7QGp_dj_1EwU7g.webp",
+    "https://firefly.cuteleaf.cn/_astro/cover.bDPQizdp_Z255eMJ.webp",
+    "https://firefly.cuteleaf.cn/_astro/m5.D_Epxsab_ZUqF2c.webp",
+    "https://firefly.cuteleaf.cn/_astro/m2.B5kTqdCO_soyen.webp",
+    "https://firefly.cuteleaf.cn/_astro/m6.BY42_Be2_2gmeme.webp",
+    "https://firefly.cuteleaf.cn/_astro/d3.CGCRs0-H_Z10cu3m.webp",
+    "https://firefly.cuteleaf.cn/_astro/d5.z7QGp_dj_H2g4W.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly2.dxmXG905_Z29OHmO.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly1.CZCuCN4V_4QwzT.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly1.CZCuCN4V_1YrHmT.webp",
+    "https://firefly.cuteleaf.cn/_astro/cover.bDPQizdp_ZqgWDr.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly2.dxmXG905_Zqx8NN.webp",
+    "https://firefly.cuteleaf.cn/_astro/m3.DGa_nZZV_2f7R4K.webp",
+    "https://firefly.cuteleaf.cn/_astro/m4.BH-lD-3t_Z1ECx3I.webp",
+    "https://firefly.cuteleaf.cn/_astro/avatar.BcAu2wMi_yT6PR.webp",
+    "https://firefly.cuteleaf.cn/_astro/m4.BH-lD-3t_Z22e9T3.webp",
+    "https://firefly.cuteleaf.cn/_astro/cover.bDPQizdp_1skyun.webp",
+    "https://firefly.cuteleaf.cn/_astro/m6.BY42_Be2_1mpr1t.webp",
+    "https://firefly.cuteleaf.cn/_astro/firefly2.dxmXG905_Z2l8jAN.webp"
+  ],
+  "warning": "This scrape job was throttled at your current concurrency limit. If you'd like to scrape faster, you can upgrade your plan."
+}

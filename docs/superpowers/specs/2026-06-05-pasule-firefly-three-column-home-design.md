@@ -7,11 +7,11 @@
   - `https://xtower.site/`
   - `https://firefly.cuteleaf.cn/`
   - `https://github.com/CuteLeaf/Firefly`
-- Status: Drafted after user selected the Firefly/Xtower three-column adaptation direction
+- Status: Revised after user removed carousel/rotation from scope
 
 ## Context
 
-The homepage currently uses Butterfly's full-screen top banner, then a custom rotating media hero inserted above the recent posts, followed by a two-column card grid and a crowded sidebar. This made the page more visual, but it also created a duplicated hero structure: the first viewport already has a large banner, and the content area repeats another large image block before the article list.
+The homepage currently uses Butterfly's full-screen top banner, then a custom media hero inserted above the recent posts, followed by a two-column card grid and a crowded sidebar. This made the page more visual, but it also created a duplicated hero structure: the first viewport already has a large banner, and the content area repeats another large image block before the article list.
 
 The user wants the homepage layout to feel closer to `xtower.site` and CuteLeaf Firefly: a mood-heavy top banner, then a readable three-column blog dashboard where left, center, and right rails each have a clear role. The user also called out "extra tags and positions", so this pass should reduce duplicate category/tag/sidebar noise instead of adding more panels.
 
@@ -31,7 +31,7 @@ Adapt Pasule's homepage into a Firefly/Xtower-style three-column blog entry whil
 The result should:
 
 - Keep the existing Butterfly top full-screen banner as the homepage's main visual mood.
-- Move the dynamic photo rotation to the top banner/background layer instead of rendering a second large content hero.
+- Use one static, configurable top banner/background image instead of any carousel, slideshow, or second content hero.
 - Rebuild the content area into a three-column layout on desktop:
   - left rail: profile, compact music/config state, category/tag entry points
   - center: recent post list
@@ -46,6 +46,7 @@ The result should:
 - Do not clone Firefly/Xtower assets, logos, copy, or exact colors.
 - Do not add heavy new effects, WinBox panels, or large framework dependencies.
 - Do not add another decorative card layer above the article list.
+- Do not add carousel behavior, rotating photos, slide dots, or banner timers.
 - Do not autoplay music.
 - Do not remove article content or break archive/tag/category pages.
 
@@ -88,19 +89,20 @@ Pasule should not take the exact brand assets, copy, or full widget inventory.
 Use the existing project-owned customization layer:
 
 - `source/_data/content-map.yml`
-  - Keep homepage image and music configuration.
+  - Keep homepage banner image and music configuration.
   - Add or reuse homepage display preferences for widget visibility and chip limits.
 - `scripts/pasule-home-shell.js`
   - Stop injecting `data-pasule-home-hero` as a content-area block.
   - Inject a lightweight homepage layout scaffold around existing Butterfly output.
+  - Set one static homepage banner/background image from configuration when present.
   - Move or clone selected sidebar widgets into left/right rails only on `index.html`.
   - Continue injecting the global music player on every HTML page.
 - `source/js/pasule-fomalhaut-ui.js`
-  - Reuse the existing media rotation timer, but target the homepage banner/background layer.
+  - Remove the media rotation timer and old content hero initializer.
   - Keep global music panel behavior.
   - Reinitialize safely on `DOMContentLoaded` and `pjax:complete`.
 - `source/css/modify.styl`
-  - Replace content hero styling with banner rotation and three-column layout styling.
+  - Replace content hero styling with static banner and three-column layout styling.
   - Restyle recent posts as horizontal list cards.
   - Compact category/tag cards and hide duplicate/low-value homepage widgets.
 - `_config.butterfly.yml`
@@ -115,7 +117,7 @@ Use the existing project-owned customization layer:
 
 Keep Butterfly's top banner as the first-viewport signal.
 
-On the homepage, the banner background should rotate through `home.media_hero.images` when enabled. This preserves the user's requested dynamic photo experience while avoiding a second large hero inside the content area.
+On the homepage, the banner background should use a single configured image. The page must not rotate between images, render slide controls, or inject another large photo block inside the content area.
 
 The banner keeps:
 
@@ -127,8 +129,7 @@ The banner keeps:
 
 The banner gains:
 
-- background image rotation sourced from `content-map.yml`
-- reduced-motion support
+- one static background image sourced from `content-map.yml`
 - no autoplaying audio
 
 ### Desktop Content Area
@@ -162,7 +163,7 @@ Replace the current two-column recent-post grid on the homepage with vertical li
 
 Pinned posts should keep a clear sticky marker, but avoid oversized iconography.
 
-This column is the main reading path and should not be interrupted by another full-width hero.
+This column is the main reading path and should not be interrupted by another full-width hero or carousel.
 
 ### Left Rail
 
@@ -209,12 +210,16 @@ The rails should not become side-by-side or create horizontal scroll. The floati
 
 ## Data And Configuration
 
-Reuse the current `home.media_hero` and `home.music` data.
+Reuse the current `home.music` data. Add a small static banner configuration; for backward compatibility, the first item in `home.media_hero.images` may be used if `home.banner.image` is missing.
 
 Add only small optional configuration if needed:
 
 ```yaml
 home:
+  banner:
+    enabled: true
+    image: /img/2.jpg
+    fallback_image: /img/404.jpg
   layout:
     style: firefly_three_column
     tag_limit: 10
@@ -227,10 +232,10 @@ The layout must still work if this block is missing by using safe defaults.
 
 ## Interaction
 
-- Banner rotation:
-  - rotate images on the configured interval
-  - pause or skip animation when `prefers-reduced-motion: reduce`
-  - do not shift layout dimensions during rotation
+- Banner:
+  - set one configured static image on the homepage header
+  - keep layout dimensions stable while the image loads
+  - do not create timers, dots, slide controls, or automatic image changes
 - Music:
   - keep the global player expand/collapse interaction
   - keep empty-ID fallback
@@ -243,7 +248,7 @@ The layout must still work if this block is missing by using safe defaults.
 
 ## Error Handling
 
-- Missing `home.media_hero.images`: keep the normal Butterfly banner image/background.
+- Missing `home.banner.image`: use the first legacy `home.media_hero.images` source when available, otherwise keep the normal Butterfly banner image/background.
 - Broken banner image: fall back to `/img/404.jpg` or the existing background.
 - Missing music ID: show configured empty state and skip `<meting-js>`.
 - Missing sidebar widget: skip moving that widget; do not break the page.
@@ -255,12 +260,13 @@ Update automated checks so they assert:
 
 - `public/index.html` contains a new three-column homepage marker, for example `data-pasule-home-firefly`.
 - `public/index.html` does not contain the old content-area `data-pasule-home-hero` block.
+- `public/index.html` does not contain `data-pasule-home-carousel`, slide dots, or the old homepage carousel.
 - `public/index.html` still contains recent posts.
 - `public/index.html` still contains `data-pasule-music-player`.
 - `public/about/index.html` contains `data-pasule-music-player`.
 - Empty music ID still skips `<meting-js>`.
 - `public/style.css` contains the three-column layout selectors.
-- `public/js/pasule-fomalhaut-ui.js` contains the banner rotation initializer.
+- `public/js/pasule-fomalhaut-ui.js` does not contain the old media hero rotation initializer.
 
 Manual browser checks:
 
@@ -269,15 +275,14 @@ Manual browser checks:
 - About/post pages do not receive homepage-only three-column rails.
 - Mobile has no horizontal overflow at common widths.
 - Music panel opens and closes on homepage and regular pages.
-- Banner image rotation works or is disabled under reduced motion.
+- Banner image is static and does not rotate.
 
 ## Acceptance Criteria
 
 - Homepage reads as a Firefly/Xtower-style blog dashboard rather than a standard Butterfly card grid.
-- The dynamic photo experience is preserved through the top banner/background, not a duplicated content hero.
+- The homepage uses one static configured banner image and has no carousel or duplicated content hero.
 - Tags/categories are compact, capped, and positioned intentionally.
 - Sidebar content is reduced to high-signal widgets.
 - The global music player still works and remains configurable.
 - The change is localized to existing project-owned customization files.
 - Build and smoke checks pass.
-

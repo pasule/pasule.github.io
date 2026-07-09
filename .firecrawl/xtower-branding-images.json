@@ -1,0 +1,242 @@
+{
+  "branding": {
+    "colorScheme": "light",
+    "fonts": [
+      {
+        "family": "Roboto",
+        "role": "body"
+      }
+    ],
+    "colors": {
+      "primary": "#FEE8EE",
+      "secondary": "#FCD1DC",
+      "accent": "#A8506F",
+      "background": "#F5ECEE",
+      "textPrimary": "#A8506F",
+      "link": "#A8506F"
+    },
+    "typography": {
+      "fontFamilies": {
+        "primary": "Roboto",
+        "heading": "Roboto"
+      },
+      "fontStacks": {
+        "heading": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        "body": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        "paragraph": [
+          "Roboto",
+          "sans-serif",
+          "ui-sans-serif",
+          "system-ui",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ]
+      },
+      "fontSizes": {
+        "h1": "16px",
+        "h2": "16px",
+        "body": "12px"
+      }
+    },
+    "spacing": {
+      "baseUnit": 4,
+      "borderRadius": "8px"
+    },
+    "components": {
+      "input": {
+        "background": "transparent",
+        "textColor": "#7B7677",
+        "borderColor": null,
+        "borderRadius": "0px",
+        "borderRadiusCorners": {
+          "topLeft": "0px",
+          "topRight": "0px",
+          "bottomRight": "0px",
+          "bottomLeft": "0px"
+        },
+        "shadow": "none"
+      },
+      "buttonPrimary": {
+        "background": "#FCD1DC",
+        "textColor": "#A8506F",
+        "borderRadius": "6px",
+        "borderRadiusCorners": {
+          "topLeft": "6px",
+          "topRight": "6px",
+          "bottomRight": "6px",
+          "bottomLeft": "6px"
+        },
+        "shadow": "none"
+      },
+      "buttonSecondary": {
+        "background": "#FBF6F7",
+        "textColor": "#3D3B3C",
+        "borderRadius": "8px",
+        "borderRadiusCorners": {
+          "topLeft": "8px",
+          "topRight": "8px",
+          "bottomRight": "8px",
+          "bottomLeft": "8px"
+        },
+        "shadow": "none"
+      }
+    },
+    "images": {
+      "logo": "https://xtower.site/assets/images/icon.png",
+      "favicon": "https://xtower.site/assets/images/favicon.ico",
+      "ogImage": null,
+      "logoHref": "/",
+      "logoAlt": "🍀"
+    },
+    "__llm_logo_reasoning": {
+      "selectedIndex": 1,
+      "reasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, matching the favicon and brand context.",
+      "confidence": 0.85,
+      "source": "llm"
+    },
+    "__llm_button_reasoning": {
+      "primary": {
+        "index": 0,
+        "text": "横幅壁纸",
+        "reasoning": "Button #0 has a vibrant background color (#FCD1DC) and is part of the main color group, making it a strong candidate for the primary CTA."
+      },
+      "secondary": {
+        "index": 7,
+        "text": "Evernight",
+        "reasoning": "Button #7 has a different background color (#FBF6F7) and stands out with a unique text color, making it suitable as a secondary button."
+      },
+      "confidence": 0.9
+    },
+    "personality": {
+      "tone": "minimalist",
+      "energy": "low",
+      "targetAudience": "unknown"
+    },
+    "designSystem": {
+      "framework": "tailwind",
+      "componentLibrary": ""
+    },
+    "confidence": {
+      "buttons": 0.9,
+      "colors": 0.9,
+      "overall": 0.9
+    },
+    "__llm_metadata": {
+      "logoSelection": {
+        "llmCalled": true,
+        "llmSucceeded": true,
+        "finalSource": "llm",
+        "rawLogoSelection": {
+          "selectedLogoIndex": 0,
+          "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, and links to the homepage, matching the favicon and brand context.",
+          "confidence": 0.85
+        }
+      },
+      "buttonClassification": {
+        "llmCalled": true,
+        "llmSucceeded": true
+      }
+    }
+  },
+  "metadata": {
+    "keywords": "弦塔, Evernight, Firefly, Astro, ACGN, 博客, 静态博客",
+    "twitter:card": "summary_large_image",
+    "author": "Xtower",
+    "viewport": "width=device-width",
+    "twitter:url": "https://xtower.site/",
+    "generator": "Astro v6.3.1",
+    "ogDescription": "「如何？为你描绘的这个世界？」个人博客站点，使用 Astro 构建。",
+    "description": "「如何？为你描绘的这个世界？」个人博客站点，使用 Astro 构建。",
+    "og:type": "website",
+    "og:title": "塔弦云随笔 - Demiurge",
+    "ogTitle": "塔弦云随笔 - Demiurge",
+    "ogSiteName": "塔弦云随笔",
+    "og:site_name": "塔弦云随笔",
+    "og:url": "https://xtower.site/",
+    "og:description": "「如何？为你描绘的这个世界？」个人博客站点，使用 Astro 构建。",
+    "ogUrl": "https://xtower.site/",
+    "language": "zh-CN",
+    "twitter:title": "塔弦云随笔 - Demiurge",
+    "title": "塔弦云随笔 - Demiurge",
+    "twitter:description": "「如何？为你描绘的这个世界？」个人博客站点，使用 Astro 构建。",
+    "favicon": "https://xtower.site/assets/images/favicon.ico",
+    "scrapeId": "019e9642-90f1-701c-9a85-e52e3a18c9e2",
+    "sourceURL": "https://xtower.site/",
+    "url": "https://xtower.site/",
+    "statusCode": 200,
+    "contentType": "text/html",
+    "timezone": "America/New_York",
+    "proxyUsed": "basic",
+    "indexId": "bf3edfd2-dc05-48a0-8d2b-ff7387b5744f",
+    "creditsUsed": 1,
+    "concurrencyLimited": false
+  },
+  "images": [
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_ZLKCWp.webp",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_Z23Wtcr.avif",
+    "https://lumine.xtower.site/v1/random?orientation=landscape&v=523699539",
+    "https://xtower.site/_astro/cover.LVH5wcXY_Z1B1yKj.avif",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_ZcH41F.webp",
+    "https://xtower.site/_astro/cover.LVH5wcXY_ZTAznu.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951169889374385&auth=fcf81198f3f70a3284add2c91bef99a3f20d6945",
+    "https://xtower.site/_astro/cover.LVH5wcXY_gpLG5.avif",
+    "https://xtower.site/_astro/cover.LVH5wcXY_kyrqa.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951170610489186&auth=8d8d73d73af0b1db0b99ffd6a45c67b341c4f921",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951172836316686&auth=3376525d0bb23a6b7ee4a97f5d56cf544e5a126a",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_Z1UVQ6u.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951169038012737&auth=3050968389b32c1829ea9478e62f56a2900521b5",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951168505830245&auth=0c3e3f659dcc3ddd93c0e134268e7f7436262fec",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951170264850160&auth=54caf1718f2159d8784d505a8b186df9faa4800b",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951172156847671&auth=cf0c9e416ad9c5e5aab11efdbb7bcd5732684eb5",
+    "https://xtower.site/assets/images/avatar.webp",
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_Z1cw4NW.webp",
+    "https://xtower.site/assets/images/icon.png",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951171892347931&auth=07884d977862c5c05a627c83ff291e006c0786e3",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951169310485931&auth=48f9e52e1188ce34d9c268a5ba70de8176060298",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_Z24w7M8.webp",
+    "https://xtower.site/_astro/cover.LVH5wcXY_F6AV6.avif",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_Z2m6ySm.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951170278788820&auth=45154a0507b93108de9bdb4aaae5a3f8ef3f70b4",
+    "https://xtower.site/_astro/cover.LVH5wcXY_Zo70r7.webp",
+    "https://xtower.site/_astro/cover.LVH5wcXY_ZuTK8t.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951166541286185&auth=1e43de149b9468bb13988e86475aa4b59a3aa65f",
+    "https://xtower.site/",
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_ZysxiV.avif",
+    "https://xtower.site/_astro/cover.LVH5wcXY_1vzNuJ.avif",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951166370697010&auth=777f5dd426804dabe37d06b9497e746340b5b998",
+    "https://xtower.site/_astro/cover.LVH5wcXY_2i9cY3.webp",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_ZGH7wT.avif",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951168044629185&auth=4ffdddff70562c22b22496d63d3d3573b3ca7d5a",
+    "https://xtower.site/_astro/cyy-h-1.CEOhzx3N_Z2lwUiF.avif",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951168690731310&auth=fe596ec189cee10ab0df4d34ed89ac793547009d",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951168126252188&auth=84cd63a7cf3d031f72f293e8077757b3572d1799",
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_bkqzC.webp",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951172511557367&auth=872f3af34d07271f2bb177584aec0f6b34b07956",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951172146425623&auth=806671f0986fb084caee5ee975bdf40128f79d33",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951169504562063&auth=ecea54cd2f2ffb5fc6da80b9ea7ec1af54eb3787",
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_Z8H6ro.avif",
+    "https://api.i-meto.com/meting/api?server=netease&type=pic&id=109951172268004943&auth=e47ebcf060881258f0fe5183cc5bbd4bdd53540a",
+    "https://xtower.site/_astro/cyy-s-1.DdALRlq6_OnX5D.avif",
+    "https://lumine.xtower.site/v1/random?orientation=landscape&v=408433746"
+  ]
+}

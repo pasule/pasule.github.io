@@ -100,7 +100,7 @@ footer_img: true
 
 # Website Background
 # Can set it to color or image url
-background: https://pic1.imgdb.cn/item/6805d3a258cb8da5c8bb423b.jpg
+background: '#eef2fb'
 #background: '#1a1a2e'  # 使用纯色背景提升速度
 
 cover:
@@ -1042,10 +1042,8 @@ inject:
   head:
     - <link rel="stylesheet" href="/css/modify.css">
     - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-    - <link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css">
     - <link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css">
   bottom:
-    - <script src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script>
     - <script src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script>
     - <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
     - <script src="https://cdn.jsdelivr.net/npm/meting/dist/Meting.min.js"></script>

@@ -1,43 +1,14 @@
 ﻿home:
-  hero:
-    eyebrow: ""
-    title: ""
-    description: ""
-    primary_text: "浏览文章档案"
-    primary_link: "/archives/"
-    secondary_text: "打开项目页"
-    secondary_link: "/projects/"
-  announcement:
-    title: "公告"
-    description: "精选文章、项目页与归档入口都在这里。"
-  carousel:
-    title: "Pasule Featured Station"
-    items:
-      - title: "微服务架构设计原理与最佳实践"
-        summary: "从单体到微服务的完整演进路线，适合作为首页主打专题。"
-        link_title: "进入文章"
-      - title: "Java并发编程深度解析：从理论到实践"
-        summary: "并发、JMM 与同步工具放在首页首屏，最能体现技术站主线。"
-        link_title: "开始阅读"
-      - title: "MySQL索引优化完全指南：从原理到实战"
-        summary: "数据库性能线的代表文章，适合作为首页精选之一。"
-        link_title: "查看全文"
-      - title: "前端性能优化实战：从加载到渲染全面提速"
-        summary: "让首页内容覆盖后端、数据库与前端三条主线。"
-        link_title: "阅读文章"
-  media_hero:
+  banner:
     enabled: true
-    interval: 5200
-    images:
-      - src: /img/2.jpg
-        title: "Pasule Blog"
-        subtitle: "记录技术文章、项目实验和日常折腾。"
-      - src: https://pic1.imgdb.cn/item/6805d3a258cb8da5c8bb423b.jpg
-        title: "技术、实验与日常"
-        subtitle: "把值得复盘的东西留在这里。"
-      - src: https://bu.dusays.com/2026/04/04/69d11d25cc720.jpg
-        title: "生活与折腾现场"
-        subtitle: "让相册和技术记录在首页都有一点存在感。"
+    image: /img/2.jpg
+    fallback_image: /img/404.jpg
+  layout:
+    style: firefly_three_column
+    tag_limit: 12
+    category_limit: 6
+    show_recent_sidebar: false
+    show_archive_sidebar: compact
   music:
     enabled: true
     provider: netease
@@ -45,55 +16,6 @@
     id: ""
     title: "Pasule Radio"
     subtitle: "网易云歌单源未填写。"
-  topic_atlas:
-    - title: "架构观察室"
-      description: "从边界划分、模块拆分到微服务协作，把抽象概念落到真正能维护的系统结构。"
-      link_text: "查看架构文章"
-      link: "/archives/"
-    - title: "Windows / WSL 工位"
-      description: "把桌面系统、终端工具链和开发环境整理到同一套顺手的协作节奏里。"
-      link_text: "进入协同环境"
-      link: "/tags/WSL/"
-    - title: "Linux 自托管角落"
-      description: "从 Docker 到服务编排，把家庭服务器做成长期可维护的小型基础设施。"
-      link_text: "查看 Linux 主题"
-      link: "/tags/Linux/"
-    - title: "Pasule 改造日志"
-      description: "记录这个 Hexo 博客从普通内容站向更完整的技术作品站升级的过程。"
-      link_text: "打开项目页"
-      link: "/projects/"
-  featured_titles:
-    - "微服务架构设计原理与最佳实践"
-    - "Java并发编程深度解析：从理论到实践"
-    - "MySQL索引优化完全指南：从原理到实战"
-    - "软件架构设计入门：从拆模块到定边界"
-    - "Windows 与 WSL 协同开发环境整理"
-    - "Linux 家庭服务器服务编排实战"
-  series_deck:
-    - key: "backend-growth"
-      title: "Java / 后端成长线"
-      description: "从 Spring 注入、Java 并发到微服务架构。"
-      entry_titles:
-        - "Spring框架依赖注入深度解析：从XML到注解的演进之路"
-        - "Java并发编程深度解析：从理论到实践"
-        - "微服务架构设计原理与最佳实践"
-    - key: "db-performance"
-      title: "数据库性能线"
-      description: "围绕 MySQL 索引、查询分析和性能定位逐步展开。"
-      entry_titles:
-        - "MySQL索引优化完全指南：从原理到实战"
-    - key: "frontend-engineering"
-      title: "前端工程线"
-      description: "从路由理解到性能优化，构建前端工程认知。"
-      entry_titles:
-        - "路由的理解"
-        - "前端性能优化实战：从加载到渲染全面提速"
-    - key: "engineering-collaboration"
-      title: "工程协作线"
-      description: "从 Git 基础延伸到团队协作与评审习惯。"
-      entry_titles:
-        - "Git工作流与团队协作最佳实践"
-
 projects:
   intro:
     title: "Project Deck"
