@@ -1,29 +1,60 @@
-# 关于我 / About Me
-
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
-
-## 🛠️ 关于本站
-
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
-
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
-
-
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
-
-**🏠我的博客： [https://blog.cuteleaf.cn](https://blog.cuteleaf.cn/)**
-
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
-
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
-
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
-
-::github{repo="CuteLeaf/Firefly"}
-
-::github{repo="saicaca/fuwari"}
-
 ---
+title: about
+published: 2025-05-24
+---
+About The Maintainer
 
-*感谢你的来访！希望在这里能找到对你有用的内容！*
 
+    # Pasule
+
+
+    这里是我的个人博客。我把技术文章、项目实验、归档入口和长期更新记录整理在同一个站点里，希望它既能持续积累，也能保持一点明确的个人气质。
+
+
+  
+
+
+
+  
+    目前坐标
+
+
+    ## 杭州 · 小和山
+
+
+    杭州市西湖区小和山浙江科技大学（Zhejiang University of Science and Technology）。
+
+
+  
+
+
+
+  
+    关注方向
+
+
+    
+      - Java / 后端基础与并发
+
+      - MySQL 与数据库性能优化
+
+      - 前端工程、路由与性能体验
+
+      - 博客系统、内容组织和长期维护
+
+    
+
+
+  
+
+
+
+  
+    联系方式
+
+
+    
+      [邮箱：3086874696@qq.com](mailto:3086874696@qq.com)
+      [Github：pasule](https://github.com/pasule)
+      [打开项目页](/projects/)
+      [继续读文章](/archives/)
