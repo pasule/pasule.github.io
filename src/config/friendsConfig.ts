@@ -3,23 +3,27 @@ import type { FriendLink } from '../types/friendsConfig';
 export const friendsConfig: FriendLink[] = [
   {
     title: "Hexo",
-    desc: "",
-    imgurl: "",
-    siteurl: "",
+    desc: "快速、简单且强大的网志框架",
+    imgurl: "https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg",
+    siteurl: "https://hexo.io/zh-cn/",
     tags: [],
     weight: 0,
     enabled: true,
   },
   {
     title: "Fomalhaut🥝",
-    desc: "",
-    imgurl: "",
-    siteurl: "",
+    desc: "Future is now 🍭🍭🍭",
+    imgurl: "/assets/head.jpg",
+    siteurl: "https://fomal.cc/",
     tags: [],
     weight: 0,
     enabled: true,
   }
 ];
+
+export function getEnabledFriends(): FriendLink[] {
+  return friendsConfig.filter(f => f.enabled);
+}
 
 export interface FriendsPageConfig {
   title: string;

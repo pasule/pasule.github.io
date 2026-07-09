@@ -26,8 +26,6 @@ async function cleanFireflySamples() {
   for (const t of targets) {
     await rm(path.join(ROOT, t), { recursive: true, force: true });
   }
-  await rm(path.join(ROOT, 'src/assets/images'), { recursive: true, force: true });
-  await mkdir(path.join(ROOT, 'src/assets/images'), { recursive: true });
 }
 
 async function cleanOutput() {
@@ -62,7 +60,7 @@ async function migratePosts() {
 }
 
 async function migrateSpec() {
-  log('→ 迁移 spec 页（about / guestbook）');
+  log('→ 迁移 spec 页（about / guestbook / friends）');
   // about：HTML → markdown
   if (existsSync(PATHS.hexoAbout)) {
     let raw = await readFile(PATHS.hexoAbout, 'utf8');
@@ -78,6 +76,11 @@ async function migrateSpec() {
   const gb = writeFrontmatter({ title: 'guestbook', published: '2025-05-27' }) + '\n\n留言板。请在下方评论区留言。\n';
   await writeFile(path.join(PATHS.astroSpec, 'guestbook.md'), gb, 'utf8');
   results.spec.push('guestbook.md');
+
+  // friends：空 body，靠 friendsConfig 驱动
+  const fr = writeFrontmatter({ title: 'friends', published: '2025-05-27' }) + '\n\n我的友链。\n';
+  await writeFile(path.join(PATHS.astroSpec, 'friends.mdx'), fr, 'utf8');
+  results.spec.push('friends.mdx');
 }
 
 async function migrateFriends() {
