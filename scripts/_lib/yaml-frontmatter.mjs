@@ -35,6 +35,7 @@ function parseYaml(text) {
         i++;
       }
       fm[key] = arr;
+      continue;
     } else if (rest.startsWith('[') && rest.endsWith(']')) {
       fm[key] = rest.slice(1, -1).split(',').map(s => stripQuotes(s.trim())).filter(Boolean);
     } else {
