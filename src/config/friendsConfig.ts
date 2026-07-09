@@ -1,4 +1,12 @@
-import type { FriendLink } from '../types/friendsConfig';
+import type { FriendLink, FriendsPageConfig } from '../types/friendsConfig';
+
+export const friendsPageConfig: FriendsPageConfig = {
+  title: '友链',
+  description: '一些好朋友~~',
+  showCustomContent: true,
+  showComment: true,
+  randomizeSort: false,
+};
 
 export const friendsConfig: FriendLink[] = [
   {
@@ -6,8 +14,8 @@ export const friendsConfig: FriendLink[] = [
     desc: "快速、简单且强大的网志框架",
     imgurl: "https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg",
     siteurl: "https://hexo.io/zh-cn/",
-    tags: [],
-    weight: 0,
+    tags: ["技术支持"],
+    weight: 10,
     enabled: true,
   },
   {
@@ -15,25 +23,16 @@ export const friendsConfig: FriendLink[] = [
     desc: "Future is now 🍭🍭🍭",
     imgurl: "/assets/head.jpg",
     siteurl: "https://fomal.cc/",
-    tags: [],
-    weight: 0,
+    tags: ["友情链接"],
+    weight: 9,
     enabled: true,
   }
 ];
 
-export function getEnabledFriends(): FriendLink[] {
-  return friendsConfig.filter(f => f.enabled);
-}
-
-export interface FriendsPageConfig {
-  title: string;
-  subTitle: string;
-  remark: string;
-  listExplain: string;
-}
-export const friendsPageConfig: FriendsPageConfig = {
-  title: '友链',
-  subTitle: 'Friends',
-  remark: '如果在浏览时发现了问题，欢迎联系我。',
-  listExplain: '',
+export const getEnabledFriends = (): FriendLink[] => {
+  const friends = friendsConfig.filter(f => f.enabled);
+  if (friendsPageConfig.randomizeSort) {
+    return friends.sort(() => Math.random() - 0.5);
+  }
+  return friends.sort((a, b) => (b.weight || 0) - (a.weight || 0));
 };

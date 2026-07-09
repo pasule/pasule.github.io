@@ -90,25 +90,24 @@ async function migrateFriends() {
   const friendsArrayTs = friendsYamlToTs(yaml);
   results.friends = friendsArrayTs.split('title:').length - 1;
 
-  const ts = `import type { FriendLink } from '../types/friendsConfig';
+  const ts = `import type { FriendLink, FriendsPageConfig } from '../types/friendsConfig';
+
+export const friendsPageConfig: FriendsPageConfig = {
+  title: '友链',
+  description: '一些好朋友~~',
+  showCustomContent: true,
+  showComment: true,
+  randomizeSort: false,
+};
 
 export const friendsConfig: FriendLink[] = ${friendsArrayTs};
 
-export function getEnabledFriends(): FriendLink[] {
-  return friendsConfig.filter(f => f.enabled);
-}
-
-export interface FriendsPageConfig {
-  title: string;
-  subTitle: string;
-  remark: string;
-  listExplain: string;
-}
-export const friendsPageConfig: FriendsPageConfig = {
-  title: '友链',
-  subTitle: 'Friends',
-  remark: '如果在浏览时发现了问题，欢迎联系我。',
-  listExplain: '',
+export const getEnabledFriends = (): FriendLink[] => {
+  const friends = friendsConfig.filter(f => f.enabled);
+  if (friendsPageConfig.randomizeSort) {
+    return friends.sort(() => Math.random() - 0.5);
+  }
+  return friends.sort((a, b) => (b.weight || 0) - (a.weight || 0));
 };
 `;
   await writeFile(path.join(PATHS.astroConfig, 'friendsConfig.ts'), ts, 'utf8');
