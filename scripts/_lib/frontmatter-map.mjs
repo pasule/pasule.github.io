@@ -25,7 +25,7 @@ export function mapFrontmatter(hexoFm, slug) {
   }
 
   if (hexoFm.sticky) fb.pinned = true;
-  if (hexoFm.published === false) fb.draft = true;
+  if (hexoFm.published === false || hexoFm.published === 'false') fb.draft = true;
 
   for (const drop of DROPPED_FIELDS) {
     if (drop in fb) delete fb[drop];

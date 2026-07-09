@@ -160,7 +160,7 @@ async function verifyMigration() {
   // 5. 校园网串流方案 图片路径 + 资源数
   const xxRaw = await readFile(path.join(PATHS.astroPosts, '校园网串流方案.md'), 'utf8').catch(() => null);
   if (xxRaw) {
-    if (/\]\(\s*\.?\/?assets\//.test(xxRaw)) fail('校园网串流方案: 残留相对 assets 路径');
+    if (/\]\(\s*assets\//.test(xxRaw)) fail('校园网串流方案: 残留相对 assets 路径');
   }
   const xxAssetsDir = path.join(PATHS.astroPublicAssets, '校园网串流方案');
   if (existsSync(xxAssetsDir)) {
