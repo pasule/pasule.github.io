@@ -91,6 +91,10 @@ async function migrateFriends() {
 
 export const friendsConfig: FriendLink[] = ${friendsArrayTs};
 
+export function getEnabledFriends(): FriendLink[] {
+  return friendsConfig.filter(f => f.enabled);
+}
+
 export interface FriendsPageConfig {
   title: string;
   subTitle: string;
