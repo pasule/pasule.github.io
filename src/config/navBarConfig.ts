@@ -55,6 +55,12 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				external: true,
 				icon: "fa7-brands:steam",
 			},
+			{
+				name: "Linux.do",
+				url: "https://linux.do/u/pasule/summary",
+				external: true,
+				icon: "fa7-brands:linux",
+			},
 		],
 	});
 

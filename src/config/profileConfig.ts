@@ -24,6 +24,12 @@ export const profileConfig: ProfileConfig = {
 			showName: false,
 		},
 		{
+			name: "Linux.do",
+			icon: "fa7-brands:linux",
+			url: "https://linux.do/u/pasule/summary",
+			showName: false,
+		},
+		{
 			name: "Email",
 			icon: "fa7-solid:envelope",
 			url: "mailto:3086874696@qq.com",
