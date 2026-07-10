@@ -47,7 +47,8 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			"https://tu.pasule.com/file/wallpaper/1783562056705_【哲风壁纸】出水芙蓉-插画.png",
 			"https://tu.pasule.com/file/wallpaper/1783561571511_【哲风壁纸】女孩-鲸鱼.png",
 			"https://tu.pasule.com/file/wallpaper/1783561479054_【哲风壁纸】佩剑-侠客-剪影.png",
-			"https://tu.pasule.com/file/wallpaper/1783516769792_【哲风壁纸】初音未来-虚拟歌姬__1_.png",
+			"https://tu.pasule.com/file/wallpaper/1783668484482_【哲风壁纸】8k-二次元.png",
+			"https://tu.pasule.com/file/wallpaper/1783668726255_【哲风壁纸】动漫壁纸-动漫天空.png",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
