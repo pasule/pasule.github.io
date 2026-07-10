@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "pasule的个人博客网站喵~",
 
 	// 站点 URL
-	site_url: "https://pasule.github.io",
+	site_url: "https://pasule.com",
 
 	// 站点描述
 	description:
