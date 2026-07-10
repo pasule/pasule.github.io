@@ -1,0 +1,66 @@
+name: 友链申请
+description: 申请添加友链
+title: "[友链申请] "
+labels: ["friend-link"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢申请友链！请填写以下信息，提交后我会尽快处理。
+
+        **回链要求**：请先在你的博客友链页添加本站链接，否则不予收录。
+  - type: input
+    id: site-name
+    attributes:
+      label: 站点名称
+      description: 你的博客名称
+      placeholder: "例：小明的博客"
+    validations:
+      required: true
+  - type: input
+    id: site-url
+    attributes:
+      label: 站点地址
+      description: 博客首页 URL
+      placeholder: "https://example.com"
+    validations:
+      required: true
+  - type: input
+    id: site-desc
+    attributes:
+      label: 站点描述
+      description: 一句话介绍
+      placeholder: "例：记录技术与生活"
+    validations:
+      required: true
+  - type: input
+    id: avatar-url
+    attributes:
+      label: 头像地址
+      description: 头像图片 URL
+      placeholder: "https://example.com/avatar.jpg"
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: 标签
+      description: 用逗号分隔
+      placeholder: "技术, 前端"
+    validations:
+      required: false
+  - type: input
+    id: back-link
+    attributes:
+      label: 回链地址
+      description: 你已添加本站链接的友链页地址
+      placeholder: "https://example.com/friends/"
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充说明
+      description: 其他需要说明的内容
+    validations:
+      required: false

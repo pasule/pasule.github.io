@@ -40,6 +40,9 @@ const allTags = [...new Set(items.flatMap((item) => item.tags || []))].sort();
 const title = friendsPageConfig.title || i18n(I18nKey.friends);
 const description =
 	friendsPageConfig.description || i18n(I18nKey.friendsDescription);
+
+// 自助申请友链地址（GitHub Issue 模板）
+const friendApplyUrl = "https://github.com/pasule/pasule.github.io/issues/new?template=friend-request.yml";
 ---
 
 <MainGridLayout title={title} description={description}>
@@ -48,24 +51,40 @@ const description =
   >
     <div class="card-base z-10 px-9 py-6 relative w-full">
       <!-- 页面标题和描述 -->
-      <div class="mb-4">
-        <div class="flex items-center gap-3 mb-3">
-          <div
-            class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70"
-          >
-            <Icon is:inline name="material-symbols:group" class="text-[1.5rem]" />
+      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-4">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div
+              class="h-8 w-8 rounded-lg bg-(--primary) flex items-center justify-center text-white dark:text-black/70"
+            >
+              <Icon is:inline name="material-symbols:group" class="text-[1.5rem]" />
+            </div>
+            <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
+              {title}
+            </div>
           </div>
-          <div class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-            {title}
-          </div>
-        </div>
-        {
-          description && (
-            <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
+          {description && (
+            <p class="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
               {description}
             </p>
-          )
-        }
+          )}
+        </div>
+
+        {/* 自助申请友链按钮 */}
+        <div class="flex shrink-0 flex-col items-start gap-2 md:items-end">
+          <a
+            href={friendApplyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-lg bg-(--primary) px-4 py-2.5 text-sm font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Icon is:inline name="material-symbols:add-link-rounded" class="text-lg" />
+            <span>自助申请友链</span>
+          </a>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400 md:text-right">
+            通过 GitHub Issue 提交，系统会自动校验回链并同步收录
+          </p>
+        </div>
       </div>
 
       <!-- 搜索框 -->
