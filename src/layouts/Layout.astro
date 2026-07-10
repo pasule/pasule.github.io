@@ -141,6 +141,16 @@ const siteLang = lang.replace("_", "-");
       content={description || siteConfig.description || pageTitle}
     />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta property="og:image:alt" content={pageTitle} />}
+    {ogImageUrl && <meta property="og:image:width" content="1200" />}
+    {ogImageUrl && <meta property="og:image:height" content="630" />}
+    {ogImageUrl && <meta itemprop="image" content={ogImageUrl} />}
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+    <!-- QQ 友好 meta -->
+    {ogImageUrl && <meta itemprop="name" content={pageTitle} />}
+    <meta itemprop="description" content={description || siteConfig.description || pageTitle} />
+    <meta name="qq" content="3086874696@qq.com" />
+    <meta name="application-name" content={siteConfig.title} />
     {
       setOGTypeArticle ? (
         <meta property="og:type" content="article" />
