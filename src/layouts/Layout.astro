@@ -75,7 +75,8 @@ if (siteConfig.post.generateOgImages && postSlug) {
 	ogImageUrl = new URL(`/og/${postSlug}.png`, Astro.site).toString();
 } else {
 	// 非文章页（首页/归档等）用默认 OG 图
-	ogImageUrl = "https://tu.pasule.com/file/wallpaper/1783693906347_【哲风壁纸】书架-书桌文具.png";
+	// encodeURI: 对 URL 中的中文进行百分号编码，避免部分爬虫/客户端解析失败导致 QQ 分享卡片缩略图不显示
+	ogImageUrl = encodeURI("https://tu.pasule.com/file/wallpaper/1783693906347_【哲风壁纸】书架-书桌文具.png");
 }
 
 const favicons: Favicon[] =
