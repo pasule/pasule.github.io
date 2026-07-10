@@ -26,6 +26,24 @@ export const friendsConfig: FriendLink[] = [
     tags: ["友情链接"],
     weight: 9,
     enabled: true,
+  },
+  {
+    title: "Firefly Docs",
+    desc: "Firefly 主题模板文档",
+    imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
+    siteurl: "https://docs-firefly.cuteleaf.cn",
+    tags: ["文档"],
+    weight: 8,
+    enabled: true,
+  },
+  {
+    title: "Astro",
+    desc: "The web framework for content-driven websites.",
+    imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
+    siteurl: "https://astro.build",
+    tags: ["框架"],
+    weight: 7,
+    enabled: true,
   }
 ];
 
