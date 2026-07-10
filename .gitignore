@@ -33,7 +33,11 @@ yarn.lock
 
 # docs
 Firefly-docs/
+docs/
 
 cache/
 package/
 .obsidian/
+
+#部署脚本
+push.ps1
