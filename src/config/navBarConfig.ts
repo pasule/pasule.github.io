@@ -59,7 +59,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 				name: "Linux.do",
 				url: "https://linux.do/u/pasule/summary",
 				external: true,
-				icon: "icons/linuxdo",
+				icon: "custom/linuxdo",
 			},
 		],
 	});

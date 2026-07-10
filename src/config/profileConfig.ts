@@ -25,7 +25,7 @@ export const profileConfig: ProfileConfig = {
 		},
 		{
 			name: "Linux.do",
-			icon: "icons/linuxdo",
+			icon: "custom/linuxdo",
 			url: "https://linux.do/u/pasule/summary",
 			showName: false,
 		},
