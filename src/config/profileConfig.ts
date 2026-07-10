@@ -3,7 +3,7 @@ import type { ProfileConfig } from "../types/profileConfig";
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar.jpg",
 	name: "Pasule",
-	bio: "记录技术文章、项目实验和日常折腾。",
+	bio: "Keep the Wonder. Keep the Fire",
 	links: [
 		{
 			name: "GitHub",

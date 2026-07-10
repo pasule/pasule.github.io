@@ -73,6 +73,9 @@ if (title) {
 let ogImageUrl: string | undefined;
 if (siteConfig.post.generateOgImages && postSlug) {
 	ogImageUrl = new URL(`/og/${postSlug}.png`, Astro.site).toString();
+} else {
+	// 非文章页（首页/归档等）用默认 OG 图
+	ogImageUrl = "https://tu.pasule.com/file/wallpaper/1783693906347_【哲风壁纸】书架-书桌文具.png";
 }
 
 const favicons: Favicon[] =
