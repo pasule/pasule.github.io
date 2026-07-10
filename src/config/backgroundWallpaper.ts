@@ -43,22 +43,20 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-			"assets/images/DesktopWallpaper/d1.avif",
-			"assets/images/DesktopWallpaper/d2.avif",
-			"assets/images/DesktopWallpaper/d3.avif",
-			"assets/images/DesktopWallpaper/d4.avif",
-			"assets/images/DesktopWallpaper/d5.avif",
-			"assets/images/DesktopWallpaper/d6.avif",
+			"https://tu.pasule.com/file/wallpaper/1783562665486_【哲风壁纸】云-动漫天空-反射.png",
+			"https://tu.pasule.com/file/wallpaper/1783562056705_【哲风壁纸】出水芙蓉-插画.png",
+			"https://tu.pasule.com/file/wallpaper/1783561571511_【哲风壁纸】女孩-鲸鱼.png",
+			"https://tu.pasule.com/file/wallpaper/1783561479054_【哲风壁纸】佩剑-侠客-剪影.png",
+			"https://tu.pasule.com/file/wallpaper/1783516769792_【哲风壁纸】初音未来-虚拟歌姬__1_.png",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
-			"assets/images/MobileWallpaper/m1.avif",
-			"assets/images/MobileWallpaper/m2.avif",
-			"assets/images/MobileWallpaper/m3.avif",
-			"assets/images/MobileWallpaper/m4.avif",
-			"assets/images/MobileWallpaper/m5.avif",
-			"assets/images/MobileWallpaper/m6.avif",
+			"https://tu.pasule.com/file/wallpaper/1783562665486_【哲风壁纸】云-动漫天空-反射.png",
+			"https://tu.pasule.com/file/wallpaper/1783562056705_【哲风壁纸】出水芙蓉-插画.png",
+			"https://tu.pasule.com/file/wallpaper/1783561571511_【哲风壁纸】女孩-鲸鱼.png",
+			"https://tu.pasule.com/file/wallpaper/1783561479054_【哲风壁纸】佩剑-侠客-剪影.png",
+			"https://tu.pasule.com/file/wallpaper/1783516769792_【哲风壁纸】初音未来-虚拟歌姬__1_.png",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组）
