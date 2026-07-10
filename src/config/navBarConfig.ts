@@ -31,6 +31,33 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 关于
 	links.push(LinkPresets.About);
 
+	// 链接及其子菜单
+	links.push({
+		name: "链接",
+		url: "#",
+		icon: "material-symbols:link",
+		children: [
+			{
+				name: "GitHub",
+				url: "https://github.com/pasule", // GitHub 地址
+				external: true,
+				icon: "fa7-brands:github",
+			},
+			{
+				name: "B站",
+				url: "https://space.bilibili.com/624807530?spm_id_from=333.1387.0.0", //  B站主页地址
+				external: true,
+				icon: "fa7-brands:bilibili",
+			},
+			{
+				name: "Steam",
+				url: "https://steamcommunity.com/profiles/76561199523953843/", // Steam 主页地址
+				external: true,
+				icon: "fa7-brands:steam",
+			},
+		],
+	});
+
 	return { links } as NavBarConfig;
 };
 
