@@ -2,7 +2,7 @@ import type { FriendLink, FriendsPageConfig } from '../types/friendsConfig';
 
 export const friendsPageConfig: FriendsPageConfig = {
   title: '友链',
-  description: '一些好朋友~~',
+  description: '这里是我的朋友们，欢迎互相访问交流',
   showCustomContent: true,
   showComment: true,
   randomizeSort: false,
