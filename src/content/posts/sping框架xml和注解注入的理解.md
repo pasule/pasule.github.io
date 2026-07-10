@@ -5,7 +5,7 @@ lang: zh-CN
 comment: true
 updated: 2025-12-01
 description: 深入理解Spring框架的核心概念——依赖注入，探索从XML配置到注解配置的演进历程，掌握现代Spring开发的最佳实践。
-image: "https://cdn.jsdelivr.net/gh/spring-projects/spring-framework@main/src/docs/asciidoc/images/spring-overview.png"
+image: "https://tu.pasule.com/file/wallpaper/1783516769792_【哲风壁纸】初音未来-虚拟歌姬__1_.png"
 category: Java技术栈
 tags:
   - Spring

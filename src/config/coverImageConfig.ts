@@ -29,7 +29,7 @@ export const coverImageConfig: CoverImageConfig = {
 			"https://uapis.cn/api/v1/random/image?category=acg&type=pc",
 		],
 		// API失败时的回退图片路径（相对于src目录或以/开头的public目录路径）
-		fallback: "assets/images/cover.avif",
+		fallback: "https://tu.pasule.com/file/wallpaper/1783561571511_【哲风壁纸】女孩-鲸鱼.png",
 		// 是否显示加载动画
 		showLoading: false,
 	},
