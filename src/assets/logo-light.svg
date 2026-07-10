@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="45%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="wingGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#be185d"/>
+      <stop offset="50%" stop-color="#c2410c"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffbeb"/>
+      <stop offset="40%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="veinGrad" x1="50%" y1="50%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fef3c7" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="#fdf2f8"/>
+
+  <circle cx="256" cy="256" r="80" fill="url(#coreGlow)"/>
+
+  <g transform="translate(256 256)">
+    <path d="M0 0 C -60 -40, -180 -60, -210 -10 C -200 40, -120 50, -40 30 C -20 20, -8 10, 0 0 Z"
+          fill="url(#wingGradDark)" opacity="0.85"/>
+    <path d="M0 0 C -50 -30, -150 -45, -175 -5 C -168 30, -100 38, -35 22 Z"
+          fill="url(#wingGrad)" opacity="0.9"/>
+    <path d="M0 0 Q -80 -20 -160 -8" stroke="url(#veinGrad)" stroke-width="3" fill="none"/>
+    <path d="M0 0 Q -70 5 -140 20" stroke="url(#veinGrad)" stroke-width="2.5" fill="none"/>
+
+    <path d="M0 0 C 60 -40, 180 -60, 210 -10 C 200 40, 120 50, 40 30 C 20 20, 8 10, 0 0 Z"
+          fill="url(#wingGradDark)" opacity="0.85"/>
+    <path d="M0 0 C 50 -30, 150 -45, 175 -5 C 168 30, 100 38, 35 22 Z"
+          fill="url(#wingGrad)" opacity="0.9"/>
+    <path d="M0 0 Q 80 -20 160 -8" stroke="url(#veinGrad)" stroke-width="3" fill="none"/>
+    <path d="M0 0 Q 70 5 140 20" stroke="url(#veinGrad)" stroke-width="2.5" fill="none"/>
+
+    <path d="M0 -10 C -40 -60, -120 -90, -150 -60 C -150 -20, -90 -10, -25 -25 Z"
+          fill="url(#wingGrad)" opacity="0.95"/>
+    <path d="M0 -10 C 40 -60, 120 -90, 150 -60 C 150 -20, 90 -10, 25 -25 Z"
+          fill="url(#wingGrad)" opacity="0.95"/>
+
+    <path d="M0 10 C -35 50, -100 80, -120 110 C -90 120, -40 100, -10 50 Z"
+          fill="url(#wingGradDark)" opacity="0.9"/>
+    <path d="M0 10 C 35 50, 100 80, 120 110 C 90 120, 40 100, 10 50 Z"
+          fill="url(#wingGradDark)" opacity="0.9"/>
+
+    <ellipse cx="0" cy="0" rx="14" ry="48" fill="#3f1d2a"/>
+    <circle cx="0" cy="-52" r="12" fill="#3f1d2a"/>
+    <path d="M -4 -60 Q -20 -78 -30 -86" stroke="#3f1d2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 4 -60 Q 20 -78 30 -86" stroke="#3f1d2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="-30" cy="-86" r="3.5" fill="#fbbf24"/>
+    <circle cx="30" cy="-86" r="3.5" fill="#fbbf24"/>
+
+    <circle cx="0" cy="0" r="10" fill="#fef3c7"/>
+    <circle cx="0" cy="0" r="6" fill="#fbbf24"/>
+  </g>
+</svg>
