@@ -1,13 +1,13 @@
 ---
 title: CloudFlare-ImgBed 网页上传 JPG/PNG 自动转 WebP 并保存到 Telegram 教程
-date: 2026-07-18
-update: 2026-07-18
-tag: 网络
+published: 2026-07-18
+updated: 2026-07-18
 description: 方便直接从图床拿webp的方法
 category: 计算机网络
 tags:
   - 网络
   - DevOps
+lang: zh-CN
 comment: true
 ---
 本文说明如何在 CloudFlare-ImgBed 中实现以下流程：用户通过网页选择 JPG、JPEG 或 PNG 图片后，浏览器先把图片转换成 WebP，再将 WebP 上传到 Cloudflare Worker，最后由 Telegram Bot 以原文件形式保存到 Telegram Channel。
