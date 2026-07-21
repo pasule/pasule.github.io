@@ -24,7 +24,16 @@ export const friendsConfig: FriendLink[] = [
     desc: "坐而言不如起而行.",
     siteurl: "https://fqzlr.com/",
     tags: ["Blog"],
-    weight: 9,
+    weight: 12,
+    enabled:true,
+ },
+ {
+    title: "Amiya的书桌",
+    imgurl: "https://blog.sayori.org/assets/profile/avatar-sayori.jpg",
+    desc: "Amiya_desi的博客站，会记录一个真实的想要分享的人，欢迎!",
+    siteurl: "https://blog.sayori.org/",
+    tags: ["Blog"],
+    weight: 11,
     enabled:true,
  },
   // {
