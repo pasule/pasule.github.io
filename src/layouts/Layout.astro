@@ -88,6 +88,36 @@ if (!lang) {
 }
 const siteLang = lang.replace("_", "-");
 
+const siteOrigin = Astro.site?.origin ?? siteConfig.site_url.replace(/\/$/, "");
+const canonicalURL = new URL(Astro.url.pathname, `${siteOrigin}/`).href;
+const entitySameAs = profileConfig.links
+	.map((link) => link.url)
+	.filter(
+		(linkUrl) =>
+			linkUrl.startsWith("http://") || linkUrl.startsWith("https://"),
+	);
+const personJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: profileConfig.name,
+	url: siteConfig.site_url,
+	description: profileConfig.bio || siteConfig.description,
+	sameAs: entitySameAs.length > 0 ? entitySameAs : undefined,
+};
+const websiteJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: siteConfig.title,
+	url: siteConfig.site_url,
+	description: siteConfig.description,
+	inLanguage: siteLang,
+	author: {
+		"@type": "Person",
+		name: profileConfig.name,
+		url: siteConfig.site_url,
+	},
+};
+
 // 使用固定的banner偏移量，position配置用于图片定位
 ---
 
@@ -133,9 +163,20 @@ const siteLang = lang.replace("_", "-");
       )
     }
     <meta name="author" content={profileConfig.name} />
+    <link rel="canonical" href={canonicalURL} />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personJsonLd)}
+    />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(websiteJsonLd)}
+    />
 
     <meta property="og:site_name" content={siteConfig.title} />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta
       property="og:description"
@@ -161,7 +202,7 @@ const siteLang = lang.replace("_", "-");
     }
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={pageTitle} />
     <meta
       name="twitter:description"
@@ -578,6 +619,7 @@ const siteLang = lang.replace("_", "-");
       },
     ]}
   >
+    <a href="#swup-container" class="skip-link">跳到主要内容</a>
 
     <div id="progress-bar"></div>
 
@@ -648,6 +690,25 @@ const siteLang = lang.replace("_", "-");
   }
 
   @layer utilities {
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 10000;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background: var(--primary, #e11d48);
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
     .enable-banner #sidebar-sticky {
       top: calc(1rem - var(--banner-height-extend)) !important;
     }

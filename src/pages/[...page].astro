@@ -16,9 +16,11 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 
 const len = page.data.length;
+const pageTitle =
+	page.currentPage > 1 ? `第 ${page.currentPage} 页` : undefined;
 ---
 
-<MainGridLayout>
+<MainGridLayout title={pageTitle}>
   <PostPage page={page} />
   {
     page.total > page.size && (

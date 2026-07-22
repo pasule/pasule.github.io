@@ -134,6 +134,11 @@ const homeTextEnable = backgroundWallpaper.common?.homeText?.enable;
 const showHomeText =
 	(isBannerMode || isFullscreenMode) && !!homeTextEnable && isHomePageCheck;
 
+const pageHeading = title?.trim() || siteConfig.title;
+const hasVisibleHomeH1 =
+	showHomeText && !!backgroundWallpaper.common?.homeText?.title;
+
+
 const showBannerPostMeta =
 	(isBannerMode || isFullscreenMode) &&
 	isBackgroundEnabled &&
@@ -622,9 +627,9 @@ const hasMultipleImages =
             <div class="w-4/5 lg:w-3/4 text-center mb-0">
                 <div class="flex flex-col">
                     {backgroundWallpaper.common?.homeText?.title && (
-                        <div class="banner-title font-bold text-white mb-2 lg:mb-4 leading-tight" style={{ '--banner-title-size': backgroundWallpaper.common.homeText.titleSize || "3rem" }}>
+                        <h1 class="banner-title font-bold text-white mb-2 lg:mb-4 leading-tight" style={{ '--banner-title-size': backgroundWallpaper.common.homeText.titleSize || "3rem" }}>
                             {backgroundWallpaper.common.homeText.title}
-                        </div>
+                        </h1>
                     )}
                     {backgroundWallpaper.common?.homeText?.subtitle && (
                         <div id="banner-subtitle" class="banner-subtitle text-white/90 leading-snug" style={{ fontSize: backgroundWallpaper.common.homeText.subtitleSize || "1.5rem" }} data-subtitles={JSON.stringify(backgroundWallpaper.common.homeText.subtitle)}>
@@ -859,7 +864,7 @@ const hasMultipleImages =
                 {/* 携带网格布局类名，用于JS更新父容器 */}
                 <div id="grid-class-carrier" data-grid-class={gridCols} class="hidden"></div>
                 {/* 为每个页面提供一个隐藏的h1标题，用于SEO和可访问性 */}
-                <h1 class="sr-only">{title}</h1>
+                {!hasVisibleHomeH1 && <h1 class="sr-only">{pageHeading}</h1>}
                 <div id="content-wrapper" class="onload-animation transition-leaving">
                     <slot></slot>
                 </div>
