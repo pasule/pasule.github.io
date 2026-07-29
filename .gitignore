@@ -41,3 +41,5 @@ package/
 
 #部署脚本
 push.ps1
+
+.firecrawl/
