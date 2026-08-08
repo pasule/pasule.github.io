@@ -17,13 +17,12 @@ date: 2026-08-07
 
 打开我的cpa一看，日志里密密麻麻的请求，下载完给ai审查一看。
 ![7759c03bcc73c647ee54448c9d19b47d.png](https://tu.pasule.com/file/blog/astro/1786070464594_7759c03bcc73c647ee54448c9d19b47d.png)
-
 **？？？**
 
 因为我这个站点主要是给自己和几个朋友用，所以没有做过多防护，套了一层cf和域名。但有两个大问题
 
->Docker端口暴露在公网上
->密码过弱
+- Docker端口暴露在公网上
+- 密码过弱
 
 我估计是弱密码被攻破，导致我的网站直接被入侵，连auth文件都被一并拿走了，幸好我里面已经没有可用的号了（笑）
 
@@ -366,5 +365,5 @@ CPA_MANAGEMENT_KEY
 > 公网可达，但并未公开开放。未经允许的用户只能到达 Cloudflare Access 登录页面，无法接触 CPA 管理页面和管理 API。
 # 参考文章
 
->[DigitalOcean nginx反代教程](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-reverse-proxy-on-ubuntu-22-04#step-1-installing-nginx)
->[使用cloudflare的zerotrust防止cpa被盗刷](https://linux.do/t/topic/2713667)
+- [DigitalOcean nginx反代教程](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-reverse-proxy-on-ubuntu-22-04#step-1-installing-nginx)
+- [使用cloudflare的zerotrust防止cpa被盗刷](https://linux.do/t/topic/2713667)
