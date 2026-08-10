@@ -3,7 +3,8 @@ import { visit } from "unist-util-visit";
 import { shouldAddNoReferrer } from "../utils/image-utils.ts";
 
 /**
- * 将带有 alt 文本的图片转换为包含 figcaption 的 figure 元素的 rehype 插件
+ * 将带有 alt 文本的图片转换为 figure 元素，并生成 figcaption。
+ * 当 alt 是默认文件名 image.png 时不显示图注。
  *
  * @returns {Function} A transformer function for the rehype plugin
  */
@@ -34,23 +35,20 @@ export default function rehypeFigure() {
 				imgProps.referrerpolicy = "no-referrer";
 			}
 
-			// 获取 alt 属性
-			const alt = imgProps.alt;
+			const alt = typeof imgProps.alt === "string" ? imgProps.alt.trim() : "";
 
-			// 如果没有 alt 属性或 alt 为空字符串，则只更新属性并保持原样
-			if (!alt || alt.trim() === "") {
+			// 没有 alt 时只更新图片属性，保持原有结构
+			if (!alt) {
 				node.properties = imgProps;
 				return;
 			}
 
-			// 创建 figure 元素，包含处理后的 img 和居中的 figcaption
-			const figure = h("figure", [
-				// 使用原始属性的 img 节点
-				h("img", {
-					...imgProps,
-				}),
-				h("figcaption", alt),
-			]);
+			// 保留 figure 居中结构，默认文件名 image.png 不显示为图注
+			const figureChildren = [h("img", { ...imgProps })];
+			if (alt !== "image.png") {
+				figureChildren.push(h("figcaption", alt));
+			}
+			const figure = h("figure", figureChildren);
 
 			// 居中显示
 			const centerFigure = h("center", figure);

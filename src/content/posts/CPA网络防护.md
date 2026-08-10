@@ -267,15 +267,15 @@ Cloudflare Access 是管理域名外面的身份验证层。
 
 填写完成后下拉页面点击保存
 
-![image.png](https://tu.pasule.com/file/blog/astro/1786168599544_image.png)
+![保存策略](https://tu.pasule.com/file/blog/astro/1786168599544_image.png)
 
 然后进入访问控制下面的应用程序，点击添加应用程序
 
-![image.png](https://tu.pasule.com/file/blog/astro/1786168621161_image.png)
+![添加应用程序](https://tu.pasule.com/file/blog/astro/1786168621161_image.png)
 
 选择继续使用自托管和私有
 
-![image.png](https://tu.pasule.com/file/blog/astro/1786168648965_image.png)
+![继续使用自托管和私有](https://tu.pasule.com/file/blog/astro/1786168648965_image.png)
 
 随后填写子域和路径，子域填写为cpa设置的子域名，当然如果你是直接拿根域名解析的cpa，可以不用填写子域，路径必须留空。
 
