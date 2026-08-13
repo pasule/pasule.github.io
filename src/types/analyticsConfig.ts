@@ -4,6 +4,13 @@ export type AnalyticsConfig = {
 	umamiAnalytics?: {
 		websiteId?: string; // Umami Website ID
 		scriptUrl?: string; // Umami JS地址，支持使用自建
+		pageViews?: {
+			enabled?: boolean; // 是否显示首页访问量卡片
+			shareUrl?: string; // Umami 网站的公开 Share URL
+			apiUrl?: string; // Umami API 地址，留空时从 scriptUrl 推断
+			path?: string; // 统计路径，默认为首页 "/"；留空则统计全站
+			cacheMinutes?: number; // 浏览器缓存时间，默认 15 分钟
+		};
 		replaysScriptUrl?: string; // Umami 会话回放脚本地址
 		trackOutboundLinks?: boolean; // 是否追踪出站链接点击事件，默认 true
 		collectWebVitals?: boolean; // 是否自动收集访客浏览器核心网页指标，默认 false

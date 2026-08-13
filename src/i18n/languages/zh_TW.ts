@@ -238,6 +238,7 @@ export const zh_TW: Translation = {
 
 	// 訪問量統計
 	[Key.pageViews]: "瀏覽量",
+	[Key.homePageViews]: "首頁瀏覽量",
 	[Key.pageViewsLoading]: "載入中...",
 	[Key.pageViewsError]: "統計不可用",
 

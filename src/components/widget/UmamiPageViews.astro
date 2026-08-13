@@ -1,0 +1,232 @@
+---
+import { analyticsConfig, siteConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import type { WidgetComponentConfig } from "@/types/config";
+
+interface Props {
+	class?: string;
+	style?: string;
+	widgetConfig?: WidgetComponentConfig;
+}
+
+const { class: className, style } = Astro.props;
+const pageViewsConfig = analyticsConfig.umamiAnalytics?.pageViews;
+const enabled = pageViewsConfig?.enabled ?? false;
+const scriptUrl = analyticsConfig.umamiAnalytics?.scriptUrl;
+const apiUrl = pageViewsConfig?.apiUrl?.trim() || scriptUrl?.trim() || "";
+const apiOrigin = apiUrl ? new URL(apiUrl, siteConfig.site_url).origin : "";
+const shareUrl = pageViewsConfig?.shareUrl?.trim() || "";
+const websiteId = analyticsConfig.umamiAnalytics?.websiteId?.trim() || "";
+const trackedPath = pageViewsConfig?.path ?? "/";
+const startAt = new Date(siteConfig.siteStartDate || "2025-01-01").getTime();
+const cacheMinutes = Math.max(pageViewsConfig?.cacheMinutes ?? 15, 1);
+const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
+---
+
+
+{
+	enabled && (
+		<umami-page-views
+			class:list={["card-base block px-4 py-6 text-center", className]}
+			style={style}
+			data-api-origin={apiOrigin}
+			data-share-url={shareUrl}
+			data-website-id={websiteId}
+			data-path={trackedPath}
+			data-start-at={String(startAt)}
+			data-cache-minutes={String(cacheMinutes)}
+			data-locale={locale}
+			data-error-label={i18n(I18nKey.pageViewsError)}
+			data-state="loading"
+			aria-live="polite"
+		>
+			<span class="page-views-value block text-4xl leading-none font-bold tracking-tight text-neutral-900 transition-opacity dark:text-neutral-100">
+				—
+			</span>
+			<span class="mt-2 block text-sm font-medium text-neutral-600 dark:text-neutral-400">
+				{i18n(I18nKey.homePageViews)}
+			</span>
+		</umami-page-views>
+	)
+}
+
+<style>
+	umami-page-views[data-state="loading"] .page-views-value {
+		opacity: 0.45;
+	}
+</style>
+
+<script>
+	type UmamiStats = {
+		pageviews?: number | { value?: number };
+	};
+
+	type UmamiShare = {
+		token?: string;
+		websiteId?: string;
+	};
+
+	type CachedPageViews = {
+		value: number;
+		createdAt: number;
+	};
+
+	const pendingRequests = new Map<string, Promise<number>>();
+
+	function readCachedValue(key: string, maxAge: number): number | null {
+		try {
+			const raw = window.localStorage.getItem(key);
+			if (!raw) return null;
+
+			const cached = JSON.parse(raw) as CachedPageViews;
+			if (
+				typeof cached.value === "number" &&
+				Date.now() - cached.createdAt < maxAge
+			) {
+				return cached.value;
+			}
+		} catch {
+			// localStorage may be unavailable in privacy mode; fetching still works.
+		}
+
+		return null;
+	}
+
+	function cacheValue(key: string, value: number) {
+		try {
+			window.localStorage.setItem(
+				key,
+				JSON.stringify({ value, createdAt: Date.now() } satisfies CachedPageViews),
+			);
+		} catch {
+			// A failed cache write should not prevent the statistic from rendering.
+		}
+	}
+
+	async function fetchPageViews(element: HTMLElement): Promise<number> {
+		const {
+			apiOrigin = "",
+			shareUrl = "",
+			websiteId = "",
+			path = "/",
+			startAt = "0",
+		} = element.dataset;
+
+		if (!apiOrigin || !shareUrl || !websiteId) {
+			throw new Error("Umami page-view statistics are not configured.");
+		}
+
+		const sharePath = new URL(shareUrl, apiOrigin).pathname
+			.split("/")
+			.filter(Boolean);
+		const shareIndex = sharePath.indexOf("share");
+		const shareSlug =
+			shareIndex >= 0 ? sharePath[shareIndex + 1] : sharePath[0];
+		if (!shareSlug) {
+			throw new Error("The Umami Share URL is invalid.");
+		}
+
+		const shareResponse = await fetch(
+			`${apiOrigin}/api/share/${encodeURIComponent(shareSlug)}`,
+			{ headers: { Accept: "application/json" } },
+		);
+		if (!shareResponse.ok) {
+			throw new Error(`Unable to load the Umami share token (${shareResponse.status}).`);
+		}
+
+		const share = (await shareResponse.json()) as UmamiShare;
+		if (!share.token || (share.websiteId && share.websiteId !== websiteId)) {
+			throw new Error("The Umami Share URL does not match the configured website.");
+		}
+
+		const params = new URLSearchParams({
+			startAt,
+			endAt: String(Date.now()),
+		});
+		if (path) params.set("path", path);
+
+		const statsResponse = await fetch(
+			`${apiOrigin}/api/websites/${encodeURIComponent(websiteId)}/stats?${params}`,
+			{
+				headers: {
+					Accept: "application/json",
+					"x-umami-share-token": share.token,
+					"x-umami-share-context": "1",
+				},
+			},
+		);
+		if (!statsResponse.ok) {
+			throw new Error(`Unable to load Umami statistics (${statsResponse.status}).`);
+		}
+
+		const stats = (await statsResponse.json()) as UmamiStats;
+		const pageviews =
+			typeof stats.pageviews === "number"
+				? stats.pageviews
+				: stats.pageviews?.value;
+		if (typeof pageviews !== "number" || !Number.isFinite(pageviews)) {
+			throw new Error("Umami returned an invalid page-view count.");
+		}
+
+		return pageviews;
+	}
+
+	class UmamiPageViews extends HTMLElement {
+		connectedCallback() {
+			void this.load();
+		}
+
+		private async load() {
+			const valueElement = this.querySelector<HTMLElement>(".page-views-value");
+			if (!valueElement) return;
+
+			const cacheKey = [
+				"umami-pageviews",
+				this.dataset.apiOrigin,
+				this.dataset.websiteId,
+				this.dataset.path,
+				this.dataset.startAt,
+			].join(":");
+			const maxAge = Number(this.dataset.cacheMinutes || "15") * 60 * 1000;
+			const cached = readCachedValue(cacheKey, maxAge);
+
+			try {
+				const value =
+					cached ??
+					(await (() => {
+						const pending = pendingRequests.get(cacheKey);
+						if (pending) return pending;
+
+						const request = fetchPageViews(this).finally(() => {
+							pendingRequests.delete(cacheKey);
+						});
+						pendingRequests.set(cacheKey, request);
+						return request;
+					})());
+
+				if (cached === null) cacheValue(cacheKey, value);
+
+				valueElement.textContent = new Intl.NumberFormat(
+					this.dataset.locale || "zh-CN",
+					{
+						notation: "compact",
+						maximumFractionDigits: value >= 1000 ? 1 : 0,
+					},
+				).format(value);
+				valueElement.title = new Intl.NumberFormat(
+					this.dataset.locale || "zh-CN",
+				).format(value);
+				this.dataset.state = "ready";
+			} catch (error) {
+				this.dataset.state = "error";
+				this.title = this.dataset.errorLabel || "Statistics unavailable";
+				console.warn(error);
+			}
+		}
+	}
+
+	if (!customElements.get("umami-page-views")) {
+		customElements.define("umami-page-views", UmamiPageViews);
+	}
+</script>

@@ -246,6 +246,7 @@ export const ru: Translation = {
 
 	// Статистика просмотров
 	[Key.pageViews]: "Просмотры",
+	[Key.homePageViews]: "Просмотры главной",
 	[Key.pageViewsLoading]: "Загрузка...",
 	[Key.pageViewsError]: "Статистика недоступна",
 

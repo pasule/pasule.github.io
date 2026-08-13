@@ -10,11 +10,13 @@ import SidebarTOC from "@/components/widget/SidebarTOC.astro";
 import SiteInfo from "@/components/widget/SiteInfo.astro";
 import SiteStats from "@/components/widget/SiteStats.astro";
 import Tags from "@/components/widget/Tags.astro";
+import UmamiPageViews from "@/components/widget/UmamiPageViews.astro";
 import { sidebarLayoutConfig } from "@/config";
 import type {
 	MobileBottomComponentConfig,
 	WidgetComponentConfig,
 } from "@/types/config";
+import { isHomePage } from "@/utils/layout-utils";
 
 interface Props {
 	class?: string;
@@ -47,6 +49,7 @@ const componentMap = {
 	sidebarToc: SidebarTOC,
 	advertisement: Advertisement,
 	stats: SiteStats,
+	umamiPageViews: UmamiPageViews,
 	calendar: Calendar,
 	music: Music,
 	siteInfo: SiteInfo,
@@ -101,6 +104,7 @@ const getAnimationDelay = (index: number): string => {
 
 // 判断当前页面是否为文章页面（服务端渲染时确定）
 const isPostPage = Astro.url.pathname.includes("/posts/");
+const isHome = isHomePage(Astro.url.pathname);
 
 // 判断组件在当前页面首屏是否可见（用于计算布局间距，避免隐藏组件占位）
 const isComponentInitiallyVisible = (
@@ -118,6 +122,9 @@ const isComponentInitiallyVisible = (
 		config.hideOnNonPostPage === true &&
 		!isPostPage
 	) {
+		return false;
+	}
+	if ("showOnlyOnHomePage" in config && config.showOnlyOnHomePage && !isHome) {
 		return false;
 	}
 	return true;
@@ -145,6 +152,12 @@ const getComponentProps = (
 	if ("hideOnNonPostPage" in config && config.hideOnNonPostPage === true) {
 		baseProps.class = `${baseProps.class} widget-hide-on-non-post`;
 		if (!isPostPage) {
+			baseProps.class = `${baseProps.class} hidden`;
+		}
+	}
+	if ("showOnlyOnHomePage" in config && config.showOnlyOnHomePage === true) {
+		baseProps.class = `${baseProps.class} widget-show-only-on-home`;
+		if (!isHome) {
 			baseProps.class = `${baseProps.class} hidden`;
 		}
 	}

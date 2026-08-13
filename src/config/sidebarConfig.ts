@@ -113,6 +113,14 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			showOnPostPage: true,
 		},
 		{
+			// Umami 首页访问量卡片
+			type: "umamiPageViews",
+			enable: true,
+			position: "top",
+			showOnPostPage: false,
+			showOnlyOnHomePage: true,
+		},
+		{
 			// 组件类型：站点信息组件
 			type: "siteInfo",
 			// 是否启用该组件
@@ -278,6 +286,13 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			enable: true,
 			// 是否在文章详情页显示
 			showOnPostPage: true,
+		},
+		{
+			// Umami 首页访问量卡片
+			type: "umamiPageViews",
+			enable: true,
+			showOnPostPage: false,
+			showOnlyOnHomePage: true,
 		},
 		{
 			// 组件类型：站点信息组件

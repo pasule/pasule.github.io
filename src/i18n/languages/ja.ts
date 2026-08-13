@@ -243,6 +243,7 @@ export const ja: Translation = {
 
 	// ページビュー統計
 	[Key.pageViews]: "閲覧数",
+	[Key.homePageViews]: "ホーム閲覧数",
 	[Key.pageViewsLoading]: "読み込み中...",
 	[Key.pageViewsError]: "統計利用不可",
 

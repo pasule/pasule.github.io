@@ -76,7 +76,9 @@ if (siteConfig.post.generateOgImages && postSlug) {
 } else {
 	// 非文章页（首页/归档等）用默认 OG 图
 	// encodeURI: 对 URL 中的中文进行百分号编码，避免部分爬虫/客户端解析失败导致 QQ 分享卡片缩略图不显示
-	ogImageUrl = encodeURI("https://tu.pasule.com/file/wallpaper/1783693906347_【哲风壁纸】书架-书桌文具.png");
+	ogImageUrl = encodeURI(
+		"https://tu.pasule.com/file/wallpaper/1783693906347_【哲风壁纸】书架-书桌文具.png",
+	);
 }
 
 const favicons: Favicon[] =
@@ -1566,6 +1568,8 @@ function disableAnimation() {
   const isCurrentPagePost = () =>
     window.location.pathname.includes("/posts/") || window.location.pathname.includes("/post/");
 
+  const isCurrentPageHome = () => pathsEqual(window.location.pathname, url("/"));
+
   // Grid 列类常量
   const GRID_COL_CLASSES = [
     "grid-cols-1",
@@ -1662,6 +1666,7 @@ function disableAnimation() {
   // 更新侧边栏组件的可见性
   function updateSidebarComponentsVisibility() {
     const isPostPage = isCurrentPagePost();
+	const isHomePage = isCurrentPageHome();
 
     // 处理侧边栏级别的 hideSidebarOnPostPage 配置
     document.querySelectorAll<HTMLElement>("[data-hide-sidebar-on-post]").forEach((wrapper) => {
@@ -1682,6 +1687,11 @@ function disableAnimation() {
     document.querySelectorAll(".widget-hide-on-non-post").forEach((widget) => {
       !isPostPage ? widget.classList.add("hidden") : widget.classList.remove("hidden");
     });
+
+	// 处理仅在首页显示的组件
+	document.querySelectorAll(".widget-show-only-on-home").forEach((widget) => {
+		isHomePage ? widget.classList.remove("hidden") : widget.classList.add("hidden");
+	});
 
     // 组件可见性变化后，立即重算 sticky 间距，避免 swup 切页后残留旧间距
     updateSidebarStickySpacing();

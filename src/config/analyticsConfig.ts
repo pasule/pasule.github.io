@@ -8,9 +8,16 @@ export const analyticsConfig: AnalyticsConfig = {
 	// Umami 统计配置
 	umamiAnalytics: {
 		// Umami Website ID
-		websiteId: "",
+		websiteId: "47094e91-e7bc-4e4e-ab56-899e6b8c3412",
 		// Umami JS地址，支持使用自建
-		scriptUrl: "https://cloud.umami.is/script.js",
+		scriptUrl: "https://umami.pasule.com/random-string.js",
+		// 首页访问量卡片（先在 Umami 网站设置中创建只读 Share URL）
+		pageViews: {
+			enabled: true,
+			shareUrl: "https://umami.pasule.com/share/gWgkEAH0TP19dqmz",
+			path: "/",
+			cacheMinutes: 15,
+		},
 		// Umami 会话回放脚本地址，支持使用自建
 		replaysScriptUrl: "https://cloud.umami.is/recorder.js",
 		// 是否追踪出站链接
