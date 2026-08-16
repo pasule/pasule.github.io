@@ -236,7 +236,7 @@ export const zh_CN: Translation = {
 
 	// 访问量统计
 	[Key.pageViews]: "浏览量",
-	[Key.homePageViews]: "首页浏览量",
+	[Key.homePageViews]: "站点浏览量",
 	[Key.pageViewsLoading]: "加载中...",
 	[Key.pageViewsError]: "统计不可用",
 

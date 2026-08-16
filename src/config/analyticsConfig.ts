@@ -15,7 +15,7 @@ export const analyticsConfig: AnalyticsConfig = {
 		pageViews: {
 			enabled: true,
 			shareUrl: "https://umami.pasule.com/share/gWgkEAH0TP19dqmz",
-			path: "/",
+			path: "",
 			cacheMinutes: 15,
 		},
 		// Umami 会话回放脚本地址，支持使用自建
