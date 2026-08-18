@@ -22,7 +22,7 @@ export const friendsConfig: FriendLink[] = [
     title: "番茄主理人",
     imgurl: "https://q1.qlogo.cn/g?b=qq&nk=20447289&s=640",
     desc: "坐而言不如起而行.",
-    siteurl: "https://fqzlr.com/",
+    siteurl: "https://blog.fqzlr.top/",
     tags: ["Blog"],
     weight: 12,
     enabled:true,
