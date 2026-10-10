@@ -5,7 +5,7 @@ lang: zh-CN
 comment: true
 updated: 2026-04-08
 description: 从目录规划、容器拆分到反向代理，把一台 Linux 家庭服务器整理成长期可维护的服务节点。
-image: "https://bu.dusays.com/2025/12/01/692d395fec4c3.png"
+image: api
 category: 架构设计
 tags:
   - Linux

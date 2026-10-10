@@ -5,7 +5,7 @@ lang: zh-CN
 comment: true
 updated: 2026-04-08
 description: 把 Windows 桌面、WSL 终端、包管理和代码目录协同起来，做一套长期稳定的开发环境。
-image: "https://bu.dusays.com/2025/12/01/692d395fec4c3.png"
+image: api
 category: 开发工具
 tags:
   - Windows
