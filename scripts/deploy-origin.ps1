@@ -27,9 +27,11 @@ $hostKeyPolicy = if ($RequireKnownHost) { "yes" } else { "accept-new" }
 $commonConnectionOptions = @("-i", $identityPath, "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes", "-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=$hostKeyPolicy")
 $sshOptions = @($commonConnectionOptions) + @("-p", $ServerPort)
 $scpOptions = @($commonConnectionOptions) + @("-P", $ServerPort)
-$sshCommand = (Get-Command ssh -CommandType Application).Source
-$scpCommand = (Get-Command scp -CommandType Application).Source
-$tarCommand = (Get-Command tar -CommandType Application).Source
+# PATH may expose the same application through multiple directories (e.g. /usr/bin and /bin).
+# The call operator requires a single executable path, not an array of matches.
+$sshCommand = (Get-Command ssh -CommandType Application | Select-Object -First 1).Source
+$scpCommand = (Get-Command scp -CommandType Application | Select-Object -First 1).Source
+$tarCommand = (Get-Command tar -CommandType Application | Select-Object -First 1).Source
 
 Push-Location $projectRoot
 try {
