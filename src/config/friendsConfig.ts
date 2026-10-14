@@ -36,6 +36,15 @@ export const friendsConfig: FriendLink[] = [
     weight: 11,
     enabled:true,
  },
+ {
+    title: "zuige's blog",
+    imgurl: "https://blog.zuiges.com/img/avatar.jpg",
+    desc: "软件开发 · 玩机折腾 · 技术随手记",
+    siteurl: "https://blog.zuiges.com",
+    tags: ["Blog"],
+    weight: 13,
+    enabled:true,
+ },
   // {
   //   title: "Fomalhaut🥝",
   //   desc: "Future is now 🍭🍭🍭",
