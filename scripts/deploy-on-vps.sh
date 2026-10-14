@@ -17,6 +17,13 @@ fi
 deploy_root=/www/wwwroot/pasule.com
 [[ $(readlink -f "$deploy_root") == "$deploy_root" ]] || { echo 'Unexpected deployment root.' >&2; exit 1; }
 [[ -L "$deploy_root/current" ]] || { echo 'Current release must be a symlink.' >&2; exit 1; }
+while IFS= read -r -d '' directory; do
+	shared_directory="$deploy_root/shared/_astro${directory#dist/_astro}"
+	if [[ -d "$shared_directory" && ! -w "$shared_directory" ]]; then
+		echo "Shared asset directory is not writable: $shared_directory" >&2
+		exit 1
+	fi
+done < <(find dist/_astro -type d -print0)
 exec 9>"$deploy_root/.runner-deploy.lock"
 flock -w 120 9
 previous_release=$(readlink "$deploy_root/current")
@@ -24,7 +31,7 @@ previous_release=$(readlink "$deploy_root/current")
 release=$(mktemp -d "$deploy_root/releases/$(date -u +%Y%m%dT%H%M%SZ)-${source_commit:0:12}.XXXXXX")
 chmod 755 "$release"
 rsync -r --no-perms --no-owner --no-group dist/ "$release/"
-rsync -r --no-perms --no-owner --no-group "$release/_astro/" "$deploy_root/shared/_astro/"
+rsync -r --checksum --no-perms --no-owner --no-group "$release/_astro/" "$deploy_root/shared/_astro/"
 switch_link="$deploy_root/.current-${release##*/}"
 ln -s "$release" "$switch_link"
 mv -Tf "$switch_link" "$deploy_root/current"

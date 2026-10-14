@@ -73,6 +73,8 @@ for directory in "$deploy_root" "$deploy_root/releases" "$deploy_root/shared" "$
 	chgrp "$runner_user" "$directory"
 	chmod g+rws "$directory"
 done
+# Existing root-owned fonts/assets directories also need group write access.
+find "$deploy_root/shared/_astro" -type d -exec chgrp "$runner_user" {} + -exec chmod g+rws {} +
 runuser -u "$runner_user" -- git config --global http.proxy "$https_proxy"
 runuser -u "$runner_user" -- bash -c 'cd /home/pasule-runner && pnpm config set registry https://registry.npmjs.org --global'
 echo "Installed: node $(node --version), pnpm $(pnpm --version)."
