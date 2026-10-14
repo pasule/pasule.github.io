@@ -7,8 +7,13 @@ param(
 	[Parameter(Mandatory = $true)]
 	[string]$IdentityFile,
 
+	[ValidateRange(1, 65535)]
+	[int]$ServerPort = 22,
+
 	[ValidatePattern("^[a-zA-Z_][a-zA-Z0-9_-]*$")]
 	[string]$RemoteUser = "root",
+
+	[switch]$RequireKnownHost,
 
 	[switch]$SkipBuild
 )
@@ -18,7 +23,10 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $identityPath = (Resolve-Path -LiteralPath $IdentityFile).Path
 $distPath = Join-Path $projectRoot "dist"
 $sshTarget = "${RemoteUser}@${ServerHost}"
-$sshOptions = @("-i", $identityPath, "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes", "-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=accept-new")
+$hostKeyPolicy = if ($RequireKnownHost) { "yes" } else { "accept-new" }
+$commonConnectionOptions = @("-i", $identityPath, "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes", "-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=$hostKeyPolicy")
+$sshOptions = @($commonConnectionOptions) + @("-p", $ServerPort)
+$scpOptions = @($commonConnectionOptions) + @("-P", $ServerPort)
 $sshCommand = (Get-Command ssh -CommandType Application).Source
 $scpCommand = (Get-Command scp -CommandType Application).Source
 $tarCommand = (Get-Command tar -CommandType Application).Source
@@ -55,7 +63,7 @@ mktemp -d "$deploy_root/releases/.upload.XXXXXX"
 	if ($LASTEXITCODE -ne 0 -or $uploadDirectory -notmatch "^/www/wwwroot/pasule\.com/releases/\.upload\.[a-zA-Z0-9]+$") {
 		throw "Cannot create the remote upload directory."
 	}
-	& $scpCommand @sshOptions $archivePath "${sshTarget}:${uploadDirectory}/site.tar.gz"
+	& $scpCommand @scpOptions $archivePath "${sshTarget}:${uploadDirectory}/site.tar.gz"
 	if ($LASTEXITCODE -ne 0) { throw "Uploading the site failed." }
 
 	$activateScript = @'

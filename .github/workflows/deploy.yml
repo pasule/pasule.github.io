@@ -1,24 +1,21 @@
-name: Deploy to GitHub Pages
+name: Deploy to VPS
 
 on:
   push:
     branches: [ astro-source ]
   workflow_dispatch:
 
-# Pages 部署需要的权限
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# 确保只有一个部署任务同时运行
 concurrency:
-  group: "pages"
+  group: production-pasule-com
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -41,21 +38,94 @@ jobs:
       - name: Build site
         run: pnpm run build
 
-      - name: Create .nojekyll file
-        run: touch dist/.nojekyll
+      - name: Stamp build with source commit
+        run: printf '{"commit":"%s"}\n' "$GITHUB_SHA" > dist/deployment.json
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: dist  # Astro默认构建输出目录
+          name: site-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 1
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/astro-source'
     needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: https://pasule.com
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Checkout deployment script
+        uses: actions/checkout@v5
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Configure SSH
+        shell: bash
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${VPS_SSH_KEY:?GitHub secret VPS_SSH_KEY is required}"
+          : "${VPS_KNOWN_HOSTS:?GitHub secret VPS_KNOWN_HOSTS is required}"
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" | tr -d '\r' > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
+          ssh-keygen -y -f "$HOME/.ssh/deploy_key" > /dev/null
+
+      - name: Deploy release to VPS
+        shell: pwsh
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:VPS_HOST)) {
+            throw "GitHub secret VPS_HOST is required."
+          }
+          if ([string]::IsNullOrWhiteSpace($env:VPS_USER)) {
+            throw "GitHub secret VPS_USER is required."
+          }
+          $serverPort = if ([string]::IsNullOrWhiteSpace($env:VPS_PORT)) {
+            22
+          } else {
+            [int]$env:VPS_PORT
+          }
+          ./scripts/deploy-origin.ps1 `
+            -ServerHost $env:VPS_HOST `
+            -ServerPort $serverPort `
+            -RemoteUser $env:VPS_USER `
+            -IdentityFile "$HOME/.ssh/deploy_key" `
+            -RequireKnownHost `
+            -SkipBuild
+
+      - name: Verify production serves this commit
+        shell: bash
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          expected="$(printf '{"commit":"%s"}' "$EXPECTED_COMMIT")"
+          actual="$(curl --fail --silent --show-error \
+            --retry 5 --retry-delay 2 \
+            --header 'Cache-Control: no-cache' \
+            "https://pasule.com/deployment.json?commit=$EXPECTED_COMMIT")"
+          if [[ "$actual" != "$expected" ]]; then
+            echo "Production is not serving commit $EXPECTED_COMMIT." >&2
+            echo "Received deployment marker: $actual" >&2
+            exit 1
+          fi
+
+      - name: Remove SSH credentials
+        if: always()
+        shell: bash
+        run: rm -f "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
