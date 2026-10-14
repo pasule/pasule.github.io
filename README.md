@@ -97,6 +97,18 @@ src/
 
 ## 🚢 部署
 
+正式站点 `pasule.com` 使用 VPS 自托管 GitHub Actions runner。推送到 `astro-source` 后，GitHub 自动调度带 `pasule-vps` 标签的 Linux x64 runner，在 VPS 上安装依赖、检查、构建并发布。不从 GitHub 上传/下载 `dist` 构建产物。
+
+```powershell
+.\scripts\push.ps1 "feat: 增加友链"
+```
+
+构建使用 VPS 上的 Mihomo HTTP 代理 `http://172.30.89.1:17897` 和持久化 pnpm 缓存。runner 以 `pasule-runner` 用户运行，没有 sudo 权限。发布脚本将构建产物复制到 `/www/wwwroot/pasule.com/releases/` 下的新目录，原子切换 `current` 软链接，并检查正式域名返回的 commit 标记；验证失败时还原前一个 release。旧 release 保留，不自动删除。
+
+安装与注册脚本分别为 `scripts/setup-vps-runner.sh` 和 `scripts/register-vps-runner.sh`（VPS root 执行）。注册令牌从 GitHub 仓库 Settings → Actions → Runners → New self-hosted runner 获取，在 VPS 终端隐藏输入，不存入仓库。注册后 runner 将以 systemd 服务开机启动。仅信任的 `astro-source` push 可以执行该生产工作流；PR 检查保持在 GitHub 托管机器上。
+
+`pnpm run deploy` 保留为本机构建和 SSH 直传的备用方式。默认 push 脚本不再调用它。
+
 站点为纯静态输出（`dist/`），已配置两种托管方式：
 
 - **Vercel**：读取 `vercel.json`，构建命令 `pnpm build`，输出目录 `dist`

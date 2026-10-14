@@ -42,5 +42,7 @@ package/
 #部署脚本
 push.ps1
 deploy-local.ps1
+!scripts/push.ps1
+!scripts/deploy-local.ps1
 
 .firecrawl/

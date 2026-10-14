@@ -13,119 +13,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  deploy:
+    if: github.ref == 'refs/heads/astro-source'
+    runs-on: [self-hosted, linux, x64, pasule-vps]
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: https://pasule.com
+    env:
+      https_proxy: http://172.30.89.1:17897
+      http_proxy: http://172.30.89.1:17897
+      no_proxy: localhost,pasule.com
+      NODE_OPTIONS: --max-old-space-size=1536
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
         with:
-          version: 9.14.4
-          run_install: false
+          persist-credentials: false
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-          cache: 'pnpm'
+      - name: Check build tools
+        run: |
+          node --version
+          pnpm --version
 
-      - name: Install dependencies
+      - name: Install dependencies (reuse the VPS pnpm store)
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build site
+      - name: Check site
+        run: pnpm check
+
+      - name: Build site on VPS
         run: pnpm run build
 
       - name: Stamp build with source commit
         run: printf '{"commit":"%s"}\n' "$GITHUB_SHA" > dist/deployment.json
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-          if-no-files-found: error
-          retention-days: 1
-
-  deploy:
-    if: github.ref == 'refs/heads/astro-source'
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    environment:
-      name: production
-      url: https://pasule.com
-    steps:
-      - name: Checkout deployment script
-        uses: actions/checkout@v5
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: site-dist
-          path: dist
-
-      - name: Configure SSH
-        shell: bash
-        env:
-          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
-          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
-        run: |
-          set -euo pipefail
-          : "${VPS_SSH_KEY:?GitHub secret VPS_SSH_KEY is required}"
-          : "${VPS_KNOWN_HOSTS:?GitHub secret VPS_KNOWN_HOSTS is required}"
-          install -d -m 700 "$HOME/.ssh"
-          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
-          printf '%s\n' "$VPS_KNOWN_HOSTS" | tr -d '\r' > "$HOME/.ssh/known_hosts"
-          chmod 600 "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
-          ssh-keygen -y -f "$HOME/.ssh/deploy_key" > /dev/null
-
-      - name: Deploy release to VPS
-        shell: pwsh
-        env:
-          VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PORT: ${{ secrets.VPS_PORT }}
-        run: |
-          if ([string]::IsNullOrWhiteSpace($env:VPS_HOST)) {
-            throw "GitHub secret VPS_HOST is required."
-          }
-          if ([string]::IsNullOrWhiteSpace($env:VPS_USER)) {
-            throw "GitHub secret VPS_USER is required."
-          }
-          $serverPort = if ([string]::IsNullOrWhiteSpace($env:VPS_PORT)) {
-            22
-          } else {
-            [int]$env:VPS_PORT
-          }
-          ./scripts/deploy-origin.ps1 `
-            -ServerHost $env:VPS_HOST `
-            -ServerPort $serverPort `
-            -RemoteUser $env:VPS_USER `
-            -IdentityFile "$HOME/.ssh/deploy_key" `
-            -RequireKnownHost `
-            -SkipBuild
-
-      - name: Verify production serves this commit
-        shell: bash
-        env:
-          EXPECTED_COMMIT: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          expected="$(printf '{"commit":"%s"}' "$EXPECTED_COMMIT")"
-          actual="$(curl --fail --silent --show-error \
-            --retry 5 --retry-delay 2 \
-            --header 'Cache-Control: no-cache' \
-            "https://pasule.com/deployment.json?commit=$EXPECTED_COMMIT")"
-          if [[ "$actual" != "$expected" ]]; then
-            echo "Production is not serving commit $EXPECTED_COMMIT." >&2
-            echo "Received deployment marker: $actual" >&2
-            exit 1
-          fi
-
-      - name: Remove SSH credentials
-        if: always()
-        shell: bash
-        run: rm -f "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
+      - name: Publish locally and verify production
+        run: bash scripts/deploy-on-vps.sh "$GITHUB_SHA"
