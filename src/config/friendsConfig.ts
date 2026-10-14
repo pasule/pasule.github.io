@@ -45,6 +45,15 @@ export const friendsConfig: FriendLink[] = [
     weight: 13,
     enabled:true,
  },
+ {
+  title:"拾玖的博客",
+  imgurl: "https://shijiucode.cn/avatar.jpg",
+  desc: "喜欢折腾，尝试创作。",
+  siteurl: "https://shijiucode.cn",
+  tags: ["Blog"],
+  weight: 14,
+  enabled:true,
+ },
   // {
   //   title: "Fomalhaut🥝",
   //   desc: "Future is now 🍭🍭🍭",

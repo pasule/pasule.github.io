@@ -29,6 +29,16 @@ $sshOptions = @($commonConnectionOptions) + @("-p", $ServerPort)
 $scpOptions = @($commonConnectionOptions) + @("-P", $ServerPort)
 # PATH may expose the same application through multiple directories (e.g. /usr/bin and /bin).
 # The call operator requires a single executable path, not an array of matches.
+#
+# On Windows, a PATH inherited from a Git Bash / MSYS terminal also exposes Git's usr\bin,
+# whose tar reads "C:\..." as the "host:path" remote syntax and fails with
+# "Cannot connect to C: resolve failed". Put the native tools first so that ssh, scp and
+# tar all resolve to the Windows implementations. No-op on other platforms.
+if ($env:OS -eq "Windows_NT" -and $env:SystemRoot) {
+	$system32 = Join-Path $env:SystemRoot "System32"
+	$nativeBinDirectories = @($system32, (Join-Path $system32 "OpenSSH")) | Where-Object { Test-Path -LiteralPath $_ -PathType Container }
+	$env:PATH = (@($nativeBinDirectories) + @($env:PATH)) -join ";"
+}
 $sshCommand = (Get-Command ssh -CommandType Application | Select-Object -First 1).Source
 $scpCommand = (Get-Command scp -CommandType Application | Select-Object -First 1).Source
 $tarCommand = (Get-Command tar -CommandType Application | Select-Object -First 1).Source
@@ -62,8 +72,18 @@ mkdir -p "$deploy_root/releases" "$deploy_root/shared/_astro"
 mktemp -d "$deploy_root/releases/.upload.XXXXXX"
 '@
 	$uploadDirectory = (& $sshCommand @sshOptions $sshTarget $prepareScript | Out-String).Trim()
-	if ($LASTEXITCODE -ne 0 -or $uploadDirectory -notmatch "^/www/wwwroot/pasule\.com/releases/\.upload\.[a-zA-Z0-9]+$") {
-		throw "Cannot create the remote upload directory."
+	$prepareExitCode = $LASTEXITCODE
+	if ($prepareExitCode -ne 0) {
+		if ($uploadDirectory) {
+			Write-Host "Remote preparation output:"
+			Write-Host $uploadDirectory
+		}
+		throw "Remote preparation failed (SSH exit code $prepareExitCode). Check the SSH/server error above."
+	}
+	if ($uploadDirectory -notmatch "^/www/wwwroot/pasule\.com/releases/\.upload\.[a-zA-Z0-9]+$") {
+		Write-Host "Unexpected remote preparation output:"
+		Write-Host $uploadDirectory
+		throw "SSH succeeded, but did not return a valid upload directory. Upload was not attempted."
 	}
 	& $scpCommand @scpOptions $archivePath "${sshTarget}:${uploadDirectory}/site.tar.gz"
 	if ($LASTEXITCODE -ne 0) { throw "Uploading the site failed." }
