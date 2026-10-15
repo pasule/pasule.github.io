@@ -38,6 +38,17 @@ jobs:
         run: |
           node --version
           pnpm --version
+          python3 --version
+
+      - name: Check EdgeOne credential configuration
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+          EDGEONE_ZONE_ID: ${{ secrets.EDGEONE_ZONE_ID }}
+        run: python3 scripts/edgeone-purge.py --check
+
+      - name: Test EdgeOne refresh handling
+        run: python3 -m unittest discover -s scripts -p 'edgeone_purge_test.py'
 
       - name: Install dependencies (reuse the VPS pnpm store)
         run: pnpm install --no-frozen-lockfile
@@ -51,5 +62,42 @@ jobs:
       - name: Stamp build with source commit
         run: printf '{"commit":"%s"}\n' "$GITHUB_SHA" > dist/deployment.json
 
-      - name: Publish locally and verify production
+      - name: Publish locally and verify origin
         run: bash scripts/deploy-on-vps.sh "$GITHUB_SHA"
+
+      - name: Refresh EdgeOne cache and wait for completion
+        timeout-minutes: 7
+        env:
+          TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENTCLOUD_SECRET_ID }}
+          TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENTCLOUD_SECRET_KEY }}
+          EDGEONE_ZONE_ID: ${{ secrets.EDGEONE_ZONE_ID }}
+        run: python3 scripts/edgeone-purge.py
+
+      - name: Verify refreshed public site
+        run: |
+          set -euo pipefail
+          expected="$(printf '{"commit":"%s"}' "$GITHUB_SHA")"
+          for attempt in $(seq 1 12); do
+            actual="$(curl --fail --silent --show-error --noproxy '*' \
+              --connect-timeout 5 --max-time 15 https://pasule.com/deployment.json)" || actual=''
+            if [[ "$actual" == "$expected" ]]; then
+              matched=true
+              for page in index.html friends/index.html; do
+                target="https://pasule.com/${page%index.html}"
+                fetched="$RUNNER_TEMP/edgeone-${page//\//-}"
+                if ! curl --fail --silent --show-error --compressed --noproxy '*' \
+                  --connect-timeout 5 --max-time 15 --output "$fetched" "$target" \
+                  || ! cmp -s "dist/$page" "$fetched"; then
+                  matched=false
+                  break
+                fi
+              done
+              if [[ "$matched" == true ]]; then
+                echo "EdgeOne serves this commit, homepage, and friends page."
+                exit 0
+              fi
+            fi
+            sleep 5
+          done
+          echo "Origin was published, but public cache verification failed. Retry the refresh; origin was retained." >&2
+          exit 1

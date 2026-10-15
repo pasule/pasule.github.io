@@ -103,7 +103,19 @@ src/
 .\scripts\push.ps1 "feat: 增加友链"
 ```
 
-构建使用 VPS 上的 Mihomo HTTP 代理 `http://172.30.89.1:17897` 和持久化 pnpm 缓存。runner 以 `pasule-runner` 用户运行，没有 sudo 权限。发布脚本将构建产物复制到 `/www/wwwroot/pasule.com/releases/` 下的新目录，原子切换 `current` 软链接，并检查正式域名返回的 commit 标记；验证失败时还原前一个 release。旧 release 保留，不自动删除。
+构建使用 VPS 上的 Mihomo HTTP 代理 `http://172.30.89.1:17897` 和持久化 pnpm 缓存。runner 以 `pasule-runner` 用户运行，没有 sudo 权限。发布脚本将构建产物复制到 `/www/wwwroot/pasule.com/releases/` 下的新目录，原子切换 `current` 软链接，并通过 HTTPS 直连本机源站检查 commit 标记；源站验证失败时还原前一个 release。旧 release 保留，不自动删除。
+
+源站发布成功后，工作流调用 EdgeOne API，仅对 `pasule.com` 提交 Hostname 刷新（`purge_host` / `invalidate`），等待任务成功（最长 5 分钟），然后通过不带缓存绕过参数的公网 URL 校验 commit、首页和友链页。缓存刷新或公网校验失败会使 Actions 报错，但保留已经通过源站验证的新版本，不回滚源站。EdgeOne 刷新不会清除访客浏览器已有的本地缓存。
+
+在 GitHub 仓库 Settings → Environments → `production` → Environment secrets 添加：
+
+- `TENCENTCLOUD_SECRET_ID`：专用腾讯云子用户的 SecretId。
+- `TENCENTCLOUD_SECRET_KEY`：该子用户的 SecretKey。
+- `EDGEONE_ZONE_ID`：`pasule.com` 对应的 `zone-…` 站点 ID，不是域名或套餐 ID。
+
+子用户仅需 `teo:CreatePurgeTask` 和 `teo:DescribePurgeTasks`，资源限定为该站点，不使用主账号密钥或管理员策略。来源 IP 条件须与实际 API 出口一致（runner 配置了代理）。密钥只注入配置检查与刷新步骤，不写入脚本或构建产物。缺少配置会在发布前失败。API 说明见 [CreatePurgeTask](https://cloud.tencent.com/document/api/1552/80703) 和 [DescribePurgeTasks](https://cloud.tencent.com/document/api/1552/80699)。
+
+刷新逻辑可离线测试：`python3 -m unittest discover -s scripts -p 'edgeone_purge_test.py'`；`python3 scripts/edgeone-purge.py --check` 只检查配置存在及站点 ID 格式，不调用 API，也不代表密钥鉴权已通过。本机备用部署不会自动调用刷新脚本。
 
 安装与注册脚本分别为 `scripts/setup-vps-runner.sh` 和 `scripts/register-vps-runner.sh`（VPS root 执行）。注册令牌从 GitHub 仓库 Settings → Actions → Runners → New self-hosted runner 获取，在 VPS 终端隐藏输入，不存入仓库。注册后 runner 将以 systemd 服务开机启动。仅信任的 `astro-source` push 可以执行该生产工作流；PR 检查保持在 GitHub 托管机器上。
 

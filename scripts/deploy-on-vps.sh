@@ -46,7 +46,8 @@ rollback() {
 trap rollback EXIT
 expected="{\"commit\":\"$source_commit\"}"
 for attempt in 1 2 3 4 5; do
-	actual=$(curl --fail --silent --show-error --noproxy '*' --connect-timeout 5 --max-time 15 \
+	actual=$(curl --fail --silent --show-error --noproxy '*' --resolve pasule.com:443:127.0.0.1 \
+		--connect-timeout 5 --max-time 15 \
 		--header 'Cache-Control: no-cache' \
 		"https://pasule.com/deployment.json?commit=$source_commit&attempt=$attempt") || actual=''
 	if [[ "$actual" == "$expected" ]]; then
@@ -56,5 +57,5 @@ for attempt in 1 2 3 4 5; do
 	fi
 	sleep 2
 done
-echo 'Production did not return this commit.' >&2
+echo 'Origin did not return this commit.' >&2
 exit 1
