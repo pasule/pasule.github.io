@@ -54,6 +54,16 @@ export const friendsConfig: FriendLink[] = [
   weight: 14,
   enabled:true,
  },
+ {
+  title:"符辞 · fu.ci",
+  imgurl: "https://fu.ci/brand/seal-logo.png",
+  desc: "如果你需要, 我可以帮你生成一个更稳, 更一针见血的博客介绍。",
+  siteurl: "https://fu.ci",
+  tags: ["Blog"],
+  weight: 15,
+  enabled:true,
+ },
+
   // {
   //   title: "Fomalhaut🥝",
   //   desc: "Future is now 🍭🍭🍭",
@@ -63,7 +73,7 @@ export const friendsConfig: FriendLink[] = [
   //   weight: 9,
   //   enabled: true,
   // },
-{
+ {
     title: "Firefly Docs",
     desc: "Firefly 主题模板文档",
     imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
@@ -71,8 +81,8 @@ export const friendsConfig: FriendLink[] = [
     tags: ["文档"],
     weight: 8,
     enabled: true,
-},
-{
+ },
+ {
     title: "Astro",
     desc: "The web framework for content-driven websites.",
     imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
@@ -80,7 +90,7 @@ export const friendsConfig: FriendLink[] = [
     tags: ["框架"],
     weight: 7,
     enabled: true,
-}
+ }
 ];
 
 export const getEnabledFriends = (): FriendLink[] => {
