@@ -2,9 +2,30 @@ import { h } from "hastscript";
 import { visit } from "unist-util-visit";
 import { shouldAddNoReferrer } from "../utils/image-utils.ts";
 
+// 图片扩展名：alt 以它结尾才可能只是上传时的原始文件名
+const IMAGE_EXTENSION_PATTERN =
+	/\.(png|jpe?g|gif|webp|avif|svg|bmp|ico|tiff?)$/i;
+
+// 含 CJK 字符的 alt 视为刻意写的图注，即使以扩展名结尾也保留
+const CJK_PATTERN = /[㐀-䶿一-鿿豈-﫿]/;
+
+/**
+ * 判断 alt 是否只是上传时自动生成的文件名。
+ * 依据是「以图片扩展名结尾 + 不含路径分隔符和空白 + 不含中文」：
+ * image.png、image.jpg、7759c03bcc73c647ee54448c9d19b47d.png 会被过滤，
+ * 而「架构图.png」这类刻意写的中文图注会保留。
+ *
+ * @param {string} alt
+ * @returns {boolean}
+ */
+const isMeaninglessAlt = (alt) =>
+	IMAGE_EXTENSION_PATTERN.test(alt) &&
+	!/[\s/\\]/.test(alt) &&
+	!CJK_PATTERN.test(alt);
+
 /**
  * 将带有 alt 文本的图片转换为 figure 元素，并生成 figcaption。
- * 当 alt 是默认文件名 image.png 时不显示图注。
+ * 当 alt 只是自动生成的文件名时不显示图注。
  *
  * @returns {Function} A transformer function for the rehype plugin
  */
@@ -43,9 +64,9 @@ export default function rehypeFigure() {
 				return;
 			}
 
-			// 保留 figure 居中结构，默认文件名 image.png 不显示为图注
+			// 保留 figure 居中结构，自动生成的文件名不作为图注
 			const figureChildren = [h("img", { ...imgProps })];
-			if (alt !== "image.png") {
+			if (!isMeaninglessAlt(alt)) {
 				figureChildren.push(h("figcaption", alt));
 			}
 			const figure = h("figure", figureChildren);
