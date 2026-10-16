@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Publish a build on the same host, without SSH/SCP or artifact downloads.
 set -euo pipefail
-umask 022
+umask 002
 source_commit=${1:?Usage: bash scripts/deploy-on-vps.sh COMMIT_SHA}
 [[ "$source_commit" =~ ^[a-f0-9]{40}$ ]] || { echo 'Invalid source commit.' >&2; exit 1; }
 [[ $(git rev-parse HEAD) == "$source_commit" ]] || { echo 'Checkout does not match deployment commit.' >&2; exit 1; }
@@ -17,6 +17,8 @@ fi
 deploy_root=/www/wwwroot/pasule.com
 [[ $(readlink -f "$deploy_root") == "$deploy_root" ]] || { echo 'Unexpected deployment root.' >&2; exit 1; }
 [[ -L "$deploy_root/current" ]] || { echo 'Current release must be a symlink.' >&2; exit 1; }
+exec 9>"$deploy_root/.runner-deploy.lock"
+flock -w 120 9
 while IFS= read -r -d '' directory; do
 	shared_directory="$deploy_root/shared/_astro${directory#dist/_astro}"
 	if [[ -d "$shared_directory" && ! -w "$shared_directory" ]]; then
@@ -24,14 +26,12 @@ while IFS= read -r -d '' directory; do
 		exit 1
 	fi
 done < <(find dist/_astro -type d -print0)
-exec 9>"$deploy_root/.runner-deploy.lock"
-flock -w 120 9
 previous_release=$(readlink "$deploy_root/current")
 [[ "$previous_release" == "$deploy_root/releases/"* && -d "$previous_release" ]] || { echo 'Unexpected current release target.' >&2; exit 1; }
 release=$(mktemp -d "$deploy_root/releases/$(date -u +%Y%m%dT%H%M%SZ)-${source_commit:0:12}.XXXXXX")
 chmod 755 "$release"
 rsync -r --no-perms --no-owner --no-group dist/ "$release/"
-rsync -r --checksum --no-perms --no-owner --no-group "$release/_astro/" "$deploy_root/shared/_astro/"
+rsync -r --checksum --no-perms --no-owner --no-group --chmod=Dg+w,Dg+s "$release/_astro/" "$deploy_root/shared/_astro/"
 switch_link="$deploy_root/.current-${release##*/}"
 ln -s "$release" "$switch_link"
 mv -Tf "$switch_link" "$deploy_root/current"

@@ -66,6 +66,7 @@ try {
 
 	$prepareScript = @'
 set -eu
+umask 002
 deploy_root=/www/wwwroot/pasule.com
 [ "$(readlink -f "$deploy_root")" = "$deploy_root" ] || { printf 'Unexpected web root.\n' >&2; exit 1; }
 mkdir -p "$deploy_root/releases" "$deploy_root/shared/_astro"
@@ -90,10 +91,13 @@ mktemp -d "$deploy_root/releases/.upload.XXXXXX"
 
 	$activateScript = @'
 set -eu
+umask 002
 deploy_root=/www/wwwroot/pasule.com
 deploy_upload=__UPLOAD__
 deploy_release="$deploy_root/releases/__RELEASE__"
 deploy_expected=__HASH__
+exec 9>"$deploy_root/.runner-deploy.lock"
+flock -w 120 9
 deploy_actual=$(sha256sum "$deploy_upload/site.tar.gz" | awk '{print $1}')
 [ "$deploy_actual" = "$deploy_expected" ] || { printf 'Archive checksum mismatch.\n' >&2; exit 1; }
 if tar -tzf "$deploy_upload/site.tar.gz" | grep -Eq '(^/|(^|/)\.\.(/|$))'; then
@@ -107,7 +111,8 @@ for deploy_file in index.html friends/index.html guestbook/index.html 404.html p
     [ -s "$deploy_release/$deploy_file" ] || { printf 'Incomplete release.\n' >&2; exit 1; }
 done
 [ -d "$deploy_release/_astro" ] || { printf 'Missing Astro assets.\n' >&2; exit 1; }
-rsync -a "$deploy_release/_astro/" "$deploy_root/shared/_astro/"
+# Keep shared ownership/modes; new directories must remain writable by the runner group.
+rsync -r --checksum --no-perms --no-owner --no-group --chmod=Dg+w,Dg+s "$deploy_release/_astro/" "$deploy_root/shared/_astro/"
 if [ -e "$deploy_root/current" ] && [ ! -L "$deploy_root/current" ]; then
     printf 'Current release is not a symlink.\n' >&2
     exit 1
