@@ -10,9 +10,7 @@ export type CommentConfig = {
 		lang?: string;
 		visitorCount?: boolean;
 		/**
-		 * Twikoo JS 文件地址，支持 CDN 链接
-		 * 国内推荐: https://registry.npmmirror.com/twikoo/1.7.9/files/dist/twikoo.min.js
-		 * 国际推荐: https://cdn.jsdelivr.net/npm/twikoo@1.7.9/dist/twikoo.min.js
+		 * 可选自定义 Twikoo JS 地址；留空使用项目依赖中的本地脚本。
 		 */
 		jsUrl?: string;
 		/**

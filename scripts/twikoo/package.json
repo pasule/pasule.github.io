@@ -1,0 +1,7 @@
+{
+  "name": "pasule-twikoo-service",
+  "private": true,
+  "dependencies": {
+    "tkserver": "2.0.15"
+  }
+}

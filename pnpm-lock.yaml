@@ -170,6 +170,9 @@ importers:
       svelte:
         specifier: ^5.56.3
         version: 5.56.3
+      twikoo:
+        specifier: 2.0.15
+        version: 2.0.15
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
@@ -2264,6 +2267,9 @@ packages:
     resolution: {integrity: sha512-hItDHuIIlEV61R+faXu66s1K36aTurO/Qw0e45Vskz57gXl9pWOT6eg3zmcEui6CZXddbN7zd41bwmvag4JGwQ==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@twikoojs/shared@2.0.15':
+    resolution: {integrity: sha512-3r9AK08Xm3qkEVNFmXEu1v6qsUmSU+su6bXNZxNZxVbcGFnWo0+TddO3BoqdNUHwkysnn329O9qXMYz3bgAymA==}
 
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
@@ -5287,6 +5293,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  twikoo@2.0.15:
+    resolution: {integrity: sha512-y99CvRNsK1UomzeeSpUR3DT5B0+qDAOcYkk3DKdtOdV/GBVAJy3MFRA7lhXUJM7sb0wWNqNf4f22xSrQUEs5Rw==}
+
   typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}
     engines: {node: '>= 0.4'}
@@ -8068,6 +8077,8 @@ snapshots:
       '@tailwindcss/oxide': 4.3.1
       tailwindcss: 4.3.1
       vite: 8.1.0(@types/node@25.9.1)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.22.4)(yaml@2.9.0)
+
+  '@twikoojs/shared@2.0.15': {}
 
   '@tybys/wasm-util@0.10.2':
     dependencies:
@@ -12045,6 +12056,10 @@ snapshots:
       esbuild: 0.28.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  twikoo@2.0.15:
+    dependencies:
+      '@twikoojs/shared': 2.0.15
 
   typed-array-buffer@1.0.3:
     dependencies:

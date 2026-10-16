@@ -1,0 +1,32 @@
+[Unit]
+Description=Pasule Twikoo comment service
+After=network.target
+
+[Service]
+Type=simple
+User=pasule-twikoo
+Group=pasule-twikoo
+WorkingDirectory=/opt/pasule-twikoo
+ExecStart=/usr/local/bin/node /opt/pasule-twikoo/node_modules/tkserver/dist/server.js
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=TZ=Asia/Shanghai
+Environment=TWIKOO_HOST=127.0.0.1
+Environment=TWIKOO_PORT=18090
+Environment=TWIKOO_DATA=/var/lib/pasule-twikoo
+Environment=TWIKOO_LOG_LEVEL=warn
+Environment=TWIKOO_THROTTLE=1000
+Environment='TWIKOO_IP_HEADERS=["headers.x-real-ip"]'
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/pasule-twikoo
+UMask=0077
+MemoryMax=384M
+CPUQuota=50%
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
