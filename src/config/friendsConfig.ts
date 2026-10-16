@@ -72,6 +72,15 @@ export const friendsConfig: FriendLink[] = [
   weight: 16,
   enabled:true,
  },
+ {
+  title:"赛博小屋",
+  imgurl: "https://minio.njfu-yangfan.top/aurora/aurora/config/050ee401d7f8b3cd9ce266d2dc01fd70.jpg",
+  desc: "午安大电牛",
+  siteurl: "https://www.njfu-yangfan.top/",
+  tags: ["Blog"],
+  weight: 17,
+  enabled:true,
+ },
 
   // {
   //   title: "Fomalhaut🥝",
