@@ -63,6 +63,15 @@ export const friendsConfig: FriendLink[] = [
   weight: 15,
   enabled:true,
  },
+ {
+  title:"奶油小屋博客",
+  imgurl: "https://abcdtfk.icu/IMG_1370.jpeg",
+  desc: "这个博客存放我的日常、成长，还有我对自己的观察。",
+  siteurl: "https://abcdtfk.icu",
+  tags: ["Blog"],
+  weight: 16,
+  enabled:true,
+ },
 
   // {
   //   title: "Fomalhaut🥝",
