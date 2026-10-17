@@ -81,6 +81,15 @@ export const friendsConfig: FriendLink[] = [
   weight: 17,
   enabled:true,
  },
+ {
+  title:"Alexander",
+  imgurl: "https://lanerc.me/avatar.png",
+  desc: "记录代码、折腾与生活",
+  siteurl: "https://lanerc.me",
+  tags: ["Blog"],
+  weight: 18,
+  enabled:true,
+ },
 
   // {
   //   title: "Fomalhaut🥝",
