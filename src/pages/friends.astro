@@ -12,6 +12,7 @@ import {
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { shouldAddNoReferrer } from "@utils/image-utils";
 
 // 检查页面是否启用
 if (!siteConfig.pages.friends) {
@@ -150,6 +151,9 @@ const friendApplyUrl = "https://github.com/pasule/pasule.github.io/issues/new?te
                 <img
                   src={item.imgurl}
                   alt={item.title}
+                  referrerpolicy={shouldAddNoReferrer(item.imgurl)
+                    ? "no-referrer"
+                    : undefined}
                   class="w-full h-full object-cover"
                 />
               </div>
