@@ -34,6 +34,7 @@ import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.
 import rehypeEmailProtection from "./src/plugins/rehype-email-protection.mjs";
 import rehypeExternalLinks from "./src/plugins/rehype-external-links.mjs";
 import rehypeFigure from "./src/plugins/rehype-figure.mjs";
+import rehypeSkipRemoteImages from "./src/plugins/rehype-skip-remote-images.mjs";
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { rehypePlantuml } from "./src/plugins/rehype-plantuml.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
@@ -261,6 +262,7 @@ export default defineConfig({
 				[remarkPlantuml, plantumlConfig],
 			],
 			rehypePlugins: [
+				rehypeSkipRemoteImages, // 远程图片改由组件层带回退地优化，避免单张抓取失败中断构建
 				[rehypeKatex, { katex }],
 				[rehypeCallouts, { theme: siteConfig.post.rehypeCallouts.theme }],
 				rehypeSlug,
