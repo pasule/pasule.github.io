@@ -25,6 +25,7 @@ import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig, fontConfig, fontsList, plantumlConfig, siteConfig } from "./src/config";
+import { friendsConfig } from "./src/config/friendsConfig";
 import { collectUsedFontCssVars } from "./src/utils/fontHelper";
 import I18nKey from "./src/i18n/i18nKey";
 import { i18n } from "./src/i18n/translation";
@@ -87,6 +88,23 @@ export default defineConfig({
 
 	// 图像优化配置
 	image: {
+		// 构建期允许优化的远程图片主机：图床、随机封面 API，以及全部启用的友链头像域名
+		remotePatterns: [
+			...new Set([
+				"tu.pasule.com",
+				"t.alcy.cc",
+				"cdn.jsdelivr.net",
+				...friendsConfig
+					.filter((friend) => friend.enabled !== false)
+					.flatMap((friend) => {
+						try {
+							return [new URL(friend.imgurl).hostname];
+						} catch {
+							return [];
+						}
+					}),
+			]),
+		].map((hostname) => ({ protocol: "https", hostname })),
 		// 全局响应式布局
 		layout: "constrained",
 	},

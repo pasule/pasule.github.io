@@ -138,7 +138,6 @@ const pageHeading = title?.trim() || siteConfig.title;
 const hasVisibleHomeH1 =
 	showHomeText && !!backgroundWallpaper.common?.homeText?.title;
 
-
 const showBannerPostMeta =
 	(isBannerMode || isFullscreenMode) &&
 	isBackgroundEnabled &&
@@ -346,8 +345,9 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[640, 750, 1080]}
                     sizes="100vw"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : undefined}
+                    deferred
+                    loading="eager"
+                    fetchpriority="high"
                     quality={mobileQuality}
                 />
             </div>
@@ -360,10 +360,11 @@ const hasMultipleImages =
                     class="object-cover h-full"
                     src={src}
                     position={backgroundWallpaper.banner?.position}
-                    widths={[1280, 1920, 2560]}
+                    widths={[960, 1280, 1600, 1920]}
                     sizes="100vw"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : undefined}
+                    deferred
+                    loading="eager"
+                    fetchpriority="high"
                     quality={configQuality}
                 />
             </div>
@@ -373,7 +374,7 @@ const hasMultipleImages =
     /* 单图模式 */
     <div class="relative h-full w-full" id="banner-images-container">
         {backgroundImages.mobile.length > 0 && (
-            <div class="banner-image-slot-mobile absolute inset-0 block lg:hidden">
+            <div class="slide-item active banner-image-slot-mobile absolute inset-0 block lg:hidden">
                 <ImageWrapper
                     alt="Mobile background image of the blog"
                     class="object-cover h-full w-full"
@@ -381,6 +382,7 @@ const hasMultipleImages =
                     position={backgroundWallpaper.banner?.position}
                     widths={[640, 750, 1080]}
                     sizes="100vw"
+                    deferred
                     loading="eager"
                     fetchpriority="high"
                     quality={mobileQuality}
@@ -388,15 +390,16 @@ const hasMultipleImages =
             </div>
         )}
         {backgroundImages.desktop.length > 0 && (
-            <div class="banner-image-slot-desktop absolute inset-0 hidden lg:block">
+            <div class="slide-item active banner-image-slot-desktop absolute inset-0 hidden lg:block">
                 <ImageWrapper
                     id="banner"
                     alt="Desktop background image of the blog"
                     class="object-cover h-full"
                     src={backgroundImages.desktop[0]}
                     position={backgroundWallpaper.banner?.position}
-                    widths={[1280, 1920, 2560]}
+                    widths={[960, 1280, 1600, 1920]}
                     sizes="100vw"
+                    deferred
                     loading="eager"
                     fetchpriority="high"
                     quality={configQuality}
@@ -407,7 +410,6 @@ const hasMultipleImages =
     )}
 
     <!-- 壁纸轮播脚本（基于 CSS transition） -->
-    {hasMultipleImages && (
     <script is:inline data-swup-ignore-script>
         (function initBannerCarousel() {
             var container = document.getElementById('banner-images-container');
@@ -476,6 +478,27 @@ const hasMultipleImages =
             }
 
             function applySlideChange(slides, nextIndex) {
+                // Templates are inert: only the selected wallpaper can start a request.
+                var slide = slides[nextIndex];
+                var template = slide.querySelector('template[data-deferred-image]');
+                if (template) {
+                    var content = template.content.cloneNode(true);
+                    var image = content.querySelector('img');
+                    var placeholder = slide.querySelector('.lqip-placeholder');
+                    if (image) {
+                        // The global LQIP fade-in only covers images present at page load,
+                        // so a materialized slide has to reveal itself.
+                        var reveal = function() {
+                            image.style.opacity = '1';
+                            if (placeholder) placeholder.classList.add('loaded');
+                        };
+                        image.addEventListener('load', reveal, { once: true });
+                        image.addEventListener('error', function() {
+                            if (placeholder) placeholder.classList.add('loaded');
+                        }, { once: true });
+                    }
+                    template.replaceWith(content);
+                }
                 // Slide 效果需要 prev-waiting 辅助类
                 if (effect === 'slide') {
                     for (var i = 0; i < slides.length; i++) {
@@ -597,13 +620,12 @@ const hasMultipleImages =
 
             // 随机首张
             var slides = getVisibleSlides();
-            if (slides.length > 1) {
-                var randomIdx = Math.floor(Math.random() * slides.length);
-                for (var k = 0; k < slides.length; k++) {
-                    if (k === randomIdx) slides[k].classList.add('active');
-                    else slides[k].classList.remove('active');
-                }
-            }
+            if (slides.length) applySlideChange(slides, Math.floor(Math.random() * slides.length));
+            // Load a device-specific image only when crossing the desktop breakpoint.
+            window.matchMedia('(min-width: 1024px)').addEventListener('change', function() {
+                var current = getVisibleSlides();
+                if (current.length) applySlideChange(current, getCurrentIndex(current));
+            });
 
             // 启动
             if (isCarouselEnabled() && isBannerWallpaperMode()) {
@@ -611,7 +633,6 @@ const hasMultipleImages =
             }
         })();
     </script>
-    )}
     
     {backgroundWallpaper.playerEnable && typeof backgroundWallpaper.src === "object" && !Array.isArray(backgroundWallpaper.src) && backgroundWallpaper.src.playerUrl && (
         <BackgroundPlayer playerUrl={backgroundWallpaper.src.playerUrl} playerMode={backgroundWallpaper.common?.playerMode ?? "order"} />

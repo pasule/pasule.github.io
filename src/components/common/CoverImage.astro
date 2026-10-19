@@ -11,6 +11,7 @@ import {
 	shouldAddNoReferrer,
 } from "@/utils/image-utils";
 import { getLqipProps } from "@/utils/lqip-utils";
+import { getRemoteImage } from "@/utils/remote-image";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -136,6 +137,15 @@ const remoteReferrerPolicy =
 	!isLocal && shouldAddNoReferrer(isPublic ? url(src) : src)
 		? "no-referrer"
 		: undefined;
+const remoteImage =
+	!isLocal && !isPublic
+		? await getRemoteImage(src, widths, quality)
+		: {
+				src: isPublic ? url(src) : src,
+				srcset: undefined,
+				width: undefined,
+				height: undefined,
+			};
 ---
 
 <div
@@ -210,7 +220,11 @@ const remoteReferrerPolicy =
 	<!-- 远程图片 -->
 	{!isLocal && (
 		<img
-			src={isPublic ? url(src) : src}
+			src={remoteImage.src}
+			srcset={remoteImage.srcset}
+			sizes={remoteImage.srcset ? sizes : undefined}
+			width={remoteImage.width}
+			height={remoteImage.height}
 			alt={alt || ""}
 			class={imageClass}
 			style={imageStyle}
@@ -328,6 +342,8 @@ const remoteReferrerPolicy =
 					// 先绑定好事件，再更换src
 					img.addEventListener('load', hideLoading, { once: true });
 					img.addEventListener('error', onError, { once: true });
+					img.removeAttribute('srcset');
+					img.removeAttribute('sizes');
 					img.src = apiUrls[currentApiIndex];
 					currentApiIndex++;
 				} else {

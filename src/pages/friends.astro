@@ -13,6 +13,7 @@ import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import { shouldAddNoReferrer } from "@utils/image-utils";
+import { getRemoteImage } from "@/utils/remote-image";
 
 // 检查页面是否启用
 if (!siteConfig.pages.friends) {
@@ -34,7 +35,10 @@ const isCommentEnabled =
 	friendsPageConfig.showComment !== false;
 
 // 使用配置文件中的友链数据，按权重排序
-const items = getEnabledFriends();
+const items = await Promise.all(getEnabledFriends().map(async (item) => ({
+	...item,
+	avatar: await getRemoteImage(item.imgurl, [64, 128], 78, true),
+})));
 const allTags = [...new Set(items.flatMap((item) => item.tags || []))].sort();
 
 // 页面标题和描述
@@ -149,7 +153,13 @@ const friendApplyUrl = "https://github.com/pasule/pasule.github.io/issues/new?te
               {/* 头像 */}
               <div class="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-black/5 dark:border-white/5 group-hover:scale-105 transition-transform duration-300">
                 <img
-                  src={item.imgurl}
+                  src={item.avatar.src}
+                  srcset={item.avatar.srcset}
+                  sizes="64px"
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                  decoding="async"
                   alt={item.title}
                   referrerpolicy={shouldAddNoReferrer(item.imgurl)
                     ? "no-referrer"

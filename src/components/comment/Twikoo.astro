@@ -10,7 +10,11 @@ interface Props {
 const { jsUrl, cssUrl, ...options } = commentConfig.twikoo ?? { envId: "" };
 // 使用配置的页面标识，而不是地址栏，确保预览域名和尾斜杠不分裂评论。
 const path = Astro.props.path.replace(/\/+$/, "") || "/";
-const scriptUrl = jsUrl ? (jsUrl.startsWith("http") ? jsUrl : url(jsUrl)) : bundledScriptUrl;
+const scriptUrl = jsUrl
+	? jsUrl.startsWith("http")
+		? jsUrl
+		: url(jsUrl)
+	: bundledScriptUrl;
 const config = {
 	...options,
 	path,
@@ -24,6 +28,7 @@ const config = {
 {cssUrl && <link rel="stylesheet" href={cssUrl.startsWith("http") ? cssUrl : url(cssUrl)} />}
 
 <script>
+  import { deferUntilVisible } from "@/utils/defer-until-visible";
   interface TwikooClient {
     init: (options: Record<string, unknown>) => Promise<void>;
   }
@@ -33,7 +38,8 @@ const config = {
     initialized: WeakSet<HTMLElement>;
     swupBound: boolean;
     styles: HTMLStyleElement[];
-    init?: () => Promise<void>;
+    init?: () => void;
+    cancelPending?: () => void;
   }
 
   declare global {
@@ -112,20 +118,28 @@ const config = {
   function bindSwup(): void {
     if (state.swupBound || !window.swup?.hooks) return;
     state.swupBound = true;
-    window.swup.hooks.on("page:view", initTwikoo);
+    // Swup awaits promises returned by hooks. Never await SDK/API requests here.
+    window.swup.hooks.on("page:view", scheduleTwikoo);
+  }
+
+  function scheduleTwikoo(): void {
+    state.cancelPending?.();
+    const container = document.getElementById("tcomment");
+    if (!container || state.initialized.has(container)) return;
+    state.cancelPending = deferUntilVisible(container, () => void initTwikoo());
   }
 
   if (!state.init) {
-    state.init = initTwikoo;
+    state.init = scheduleTwikoo;
     bindSwup();
     document.addEventListener("swup:enable", bindSwup, { once: true });
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initTwikoo, { once: true });
+      document.addEventListener("DOMContentLoaded", scheduleTwikoo, { once: true });
     } else {
-      void initTwikoo();
+      scheduleTwikoo();
     }
   } else {
-    void state.init();
+    state.init();
   }
 </script>
 

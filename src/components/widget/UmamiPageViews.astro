@@ -58,6 +58,7 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 </style>
 
 <script>
+	import { deferUntilVisible } from "@/utils/defer-until-visible";
 	type UmamiStats = {
 		pageviews?: number | { value?: number };
 	};
@@ -129,7 +130,7 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 
 		const shareResponse = await fetch(
 			`${apiOrigin}/api/share/${encodeURIComponent(shareSlug)}`,
-			{ headers: { Accept: "application/json" } },
+			{ headers: { Accept: "application/json" }, signal: AbortSignal.timeout(8000) },
 		);
 		if (!shareResponse.ok) {
 			throw new Error(`Unable to load the Umami share token (${shareResponse.status}).`);
@@ -149,6 +150,7 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 		const statsResponse = await fetch(
 			`${apiOrigin}/api/websites/${encodeURIComponent(websiteId)}/stats?${params}`,
 			{
+				signal: AbortSignal.timeout(8000),
 				headers: {
 					Accept: "application/json",
 					"x-umami-share-token": share.token,
@@ -173,11 +175,17 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 	}
 
 	class UmamiPageViews extends HTMLElement {
+		private cancelPending?: () => void;
+
 		connectedCallback() {
-			void this.load();
+			void this.load(true);
 		}
 
-		private async load() {
+		disconnectedCallback() {
+			this.cancelPending?.();
+		}
+
+		private async load(useCache = false) {
 			const valueElement = this.querySelector<HTMLElement>(".page-views-value");
 			if (!valueElement) return;
 
@@ -190,6 +198,21 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 			].join(":");
 			const maxAge = Number(this.dataset.cacheMinutes || "15") * 60 * 1000;
 			const cached = readCachedValue(cacheKey, maxAge);
+			const previous = cached ?? readCachedValue(cacheKey, 7 * 24 * 60 * 60 * 1000);
+			const render = (value: number) => {
+				valueElement.textContent = new Intl.NumberFormat(this.dataset.locale || "zh-CN", {
+					notation: "compact", maximumFractionDigits: value >= 1000 ? 1 : 0,
+				}).format(value);
+				valueElement.title = new Intl.NumberFormat(this.dataset.locale || "zh-CN").format(value);
+				this.dataset.state = "ready";
+			};
+			if (useCache) {
+				if (previous !== null) render(previous);
+				if (cached === null) {
+					this.cancelPending = deferUntilVisible(this, () => void this.load(), true);
+				}
+				return;
+			}
 
 			try {
 				const value =
@@ -207,19 +230,10 @@ const locale = siteConfig.lang?.replace("_", "-") || "zh-CN";
 
 				if (cached === null) cacheValue(cacheKey, value);
 
-				valueElement.textContent = new Intl.NumberFormat(
-					this.dataset.locale || "zh-CN",
-					{
-						notation: "compact",
-						maximumFractionDigits: value >= 1000 ? 1 : 0,
-					},
-				).format(value);
-				valueElement.title = new Intl.NumberFormat(
-					this.dataset.locale || "zh-CN",
-				).format(value);
-				this.dataset.state = "ready";
+				if (this.isConnected) render(value);
 			} catch (error) {
-				this.dataset.state = "error";
+				if (!this.isConnected) return;
+				this.dataset.state = previous === null ? "error" : "ready";
 				this.title = this.dataset.errorLabel || "Statistics unavailable";
 				console.warn(error);
 			}

@@ -10,6 +10,7 @@ import {
 	shouldAddNoReferrer,
 } from "@/utils/image-utils";
 import { getLqipProps } from "@/utils/lqip-utils";
+import { getRemoteImage } from "@/utils/remote-image";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -28,6 +29,7 @@ interface Props {
 	widths?: number[];
 	sizes?: string;
 	quality?: number;
+	deferred?: boolean;
 }
 
 const {
@@ -44,6 +46,7 @@ const {
 	widths,
 	sizes,
 	quality = getImageQuality(),
+	deferred = false,
 } = Astro.props;
 
 const fallbackFormat = getFallbackFormat();
@@ -88,6 +91,11 @@ const imageStyle = `object-position: ${position}`;
 const fullSrc = isPublic ? url(src) : src;
 const referrerPolicy =
 	!isLocal && shouldAddNoReferrer(fullSrc) ? "no-referrer" : undefined;
+const remoteImage =
+	!isLocal && !isPublic && widths
+		? await getRemoteImage(src, widths, quality)
+		: { src: fullSrc, srcset: undefined, width: undefined, height: undefined };
+const ImageContainer = deferred ? "template" : "div";
 
 // 构建响应式图像属性
 const responsiveProps = {
@@ -107,6 +115,7 @@ const lqipProps = isLocal
 <div id={id} class:list={[className, 'overflow-hidden relative']}>
     <div class="lqip-placeholder absolute inset-0 pointer-events-none" style={lqipProps.style} aria-hidden="true"></div>
     <div class="transition absolute inset-0 dark:bg-black/10 pointer-events-none"></div>
+    <ImageContainer data-deferred-image={deferred || undefined} style={deferred ? undefined : "display:contents"}>
     {isLocal && img && usePicture && (
         <Picture
             src={img}
@@ -131,5 +140,6 @@ const lqipProps = isLocal
             {...responsiveProps}
         />
     )}
-    {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ""} class={imageClass} style={imageStyle} loading={loading} fetchpriority={fetchpriority} referrerpolicy={referrerPolicy} />}
+    {!isLocal && <img src={remoteImage.src} srcset={remoteImage.srcset} sizes={remoteImage.srcset ? sizes : undefined} width={remoteImage.width} height={remoteImage.height} alt={alt || ""} class={imageClass} style={imageStyle} loading={loading} decoding="async" fetchpriority={fetchpriority} referrerpolicy={referrerPolicy} />}
+    </ImageContainer>
 </div>
