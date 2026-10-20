@@ -9,15 +9,15 @@ export const friendsPageConfig: FriendsPageConfig = {
 };
 
 export const friendsConfig: FriendLink[] = [
-  {
-    title: "Hexo",
-    desc: "快速、简单且强大的网志框架",
-    imgurl: "https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg",
-    siteurl: "https://hexo.io/zh-cn/",
-    tags: ["技术支持"],
-    weight: 10,
-    enabled: true,
-  },
+  // {
+  //   title: "Hexo",
+  //   desc: "快速、简单且强大的网志框架",
+  //   imgurl: "https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg",
+  //   siteurl: "https://hexo.io/zh-cn/",
+  //   tags: ["技术支持"],
+  //   weight: 10,
+  //   enabled: true,
+  // },
   {
     title: "番茄主理人",
     imgurl: "https://q1.qlogo.cn/g?b=qq&nk=20447289&s=640",
