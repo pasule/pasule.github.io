@@ -90,6 +90,15 @@ export const friendsConfig: FriendLink[] = [
   weight: 18,
   enabled:true,
  },
+ {
+  title:"Chisa Blog",
+  imgurl: "https://chisablog.ef-yuko.cn/mainIcon-64.gif",
+  desc: "Catch the Future",
+  siteurl: "https://chisablog.ef-yuko.cn/",
+  tags: ["Blog"],
+  weight: 19,
+  enabled:true,
+ },
 
   // {
   //   title: "Fomalhaut🥝",
@@ -100,24 +109,6 @@ export const friendsConfig: FriendLink[] = [
   //   weight: 9,
   //   enabled: true,
   // },
- {
-    title: "Firefly Docs",
-    desc: "Firefly 主题模板文档",
-    imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-    siteurl: "https://docs-firefly.cuteleaf.cn",
-    tags: ["文档"],
-    weight: 8,
-    enabled: true,
- },
- {
-    title: "Astro",
-    desc: "The web framework for content-driven websites.",
-    imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-    siteurl: "https://astro.build",
-    tags: ["框架"],
-    weight: 7,
-    enabled: true,
- }
 ];
 
 export const getEnabledFriends = (): FriendLink[] => {
