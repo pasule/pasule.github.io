@@ -99,6 +99,15 @@ export const friendsConfig: FriendLink[] = [
   weight: 19,
   enabled:true,
  },
+ {
+  title:"AiphaDeity",
+  imgurl: "https://aiphadeity.cn/favicon/avatar-128.png",
+  desc: "路漫漫其修远兮，吾将上下而求索",
+  siteurl: "https://aiphadeity.cn",
+  tags: ["Blog"],
+  weight: 20,
+  enabled:true,
+ },
 
   // {
   //   title: "Fomalhaut🥝",
