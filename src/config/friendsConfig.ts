@@ -106,6 +106,15 @@ export const friendsConfig: FriendLink[] = [
   siteurl: "https://aiphadeity.cn",
   tags: ["Blog"],
   weight: 20,
+  enabled:true,   
+ },
+ {
+  title:"陈沐阳",
+  imgurl: "https://muyangchen.me/images/profile/site-avatar.jpg",
+  desc: "代码、系统，以及一些安静的事物",
+  siteurl: "https://muyangchen.me/",
+  tags: ["Blog"],
+  weight: 21,
   enabled:true,
  },
 
